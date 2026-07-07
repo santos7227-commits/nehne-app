@@ -523,6 +523,26 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
   font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:0.06em;
   color:var(--paper-dim); opacity:0.8;
 }
+/* ---------- Print / PDF export ---------- */
+#printArea{display:none;}
+@media print{
+  body > *:not(#printArea){display:none !important;}
+  #printArea{display:block !important;}
+  html,body{background:#fff !important; color:#1a1a1a !important; margin:0; padding:0;}
+  #printArea{font-family:'Noto Sans JP',sans-serif; color:#1a1a1a; padding:8mm 4mm;}
+  .pr-brand{font-family:'Shippori Mincho',serif; font-size:13px; letter-spacing:.18em; color:#555; border-bottom:2px solid #1a1a1a; padding-bottom:6px; display:flex; justify-content:space-between; align-items:baseline;}
+  .pr-brand .pr-date{font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.05em;}
+  .pr-title{font-family:'Shippori Mincho',serif; font-size:22px; font-weight:700; margin:14px 0 2px;}
+  .pr-sub{font-size:11px; color:#555; margin-bottom:14px;}
+  .pr-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:6px;}
+  .pr-table th{border-top:1.5px solid #1a1a1a; border-bottom:1px solid #1a1a1a; padding:6px 8px; text-align:left; font-weight:700; white-space:nowrap;}
+  .pr-table td{border-bottom:1px solid #ccc; padding:6px 8px;}
+  .pr-table td.num, .pr-table th.num{text-align:right; font-family:'JetBrains Mono',monospace; white-space:nowrap;}
+  .pr-table tr.pr-total td{border-top:1.5px solid #1a1a1a; border-bottom:none; font-weight:700;}
+  .pr-note-tag{display:inline-block; font-size:9.5px; border:1px solid #999; border-radius:3px; padding:1px 5px; color:#555;}
+  .pr-footer{margin-top:18px; font-size:9.5px; color:#888; display:flex; justify-content:space-between; border-top:1px solid #ccc; padding-top:6px;}
+  @page{margin:14mm 12mm;}
+}
 </style>
 </head>
 <body>
@@ -840,6 +860,10 @@ const STR = {
     cm_default_family:'未分類', cm_default_ifra:'未確認',
     tbl_material:'素材', tbl_dilution:'希釈率', tbl_amount:'使用量', tbl_drops:'滴数目安', tbl_total:'合計',
     tbl_empty:'素材を追加すると計算されます',
+    print_btn:'印刷', print_created:'作成日', print_target:'総量設定',
+    print_mode_ul:'体積モード（μl・希釈済み香料）', print_mode_g:'重量モード（g・比重換算）',
+    print_col_note:'ノート', print_col_ratio:'比率', print_footer:'nehne調香ノートで作成',
+    toast_print_failed:'印刷用データの読み込みに失敗しました: ',
     picker_title:'素材を選ぶ', picker_search_ph:'検索…', not_found:'見つかりませんでした',
     mix_reset:'進捗をリセット', mix_done_suffix:' 完了', mix_measured:'計量済み', mix_all_done:'🎉 すべて完了しました',
     confirm_clear:'現在の配合をクリアしますか？', confirm_delete:'このフォーミュラを削除しますか？', confirm_reset:'進捗をリセットしますか？',
@@ -901,6 +925,10 @@ const STR = {
     cm_default_family:'Uncategorized', cm_default_ifra:'Not verified',
     tbl_material:'Material', tbl_dilution:'Dilution', tbl_amount:'Amount', tbl_drops:'Est. drops', tbl_total:'Total',
     tbl_empty:'Amounts appear once you add materials',
+    print_btn:'Print', print_created:'Created', print_target:'Target',
+    print_mode_ul:'Volume mode (μl, pre-diluted)', print_mode_g:'Weight mode (g, SG-converted)',
+    print_col_note:'Note', print_col_ratio:'Ratio', print_footer:'Created with nehne Blending Note',
+    toast_print_failed:'Failed to load formula for printing: ',
     picker_title:'Choose a material', picker_search_ph:'Search…', not_found:'No results found',
     mix_reset:'Reset progress', mix_done_suffix:' done', mix_measured:'Measured', mix_all_done:'🎉 All done',
     confirm_clear:'Clear the current formula?', confirm_delete:'Delete this formula?', confirm_reset:'Reset progress?',
@@ -1734,6 +1762,96 @@ const nStorage = {
 };
 
 /* ---------------- Saved (local storage) ---------------- */
+/* ---------- Print / PDF export for saved formulas ----------
+   Computes weigh-out amounts from saved data (independent of current builder state),
+   using the same math as computeMixItems(), then opens the browser print dialog.
+   Users can choose "Save as PDF" in the dialog. */
+function computeMixItemsFor(f){
+  const items = f.items || [];
+  const targetWeight = parseFloat(f.targetWeight) || 0;
+  const mode = f.calcMode || 'ul';
+  const sumParts = items.reduce((a,b)=>a+(b.parts||0),0);
+  if(mode==='ul'){
+    const weighted = items.map(ing=>{
+      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+      return ing.parts>0 ? ing.parts/(dil/100) : 0;
+    });
+    const sumW = weighted.reduce((a,b)=>a+b,0);
+    return items.map((ing,i)=>{
+      const amount = sumW>0 ? weighted[i]/sumW*targetWeight : 0;
+      const pct = sumParts>0 ? (ing.parts||0)/sumParts*100 : 0;
+      return {name:ing.name, note:ing.note, pct, dilution:(ing.dilution>0&&ing.dilution<=100)?ing.dilution:10, amount, unit:'μl', drops:amount/50};
+    });
+  } else {
+    return items.map(ing=>{
+      const mat = findMaterial(ing.name) || {sg:1};
+      const pct = sumParts>0 ? (ing.parts||0)/sumParts*100 : 0;
+      const pureG = pct/100*targetWeight;
+      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+      const dilutedG = dil>0 ? pureG/(dil/100) : pureG;
+      const ulEquiv = (mat.sg||1)>0 ? dilutedG/(mat.sg||1)*1000 : 0;
+      return {name:ing.name, note:ing.note, pct, dilution:dil, amount:dilutedG, unit:'g', drops:ulEquiv/50};
+    });
+  }
+}
+function printSavedFormula(key){
+  let f;
+  try{
+    f = JSON.parse(nStorage.get(key));
+  }catch(err){
+    toast(t('toast_print_failed') + (err && err.message ? err.message : String(err)));
+    return;
+  }
+  if(!f || !Array.isArray(f.items)){ toast(t('toast_print_failed') + 'invalid data'); return; }
+  const isUl = (f.calcMode||'ul')==='ul';
+  const items = computeMixItemsFor(f);
+  const totalOut = items.reduce((a,b)=>a+b.amount,0);
+  const locale = currentLang==='ja' ? 'ja-JP' : 'en-US';
+  const created = f.savedAt ? new Date(f.savedAt).toLocaleDateString(locale) : '—';
+  const today = new Date().toLocaleDateString(locale);
+  const dropsSuffix = currentLang==='ja' ? '滴' : '';
+  const rows = items.map(it=>`
+    <tr>
+      <td>${esc(it.name)}</td>
+      <td>${it.note ? `<span class="pr-note-tag">${esc(it.note)}</span>` : '—'}</td>
+      <td class="num">${it.pct.toFixed(1)}%</td>
+      <td class="num">${it.dilution}%</td>
+      <td class="num">${it.amount.toFixed(isUl?1:3)}${it.unit}</td>
+      <td class="num">${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
+    </tr>`).join('');
+  let area = document.getElementById('printArea');
+  if(!area){
+    area = document.createElement('div');
+    area.id = 'printArea';
+    document.body.appendChild(area);
+  }
+  area.innerHTML = `
+    <div class="pr-brand"><span>nehne — ${esc(currentLang==='ja'?'調香ノート':'Blending Note')}</span><span class="pr-date">${esc(today)}</span></div>
+    <div class="pr-title">${esc(f.name || t('untitled_formula'))}</div>
+    <div class="pr-sub">
+      ${esc(t('print_created'))}: ${esc(created)} ・
+      ${esc(isUl ? t('print_mode_ul') : t('print_mode_g'))} ・
+      ${esc(t('print_target'))}: ${parseFloat(f.targetWeight)||0}${isUl?'μl':'g'}
+    </div>
+    <table class="pr-table">
+      <thead><tr>
+        <th>${esc(t('tbl_material'))}</th>
+        <th>${esc(t('print_col_note'))}</th>
+        <th class="num">${esc(t('print_col_ratio'))}</th>
+        <th class="num">${esc(t('tbl_dilution'))}</th>
+        <th class="num">${esc(t('tbl_amount'))}</th>
+        <th class="num">${esc(t('tbl_drops'))}</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+      <tbody><tr class="pr-total">
+        <td>${esc(t('tbl_total'))}</td><td>—</td><td class="num">100%</td><td class="num">—</td>
+        <td class="num">${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td class="num">—</td>
+      </tr></tbody>
+    </table>
+    <div class="pr-footer"><span>${esc(t('print_footer'))}</span><span>v${APP_VERSION}</span></div>`;
+  setTimeout(()=>window.print(), 50);
+}
+
 function renderSaved(){
   const wrap = document.getElementById('savedList');
   try{
@@ -1775,6 +1893,7 @@ function renderSaved(){
         </div>
         <div class="formula-actions">
           <button class="btn btn-secondary btn-sm" style="flex:1;" data-edit="${e.key}">${esc(t('edit_btn'))}</button>
+          <button class="btn btn-secondary btn-sm" style="flex:1;" data-print="${e.key}">🖨 ${esc(t('print_btn'))}</button>
           <button class="btn btn-danger btn-sm" style="flex:1;" data-del="${e.key}">${esc(t('delete_btn'))}</button>
         </div>
       </div>`;
@@ -1794,6 +1913,7 @@ function renderSaved(){
         toast((currentLang==='ja'?'編集用データの読み込みに失敗しました: ':'Failed to load formula for editing: ') + (err && err.message ? err.message : String(err)));
       }
     }));
+    wrap.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click', ()=>printSavedFormula(b.dataset.print)));
     wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', ()=>{
       if(!confirm(t('confirm_delete'))) return;
       try{
@@ -1936,7 +2056,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.2.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.3.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
