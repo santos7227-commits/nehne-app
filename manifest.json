@@ -1,0 +1,37 @@
+{
+  "name": "nehne Perfumer's Notebook / 調香ノート",
+  "short_name": "nehne",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#141f18",
+  "theme_color": "#141f18",
+  "description": "0.1mL PCRチューブ調香法のためのブレンディングノート。83種の香料データ、IFRA安全データ、処方ビルダー、容量・重量計算を搭載。 / A blending notebook for the 0.1mL PCR-tube perfumery method with 83 fragrance materials, IFRA safety data, formula builder, and volume/weight calculator.",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
