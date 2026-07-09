@@ -1,3 +1,2085 @@
-/* nehne調香ノート 素材データ (v1.5.0で外部化)
-   素材の追加・修正はこのファイルを差し替えるだけでOK */
-const BASE_MATERIALS = [{"name":"Agar wood","note":"Base","family":"Woody","desc":"濃厚でアニマリック、バルサミックなウッディ香","ifra":"制限なし","vocab_ja":"ウッディ、アニマリック、バルサミック","vocab_fr":"Boisé, Animalique, Balsamique","components":"アガロスピロール、ジンコホール","sg":1.0,"defaultDilution":10.0,"desc_en":"Rich, animalic and balsamic woody scent","ifra_en":"No restriction","vocab_en":"Woody, Animalic, Balsamic"},{"name":"Ambrette Seed","note":"Base","family":"Musky","desc":"植物性のムスク香、フローラルでわずかにフルーティ","ifra":"制限なし","vocab_ja":"ムスキー、パウダリー、フローラル","vocab_fr":"Musqué, Poudré, Floral","components":"アンブレットリド、ファルネソール","sg":1.0,"defaultDilution":10.0,"desc_en":"Plant-derived musk, floral with a hint of fruitiness","ifra_en":"No restriction","vocab_en":"Musky, Powdery, Floral"},{"name":"Angelica root","note":"Base","family":"Musky / Woody","desc":"アーシーでムスキー、ペッパーのようなスパイシーさ","ifra":"0.8 光毒性","vocab_ja":"アーシー、ムスキー、スパイシー","vocab_fr":"Terreux, Musqué, Épicé","components":"シクロペンタデカノリド、α-ピネン","sg":0.82,"defaultDilution":10.0,"desc_en":"Earthy, musky, with a peppery spiciness","ifra_en":"0.8% Phototoxicity","vocab_en":"Earthy, Musky, Spicy"},{"name":"Basillic","note":"Top","family":"Aromatic","desc":"アニスに似たフレッシュでスパイシーなグリーン香","ifra":"3.4 エストラゴール制限","vocab_ja":"ハーバル、スパイシー、アニス","vocab_fr":"Herbacé, Épicé, Anisé","components":"エストラゴール、リナロール、オイゲノール","sg":0.88,"defaultDilution":10.0,"desc_en":"Fresh, spicy green scent reminiscent of anise","ifra_en":"3.4% Estragole restriction","vocab_en":"Herbal, Spicy, Anise"},{"name":"Benzoin Abs","note":"Base","family":"Balsamic","desc":"甘くバニラのようなパウダリーな樹脂の香り","ifra":"100 制限なし","vocab_ja":"バルサミック、スウィート、バニラ","vocab_fr":"Balsamique, Doux, Vanillé","components":"安息香酸、ケイ皮酸、バニリン","sg":1.13,"defaultDilution":10.0,"desc_en":"Sweet, vanilla-like powdery resin scent","ifra_en":"100% No restriction","vocab_en":"Balsamic, Sweet, Vanilla"},{"name":"Bergamot","note":"Top","family":"Citrus","desc":"フレッシュでフルーティ、わずかにフローラルな柑橘香","ifra":"0.4 光毒性(Expressed)","vocab_ja":"シトラス、ゼスティ、フローラル","vocab_fr":"Hespéridé, Zesté, Floral","components":"酢酸リナリル、リモネン、リナロール","sg":0.87,"defaultDilution":10.0,"desc_en":"Fresh, fruity citrus with a touch of floralcy","ifra_en":"0.4% Phototoxicity (expressed oil)","vocab_en":"Citrus, Zesty, Floral"},{"name":"Birch tar","note":"Base","family":"Leather","desc":"スモーキーでタールのような強いレザー香","ifra":"0.16 皮膚感作性","vocab_ja":"レザー、スモーキー、タール","vocab_fr":"Cuiré, Fumé, Goudron","components":"クレゾール、フェノール類","sg":0.96,"defaultDilution":10.0,"desc_en":"Smoky, tar-like intense leather scent","ifra_en":"0.16% Skin sensitization","vocab_en":"Leather, Smoky, Tar"},{"name":"Bitter orange","note":"Top","family":"Citrus","desc":"爽やかでドライ、わずかに苦味のある柑橘香","ifra":"1.25 光毒性","vocab_ja":"シトラス、ビター、ピール","vocab_fr":"Hespéridé, Amer, Zeste","components":"リモネン、リナロール、ミルセン","sg":0.9,"defaultDilution":10.0,"desc_en":"Fresh, dry citrus with a hint of bitterness","ifra_en":"1.25% Phototoxicity","vocab_en":"Citrus, Bitter, Peel"},{"name":"Black carrant","note":"Top","family":"Fruity / Green","desc":"非常に強いグリーンでフルーティ、わずかにアニマリック","ifra":"100 制限なし","vocab_ja":"フルーティ、グリーン、サルファリック","vocab_fr":"Fruité, Vert, Sulfurique","components":"チオメンタン類、p-メンタン-8-チオール-3-オン","sg":0.98,"defaultDilution":10.0,"desc_en":"Very strong green, fruity, slightly animalic","ifra_en":"100% No restriction","vocab_en":"Fruity, Green, Sulfurous"},{"name":"Black pepper","note":"Top","family":"Spicy","desc":"ドライで温かみのあるシャープなスパイス香","ifra":"100 制限なし","vocab_ja":"スパイシー、ピカント、ウッディ","vocab_fr":"Épicé, Piquant, Boisé","components":"ピペリン、カリオフィレン、リモネン","sg":1.02,"defaultDilution":10.0,"desc_en":"Dry, warm, sharp spice scent","ifra_en":"100% No restriction","vocab_en":"Spicy, Piquant, Woody"},{"name":"Camomile German Blue","note":"Middle","family":"Floral / Herbal","desc":"甘くフルーティでハーブのような温かみのある香り","ifra":"100 制限なし","vocab_ja":"ハーバル、フルーティ、カモミール","vocab_fr":"Herbacé, Fruité, Camomille","components":"カマズレン、ビサボロール","sg":1.0,"defaultDilution":10.0,"desc_en":"Sweet, fruity, warm herbal scent","ifra_en":"100% No restriction","vocab_en":"Herbal, Fruity, Chamomile"},{"name":"Camomille Roman","note":"Middle","family":"Floral / Herbal","desc":"青リンゴのような甘くフレッシュなハーブ香","ifra":"100 制限なし","vocab_ja":"ハーバル、アップル、スウィート","vocab_fr":"Herbacé, Pomme, Doux","components":"アンゲリカ酸エステル類、チグリン酸エステル","sg":0.89,"defaultDilution":10.0,"desc_en":"Sweet, fresh herbal scent like green apple","ifra_en":"100% No restriction","vocab_en":"Herbal, Apple, Sweet"},{"name":"Caldamon","note":"Top","family":"Spicy","desc":"爽快でカンファー調の甘くスパイシーな香り","ifra":"100 制限なし","vocab_ja":"スパイシー、カンファー、フレッシュ","vocab_fr":"Épicé, Camphré, Frais","components":1.0,"sg":0.92,"defaultDilution":10.0,"desc_en":"Refreshing, camphoraceous, sweet spicy scent","ifra_en":"100% No restriction","vocab_en":"Spicy, Camphor, Fresh"},{"name":"Carrot seed","note":"Middle","family":"Powdery / Earthy","desc":"土っぽくウッディで、アイリスに似たパウダリー香","ifra":"100 制限なし","vocab_ja":"アーシー、パウダリー、ウッディ","vocab_fr":"Terreux, Poudré, Boisé","components":"カロトール、ダウコール","sg":0.94,"defaultDilution":10.0,"desc_en":"Earthy, woody, powdery scent reminiscent of iris","ifra_en":"100% No restriction","vocab_en":"Earthy, Powdery, Woody"},{"name":"Cassis Bud Abs","note":"Top","family":"Green / Fruity","desc":"硫黄のような鋭いグリーンと濃厚なフルーティ香","ifra":"制限なし","vocab_ja":"グリーン、フルーティ、アニマリック","vocab_fr":"Vert, Fruité, Animalique","components":"チオメンタン類","sg":0.98,"defaultDilution":10.0,"desc_en":"Sharp sulfurous green with rich fruitiness","ifra_en":"No restriction","vocab_en":"Green, Fruity, Animalic"},{"name":"Cederwood atras","note":"Base","family":"Woody","desc":"暖かく甘い、少しカンファー調のウッディ香","ifra":"100 制限なし","vocab_ja":"ウッディ、カンファー、スウィート","vocab_fr":"Boisé, Camphré, Doux","components":"α-アトラントン、セドロール","sg":0.93,"defaultDilution":10.0,"desc_en":"Warm, sweet, slightly camphoraceous woody scent","ifra_en":"100% No restriction","vocab_en":"Woody, Camphor, Sweet"},{"name":"Cederwood texas","note":"Base","family":"Woody","desc":"ドライでスモーキーなウッディ香","ifra":"100 制限なし","vocab_ja":"ウッディ、ドライ、スモーキー","vocab_fr":"Boisé, Sec, Fumé","components":"セドロール、ツヨプセン","sg":0.95,"defaultDilution":10.0,"desc_en":"Dry, smoky woody scent","ifra_en":"100% No restriction","vocab_en":"Woody, Dry, Smoky"},{"name":"Cederwood virginia","note":"Base","family":"Woody","desc":"鉛筆の削りかすのようなドライでクリーンな木材の香り","ifra":"制限なし","vocab_ja":"ウッディ、ドライ、ペンシル","vocab_fr":"Boisé, Sec, Crayon","components":"セドロール、セドレン","sg":0.96,"defaultDilution":10.0,"desc_en":"Dry, clean wood scent like pencil shavings","ifra_en":"No restriction","vocab_en":"Woody, Dry, Pencil"},{"name":"Celery seed","note":"Top","family":"Spicy","desc":"スープのような温かくスパイシーでアーシーな香り","ifra":"100 制限なし","vocab_ja":"スパイシー、アーシー、ベジタル","vocab_fr":"Épicé, Terreux, Végétal","components":"セダノリド、リモネン","sg":0.88,"defaultDilution":10.0,"desc_en":"Warm, spicy, earthy scent like soup","ifra_en":"100% No restriction","vocab_en":"Spicy, Earthy, Vegetal"},{"name":"Clary sage","note":"Middle","family":"Aromatic","desc":"甘くハーブ調で、ティーやタバコのようなニュアンス","ifra":"100 制限なし","vocab_ja":"ハーバル、ティー、アンバリー","vocab_fr":"Herbacé, Thé, Ambré","components":"酢酸リナリル、リナロール、スクラレオール","sg":0.88,"defaultDilution":10.0,"desc_en":"Sweet, herbal, with tea and tobacco nuances","ifra_en":"100% No restriction","vocab_en":"Herbal, Tea, Ambery"},{"name":"Clove Bud","note":"Middle","family":"Spicy","desc":"強く甘い、カーネーションに似たスパイス香","ifra":"0.5 オイゲノール制限","vocab_ja":"スパイシー、スウィート、メディシナル","vocab_fr":"Épicé, Doux, Médicinal","components":"オイゲノール、酢酸オイゲニル、カリオフィレン","sg":1.03,"defaultDilution":10.0,"desc_en":"Strong, sweet spice scent resembling carnation","ifra_en":"0.5% Eugenol restriction","vocab_en":"Spicy, Sweet, Medicinal"},{"name":"Coriander seed","note":"Top","family":"Spicy","desc":"スパイシーでウッディ、フローラルなニュアンス","ifra":"100 制限なし","vocab_ja":"スパイシー、フローラル、ウッディ","vocab_fr":"Épicé, Floral, Boisé","components":"リナロール（コリアンドロール）、ピネン","sg":0.86,"defaultDilution":10.0,"desc_en":"Spicy, woody, with floral nuances","ifra_en":"100% No restriction","vocab_en":"Spicy, Floral, Woody"},{"name":"Cumin","note":"Top","family":"Spicy","desc":"非常に強くアニマリックで温かいスパイス香","ifra":"0.4 光毒性","vocab_ja":"スパイシー、アニマリック、ウォーム","vocab_fr":"Épicé, Animalique, Chaud","components":"クミンアルデヒド、ピネン","sg":1.0,"defaultDilution":10.0,"desc_en":"Very strong, animalic, warm spice scent","ifra_en":"0.4% Phototoxicity","vocab_en":"Spicy, Animalic, Warm"},{"name":"Cypres","note":"Middle","family":"Woody","desc":"フレッシュで松脂のようなウッディ・バルサミック香","ifra":"100 制限なし","vocab_ja":"ウッディ、レジナス、パイン","vocab_fr":"Boisé, Résineux, Pin","components":"α-ピネン、δ-3-カレン","sg":0.83,"defaultDilution":10.0,"desc_en":"Fresh, woody-balsamic scent like pine resin","ifra_en":"100% No restriction","vocab_en":"Woody, Resinous, Pine"},{"name":"Dabana","note":"Middle","family":"Fruity / Balsamic","desc":"洋酒やドライフルーツのような甘く濃厚な香り","ifra":"0.7 光毒性","vocab_ja":"フルーティ、リキュール、バルサミック","vocab_fr":"Fruité, Liqueur, Balsamique","components":"ダバノン","sg":1.0,"defaultDilution":10.0,"desc_en":"Sweet, rich scent like liqueur or dried fruit","ifra_en":"0.7% Phototoxicity","vocab_en":"Fruity, Liqueur, Balsamic"},{"name":"Euclyptus blue mallee","note":"Top","family":"Aromatic","desc":"非常に強くフレッシュなカンファー（樟脳）香","ifra":"100 制限なし","vocab_ja":"カンファー、フレッシュ、メディシナル","vocab_fr":"Camphré, Frais, Médicinal","components":1.0,"sg":0.91,"defaultDilution":10.0,"desc_en":"Very strong, fresh camphoraceous scent","ifra_en":"100% No restriction","vocab_en":"Camphor, Fresh, Medicinal"},{"name":"Euclyptus dives","note":"Top","family":"Aromatic","desc":"ペパーミントに似たフレッシュで鋭い香り","ifra":"制限なし","vocab_ja":"ミント、カンファー、フレッシュ","vocab_fr":"Mentholé, Camphré, Frais","components":"ピペリトン、フェランドレン","sg":0.88,"defaultDilution":10.0,"desc_en":"Fresh, sharp scent similar to peppermint","ifra_en":"No restriction","vocab_en":"Minty, Camphor, Fresh"},{"name":"Euclyptus globuls","note":"Top","family":"Aromatic","desc":"典型的なフレッシュでクリアなユーカリ香","ifra":"100 制限なし","vocab_ja":"カンファー、フレッシュ、クリア","vocab_fr":"Camphré, Frais, Clair","components":1.0,"sg":0.9,"defaultDilution":10.0,"desc_en":"Typical fresh, clear eucalyptus scent","ifra_en":"100% No restriction","vocab_en":"Camphor, Fresh, Clear"},{"name":"Euclyptus lemon","note":"Top","family":"Citrus / Aromatic","desc":"強いレモン調のフレッシュな香り","ifra":"0.57 シトラール等制限","vocab_ja":"シトラス、レモン、フレッシュ","vocab_fr":"Hespéridé, Citronné, Frais","components":"シトロネラール、シトロネロール","sg":0.85,"defaultDilution":10.0,"desc_en":"Strong, fresh lemon-toned scent","ifra_en":"0.57% Citral (and related) restriction","vocab_en":"Citrus, Lemon, Fresh"},{"name":"Frankinsence","note":"Base","family":"Balsamic / Woody","desc":"スパイシーでレモンのような爽やかさを持つ樹脂香","ifra":"100 制限なし","vocab_ja":"バルサミック、インセンス、ゼスティ","vocab_fr":"Balsamique, Encens, Zesté","components":"α-ピネン、オリバノール","sg":0.84,"defaultDilution":10.0,"desc_en":"Spicy resin scent with a lemony freshness","ifra_en":"100% No restriction","vocab_en":"Balsamic, Incense, Zesty"},{"name":"Galangal","note":"Top","family":"Spicy","desc":"ジンジャーに似た温かくスパイシーな香り","ifra":"0.7 光毒性","vocab_ja":"スパイシー、ジンジャー、ウォーム","vocab_fr":"Épicé, Gingembre, Chaud","components":"シネオール、ピネン","sg":1.0,"defaultDilution":10.0,"desc_en":"Warm, spicy scent similar to ginger","ifra_en":"0.7% Phototoxicity","vocab_en":"Spicy, Ginger, Warm"},{"name":"Galbanum","note":"Top","family":"Green","desc":"鋭く土っぽい、非常に強いフレッシュグリーン香","ifra":"100 制限なし","vocab_ja":"グリーン、アーシー、ペネトレーティング","vocab_fr":"Vert, Terreux, Pénétrant","components":"ウンデカトリエン、ピネン","sg":0.88,"defaultDilution":10.0,"desc_en":"Sharp, earthy, very strong fresh green scent","ifra_en":"100% No restriction","vocab_en":"Green, Earthy, Penetrating"},{"name":"Ginger abs","note":"Top","family":"Spicy","desc":"温かくウッディで、ピリッとしたスパイス香","ifra":"100 制限なし","vocab_ja":"スパイシー、ウォーム、ウッディ","vocab_fr":"Épicé, Chaud, Boisé","components":"ジンギベレン、ジンゲロール、ショウガオール","sg":0.9,"defaultDilution":10.0,"desc_en":"Warm, woody, pungent spice scent","ifra_en":"100% No restriction","vocab_en":"Spicy, Warm, Woody"},{"name":"Grape fruit","note":"Top","family":"Citrus","desc":"爽やかでほのかに苦い、フレッシュな柑橘香","ifra":"4 光毒性","vocab_ja":"シトラス、ビター、ジューシー","vocab_fr":"Hespéridé, Amer, Juteux","components":"リモネン、ヌートカトン、グレープフルーツメルカプタン","sg":0.88,"defaultDilution":10.0,"desc_en":"Fresh, faintly bitter citrus scent","ifra_en":"4% Phototoxicity","vocab_en":"Citrus, Bitter, Juicy"},{"name":"Guaiac Wood","note":"Base","family":"Woody","desc":"バラのような甘さとスモーキーさを持つウッディ香","ifra":"100 制限なし","vocab_ja":"ウッディ、スウィート、スモーキー","vocab_fr":"Boisé, Doux, Fumé","components":"グアイオール、ブルネソール","sg":0.94,"defaultDilution":10.0,"desc_en":"Woody scent with rose-like sweetness and smokiness","ifra_en":"100% No restriction","vocab_en":"Woody, Sweet, Smoky"},{"name":"Hay Abs 90%","note":"Base","family":"Fougère / Sweet","desc":"干し草の甘く温かいクマリン調の香り","ifra":"100 クマリン合算注意","vocab_ja":"スウィート、ヘイ、クマリン","vocab_fr":"Doux, Foin, Coumarine","components":"クマリン","sg":1.0,"defaultDilution":10.0,"desc_en":"Sweet, warm coumarin-like scent of dried hay","ifra_en":"100% Coumarin cumulative-total caution","vocab_en":"Sweet, Hay, Coumarin"},{"name":"Ho wood","note":"Middle","family":"Woody / Floral","desc":"リナロールを豊富に含む、甘くフローラルなウッディ香","ifra":"100 制限なし","vocab_ja":"ウッディ、フローラル、スウィート","vocab_fr":"Boisé, Floral, Doux","components":"リナロール、カンファー","sg":0.86,"defaultDilution":10.0,"desc_en":"Sweet, floral woody scent rich in linalool","ifra_en":"100% No restriction","vocab_en":"Woody, Floral, Sweet"},{"name":"Inula","note":"Middle","family":"Herbal","desc":"カンファー調の強いハーブ香","ifra":"0 IFRA禁止/極めて厳しい","vocab_ja":"ハーバル、カンファー、ストロング","vocab_fr":"Herbacé, Camphré, Fort","components":"ボルネオール、カンファー","sg":0.94,"defaultDilution":10.0,"desc_en":"Strong herbal scent with a camphoraceous tone","ifra_en":"0% IFRA prohibited / extremely restricted","vocab_en":"Herbal, Camphor, Strong"},{"name":"Jasmin Grandiflorum Abs","note":"Middle","family":"Floral","desc":"濃厚で甘く、アニマリックなホワイトフローラル香","ifra":"0.6 皮膚感作性","vocab_ja":"フローラル、アニマリック、ジャスミン","vocab_fr":"Floral, Animalique, Jasminé","components":"酢酸ベンジル、リナロール、インドール、ジャスモン","sg":1.0,"defaultDilution":10.0,"desc_en":"Rich, sweet, animalic white floral scent","ifra_en":"0.6% Skin sensitization","vocab_en":"Floral, Animalic, Jasmine"},{"name":"Juniper berry","note":"Top","family":"Aromatic","desc":"ジンのようなフレッシュでウッディな松のような香り","ifra":"100 制限なし","vocab_ja":"フレッシュ、パイン、ジニー","vocab_fr":"Frais, Pin, Genièvre","components":"α-ピネン、ミルセン、サビネン","sg":0.84,"defaultDilution":10.0,"desc_en":"Fresh, woody, pine-like scent reminiscent of gin","ifra_en":"100% No restriction","vocab_en":"Fresh, Pine, Gin-like"},{"name":"Kouchi konatsu","note":"Top","family":"Citrus","desc":"日本特有の爽やかでジューシーな柑橘香","ifra":"0.7 光毒性","vocab_ja":"シトラス、ジューシー、フレッシュ","vocab_fr":"Hespéridé, Juteux, Frais","components":"リモネン、テルピネオール","sg":1.0,"defaultDilution":10.0,"desc_en":"Fresh, juicy citrus scent distinctive to Japan","ifra_en":"0.7% Phototoxicity","vocab_en":"Citrus, Juicy, Fresh"},{"name":"Labdanum Abs 85%","note":"Base","family":"Balsamic","desc":"アンバーに似た甘く温かい、レザーやハチミツの香り","ifra":"100 制限なし","vocab_ja":"バルサミック、アンバリー、レザー","vocab_fr":"Balsamique, Ambré, Cuiré","components":"ピネン、カンフェン、ラブダノイル類","sg":0.91,"defaultDilution":10.0,"desc_en":"Sweet, warm amber-like scent with leather and honey","ifra_en":"100% No restriction","vocab_en":"Balsamic, Ambery, Leather"},{"name":"Lavender","note":"Top","family":"Floral / Aromatic","desc":"フレッシュでハーブ調のフローラル香","ifra":"100 制限なし","vocab_ja":"フローラル、ハーバル、フレッシュ","vocab_fr":"Floral, Herbacé, Frais","components":"酢酸リナリル、リナロール","sg":0.89,"defaultDilution":10.0,"desc_en":"Fresh, herbal floral scent","ifra_en":"100% No restriction","vocab_en":"Floral, Herbal, Fresh"},{"name":"Lavender 40/42","note":"Top","family":"Floral / Aromatic","desc":"標準化された、甘くフローラルなラベンダー香","ifra":"100 制限なし","vocab_ja":"フローラル、ハーバル、スウィート","vocab_fr":"Floral, Herbacé, Doux","components":"酢酸リナリル（40-42%）、リナロール","sg":0.88,"defaultDilution":10.0,"desc_en":"Standardized, sweet floral lavender scent","ifra_en":"100% No restriction","vocab_en":"Floral, Herbal, Sweet"},{"name":"Lemon","note":"Top","family":"Citrus","desc":"非常にフレッシュで鋭い、ジューシーな柑橘香","ifra":"2 光毒性","vocab_ja":"シトラス、ゼスティ、フレッシュ","vocab_fr":"Hespéridé, Zesté, Frais","components":"リモネン、シトラール、ピネン","sg":0.85,"defaultDilution":10.0,"desc_en":"Very fresh, sharp, juicy citrus scent","ifra_en":"2% Phototoxicity","vocab_en":"Citrus, Zesty, Fresh"},{"name":"Lemon grass","note":"Top","family":"Citrus / Green","desc":"レモンのような力強いグリーン・ハーブ香","ifra":"0.6 シトラール制限","vocab_ja":"シトラス、グリーン、ハーバル","vocab_fr":"Hespéridé, Vert, Herbacé","components":"シトラール（ゲラニアール、ネラール）","sg":0.9,"defaultDilution":10.0,"desc_en":"Strong lemon-like green herbal scent","ifra_en":"0.6% Citral restriction","vocab_en":"Citrus, Green, Herbal"},{"name":"Lemon myrtre","note":"Top","family":"Citrus","desc":"レモングラスより甘く濃厚なシトラス香","ifra":"0.6 シトラール制限","vocab_ja":"シトラス、スウィート、インテンス","vocab_fr":"Hespéridé, Doux, Intense","components":"シトラール","sg":0.88,"defaultDilution":10.0,"desc_en":"Sweeter, more intense citrus than lemongrass","ifra_en":"0.6% Citral restriction","vocab_en":"Citrus, Sweet, Intense"},{"name":"Lime","note":"Top","family":"Citrus","desc":"ドライでシャープ、少し甘みのある柑橘香","ifra":"0.7 光毒性","vocab_ja":"シトラス、シャープ、ドライ","vocab_fr":"Hespéridé, Acide, Sec","components":"リモネン、γ-テルピネン、シトラール","sg":0.85,"defaultDilution":10.0,"desc_en":"Dry, sharp citrus with a hint of sweetness","ifra_en":"0.7% Phototoxicity","vocab_en":"Citrus, Sharp, Dry"},{"name":"Linden blossom","note":"Middle","family":"Floral","desc":"ハチミツのように甘く温かいフローラル香","ifra":"0.7 光毒性","vocab_ja":"フローラル、ハニー、スウィート","vocab_fr":"Floral, Miel, Doux","components":"ファルネソール、リナロール","sg":1.0,"defaultDilution":10.0,"desc_en":"Sweet, warm floral scent like honey","ifra_en":"0.7% Phototoxicity","vocab_en":"Floral, Honey, Sweet"},{"name":"Marigold tagetes","note":"Middle","family":"Green / Floral","desc":"非常に強くフルーティでグリーンなリンゴのような香り","ifra":"0.01 光毒性","vocab_ja":"グリーン、フルーティ、アップル","vocab_fr":"Vert, Fruité, Pomme","components":"タゲトン、オシメン","sg":1.0,"defaultDilution":10.0,"desc_en":"Very strong fruity green scent like apple","ifra_en":"0.01% Phototoxicity","vocab_en":"Green, Fruity, Apple"},{"name":"Mandarin Orange","note":"Top","family":"Citrus","desc":"非常に甘くフルーティな柑橘香","ifra":"100 制限なし","vocab_ja":"シトラス、スウィート、フルーティ","vocab_fr":"Hespéridé, Doux, Fruité","components":"リモネン、γ-テルピネン、アントラニル酸ジメチル","sg":0.84,"defaultDilution":10.0,"desc_en":"Very sweet, fruity citrus scent","ifra_en":"100% No restriction","vocab_en":"Citrus, Sweet, Fruity"},{"name":"Meronal","note":"Top","family":"Marine / Melon","desc":"メロンやオゾンのようなみずみずしい香り（※合成香料系）","ifra":"0.86 光毒性","vocab_ja":"マリーン、メロン、オゾニック","vocab_fr":"Marin, Melon, Ozonique","components":"メロナール（2","sg":1.0,"defaultDilution":10.0,"desc_en":"Fresh, watery scent of melon and ozone (synthetic)","ifra_en":"0.86% Phototoxicity","vocab_en":"Marine, Melon, Ozonic"},{"name":"Myrrh","note":"Base","family":"Balsamic","desc":"温かくマッシュルームのような土っぽさを持つ樹脂香","ifra":"100 制限なし","vocab_ja":"バルサミック、アーシー、マッシュルーム","vocab_fr":"Balsamique, Terreux, Champignon","components":"フラノエウデスマ-1","sg":1.01,"defaultDilution":10.0,"desc_en":"Warm, earthy resin scent reminiscent of mushroom","ifra_en":"100% No restriction","vocab_en":"Balsamic, Earthy, Mushroom"},{"name":"Neroli","note":"Middle","family":"Floral","desc":"フレッシュでグリーン、わずかに苦いオレンジの花の香り","ifra":"100 制限なし","vocab_ja":"フローラル、グリーン、ビター","vocab_fr":"Floral, Vert, Amer","components":"リナロール、リモネン、ネロリドール","sg":0.85,"defaultDilution":10.0,"desc_en":"Fresh, green, slightly bitter orange blossom scent","ifra_en":"100% No restriction","vocab_en":"Floral, Green, Bitter"},{"name":"Oak moss","note":"Base","family":"Mossy / Chypre","desc":"土っぽく湿った森、ウッディで重厚な香り","ifra":"0.1 皮膚感作性","vocab_ja":"モッシー、アーシー、ウッディ","vocab_fr":"Mousse, Terreux, Boisé","components":"エベルニン酸、アトラノール","sg":1.05,"defaultDilution":10.0,"desc_en":"Earthy, damp-forest, heavy woody scent","ifra_en":"0.1% Skin sensitization","vocab_en":"Mossy, Earthy, Woody"},{"name":"Okinawa gettou","note":"Middle","family":"Aromatic","desc":"月桃特有のスパイシーで爽やかなハーブ香","ifra":"0.7 光毒性","vocab_ja":"ハーバル、スパイシー、フレッシュ","vocab_fr":"Herbacé, Épicé, Frais","components":1.0,"sg":1.0,"defaultDilution":10.0,"desc_en":"Spicy, fresh herbal scent distinctive to gettou (shell ginger)","ifra_en":"0.7% Phototoxicity","vocab_en":"Herbal, Spicy, Fresh"},{"name":"Opopanax","note":"Base","family":"Balsamic","desc":"甘くスパイシーで、バルサミックな樹脂の香り","ifra":"0.43 皮膚感作性","vocab_ja":"バルサミック、スウィート、スパイシー","vocab_fr":"Balsamique, Doux, Épicé","components":"ビサボレン","sg":1.04,"defaultDilution":10.0,"desc_en":"Sweet, spicy, balsamic resin scent","ifra_en":"0.43% Skin sensitization","vocab_en":"Balsamic, Sweet, Spicy"},{"name":"Orange flower abs","note":"Middle","family":"Floral","desc":"非常に濃厚で甘くアニマリックなオレンジの花の香り","ifra":"制限なし","vocab_ja":"フローラル、アニマリック、スウィート","vocab_fr":"Floral, Animalique, Doux","components":"リナロール、アントラニル酸メチル、インドール","sg":0.917,"defaultDilution":10.0,"desc_en":"Very rich, sweet, animalic orange blossom scent","ifra_en":"No restriction","vocab_en":"Floral, Animalic, Sweet"},{"name":"Orange Sweet","note":"Top","family":"Citrus","desc":"フレッシュで甘くジューシーなオレンジの香り","ifra":"100 制限なし","vocab_ja":"シトラス、スウィート、ジューシー","vocab_fr":"Hespéridé, Doux, Juteux","components":"リモネン、デカナール","sg":0.84,"defaultDilution":10.0,"desc_en":"Fresh, sweet, juicy orange scent","ifra_en":"100% No restriction","vocab_en":"Citrus, Sweet, Juicy"},{"name":"Orris root","note":"Middle","family":"Powdery","desc":"バイオレットに似た非常に上品でパウダリーなウッディ香","ifra":"制限なし","vocab_ja":"パウダリー、バイオレット、ウッディ","vocab_fr":"Poudré, Violette, Boisé","components":"イロン","sg":0.93,"defaultDilution":10.0,"desc_en":"Very elegant, powdery woody scent like violet","ifra_en":"No restriction","vocab_en":"Powdery, Violet, Woody"},{"name":"Osmanthus Abs","note":"Middle","family":"Floral / Fruity","desc":"アプリコットやピーチに似た甘くフルーティな金木犀の香り","ifra":"100 制限なし","vocab_ja":"フローラル、フルーティ、ピーチ","vocab_fr":"Floral, Fruité, Pêche","components":"β-イオノン、γ-デカラクトン、リナロール","sg":0.87,"defaultDilution":10.0,"desc_en":"Sweet, fruity osmanthus scent like apricot or peach","ifra_en":"100% No restriction","vocab_en":"Floral, Fruity, Peach"},{"name":"Parmarosa","note":"Middle","family":"Floral","desc":"ローズに似た甘くフローラルでハーブ調の香り","ifra":"100 ゲラニオール合算注意","vocab_ja":"フローラル、ハーバル、ローズ","vocab_fr":"Floral, Herbacé, Rosé","components":"ゲラニオール、酢酸ゲラニル","sg":0.86,"defaultDilution":10.0,"desc_en":"Sweet, floral, herbal scent similar to rose","ifra_en":"100% Geraniol cumulative-total caution","vocab_en":"Floral, Herbal, Rose"},{"name":"Patchhouli","note":"Base","family":"Woody","desc":"湿った土、木、わずかに甘いカンファー調の香り","ifra":"100 制限なし","vocab_ja":"ウッディ、アーシー、カンファー","vocab_fr":"Boisé, Terreux, Camphré","components":"パチュロール、ノルパチュレノール","sg":0.94,"defaultDilution":10.0,"desc_en":"Damp earth and wood with a hint of sweet camphor","ifra_en":"100% No restriction","vocab_en":"Woody, Earthy, Camphor"},{"name":"Petitgrain","note":"Top","family":"Citrus / Green","desc":"オレンジの葉や枝からのシャープでドライなグリーン香","ifra":"100 制限なし","vocab_ja":"シトラス、グリーン、ドライ","vocab_fr":"Hespéridé, Vert, Sec","components":"酢酸リナリル、リナロール、テルピネオール","sg":0.87,"defaultDilution":10.0,"desc_en":"Sharp, dry green scent from orange leaves and twigs","ifra_en":"100% No restriction","vocab_en":"Citrus, Green, Dry"},{"name":"Pink Pepper corn","note":"Top","family":"Spicy","desc":"フレッシュでフルーティ、少しウッディなスパイス香","ifra":"0.7 光毒性","vocab_ja":"スパイシー、フレッシュ、フルーティ","vocab_fr":"Épicé, Frais, Fruité","components":"α-フェランドレン、リモネン","sg":1.0,"defaultDilution":10.0,"desc_en":"Fresh, fruity, slightly woody spice scent","ifra_en":"0.7% Phototoxicity","vocab_en":"Spicy, Fresh, Fruity"},{"name":"Rose Abs","note":"Middle","family":"Floral","desc":"濃厚で甘く、スパイシーさとハチミツのニュアンスを持つバラ香","ifra":"2 メチルオイゲノール等制","vocab_ja":"フローラル、スウィート、スパイシー","vocab_fr":"Floral, Doux, Épicé","components":"シトロネロール、ゲラニオール、フェニルエチルアルコール","sg":1.0,"defaultDilution":10.0,"desc_en":"Rich, sweet rose scent with spicy and honey nuances","ifra_en":"2% Methyleugenol (and related) restriction","vocab_en":"Floral, Sweet, Spicy"},{"name":"Rose mary","note":"Top","family":"Aromatic","desc":"フレッシュでカンファー調の強いハーブ香","ifra":"100 制限なし","vocab_ja":"ハーバル、カンファー、フレッシュ","vocab_fr":"Herbacé, Camphré, Frais","components":1.0,"sg":0.89,"defaultDilution":10.0,"desc_en":"Fresh, strong herbal scent with camphoraceous tone","ifra_en":"100% No restriction","vocab_en":"Herbal, Camphor, Fresh"},{"name":"Rose wood","note":"Middle","family":"Woody / Floral","desc":"リナロールを多く含む甘くフローラルなウッディ香","ifra":"100 制限なし","vocab_ja":"ウッディ、フローラル、スウィート","vocab_fr":"Boisé, Floral, Doux","components":"リナロール、α-テルピネオール","sg":0.87,"defaultDilution":10.0,"desc_en":"Sweet, floral woody scent rich in linalool","ifra_en":"100% No restriction","vocab_en":"Woody, Floral, Sweet"},{"name":"Sandal Wood","note":"Base","family":"Woody","desc":"非常に柔らかく甘い、クリーミーなウッディ香","ifra":"100 制限なし","vocab_ja":"ウッディ、クリーミー、ミルキー","vocab_fr":"Boisé, Crémeux, Lacté","components":"α-サンタロール、β-サンタロール","sg":0.95,"defaultDilution":10.0,"desc_en":"Very soft, sweet, creamy woody scent","ifra_en":"100% No restriction","vocab_en":"Woody, Creamy, Milky"},{"name":"Seaweed abs","note":"Base","family":"Marine","desc":"強い潮の香り、オゾンや海藻のニュアンス","ifra":"100 制限なし","vocab_ja":"マリーン、オゾニック、サルティ","vocab_fr":"Marin, Ozonique, Salé","components":"ジメチルスルフィド、ジクチオプテレン類","sg":1.0,"defaultDilution":10.0,"desc_en":"Strong salty-sea scent with ozonic seaweed nuances","ifra_en":"100% No restriction","vocab_en":"Marine, Ozonic, Salty"},{"name":"Silver birch","note":"Base","family":"Leather / Woody","desc":"白樺特有の甘くウッディ、わずかにレザー調の香り","ifra":"2.5 サリチル酸メチル制限","vocab_ja":"ウッディ、レザー、スウィート","vocab_fr":"Boisé, Cuiré, Doux","components":"サリチル酸メチル、ベツレノール","sg":1.17,"defaultDilution":10.0,"desc_en":"Sweet, woody birch scent with a hint of leather","ifra_en":"2.5% Methyl salicylate restriction","vocab_en":"Woody, Leather, Sweet"},{"name":"Spanish sage","note":"Top","family":"Aromatic","desc":"カンファー調でスパイシーな爽やかなハーブ香","ifra":"0.7 光毒性","vocab_ja":"ハーバル、カンファー、スパイシー","vocab_fr":"Herbacé, Camphré, Épicé","components":"カンファー、1","sg":1.0,"defaultDilution":10.0,"desc_en":"Fresh, spicy herbal scent with a camphoraceous tone","ifra_en":"0.7% Phototoxicity","vocab_en":"Herbal, Camphor, Spicy"},{"name":"Sweet birch","note":"Top","family":"Spicy / Minty","desc":"ウィンターグリーンに似た甘く薬効感のある香り","ifra":"2.5 サリチル酸メチル制限","vocab_ja":"ミント、メディシナル、スウィート","vocab_fr":"Mentholé, Médicinal, Doux","components":"サリチル酸メチル","sg":1.17,"defaultDilution":10.0,"desc_en":"Sweet, medicinal scent similar to wintergreen","ifra_en":"2.5% Methyl salicylate restriction","vocab_en":"Minty, Medicinal, Sweet"},{"name":"Tea tree","note":"Top","family":"Aromatic","desc":"フレッシュで薬効感のある強いカンファー香","ifra":"100 制限なし","vocab_ja":"カンファー、メディシナル、フレッシュ","vocab_fr":"Camphré, Médicinal, Frais","components":"テルピネン-4-オール、γ-テルピネン、1","sg":0.87,"defaultDilution":10.0,"desc_en":"Fresh, strong camphoraceous medicinal scent","ifra_en":"100% No restriction","vocab_en":"Camphor, Medicinal, Fresh"},{"name":"Thyme","note":"Top","family":"Aromatic / Spicy","desc":"強く温かい、薬効感のあるスパイシーなハーブ香","ifra":"0.7 光毒性","vocab_ja":"ハーバル、スパイシー、メディシナル","vocab_fr":"Herbacé, Épicé, Médicinal","components":"チモール、カルバクロール、リナロール","sg":1.0,"defaultDilution":10.0,"desc_en":"Strong, warm, spicy medicinal herbal scent","ifra_en":"0.7% Phototoxicity","vocab_en":"Herbal, Spicy, Medicinal"},{"name":"Tonka Bean Abs","note":"Base","family":"Balsamic / Sweet","desc":"バニラやアーモンドに似た甘く温かいクマリン香","ifra":"1.5 クマリン制限","vocab_ja":"バルサミック、スウィート、アーモンド","vocab_fr":"Balsamique, Doux, Amande","components":"クマリン","sg":1.1,"defaultDilution":10.0,"desc_en":"Sweet, warm coumarin scent like vanilla and almond","ifra_en":"1.5% Coumarin restriction","vocab_en":"Balsamic, Sweet, Almond"},{"name":"Tuberose Abs","note":"Middle","family":"Floral","desc":"非常に濃厚で甘く、重厚なホワイトフローラル香","ifra":"制限なし","vocab_ja":"フローラル、インテンス、ラクトニック","vocab_fr":"Floral, Intense, Lacté","components":"ラクトン類、アントラニル酸メチル、インドール","sg":1.0,"defaultDilution":10.0,"desc_en":"Very rich, sweet, heavy white floral scent","ifra_en":"No restriction","vocab_en":"Floral, Intense, Lactonic"},{"name":"Vanilla Oleoresin","note":"Base","family":"Balsamic","desc":"濃厚で甘い、典型的なバニラの香り","ifra":"100 制限なし","vocab_ja":"バルサミック、スウィート、グルマン","vocab_fr":"Balsamique, Doux, Gourmand","components":"バニリン、エチルバニリン","sg":1.06,"defaultDilution":10.0,"desc_en":"Rich, sweet, classic vanilla scent","ifra_en":"100% No restriction","vocab_en":"Balsamic, Sweet, Gourmand"},{"name":"Vetiver","note":"Base","family":"Woody / Earthy","desc":"土っぽくスモーキーで、根の力強いウッディ香","ifra":"制限なし","vocab_ja":"ウッディ、アーシー、スモーキー","vocab_fr":"Boisé, Terreux, Fumé","components":"ベチベロール、ベチボン","sg":1.0,"defaultDilution":10.0,"desc_en":"Earthy, smoky, powerful rooty woody scent","ifra_en":"No restriction","vocab_en":"Woody, Earthy, Smoky"},{"name":"Violet leaf","note":"Middle","family":"Green","desc":"きゅうりのようなみずみずしいフレッシュグリーン香","ifra":"100 制限なし","vocab_ja":"グリーン、キューカンバー、ウォータリー","vocab_fr":"Vert, Concombre, Aqueux","components":"ノナジエナール","sg":1.0,"defaultDilution":10.0,"desc_en":"Fresh, watery green scent like cucumber","ifra_en":"100% No restriction","vocab_en":"Green, Cucumber, Watery"},{"name":"Winter green","note":"Top","family":"Spicy / Minty","desc":"サリチル酸メチル特有の強いミント・薬効香","ifra":"2.5 サリチル酸メチル制限","vocab_ja":"ミント、メディシナル、シャープ","vocab_fr":"Mentholé, Médicinal, Acide","components":"サリチル酸メチル","sg":1.18,"defaultDilution":10.0,"desc_en":"Strong minty medicinal scent from methyl salicylate","ifra_en":"2.5% Methyl salicylate restriction","vocab_en":"Minty, Medicinal, Sharp"},{"name":"Ylang Ylang","note":"Middle","family":"Floral","desc":"甘くスパイシーで、非常に官能的なフローラル香","ifra":"0.73 皮膚感作性","vocab_ja":"フローラル、スウィート、スパイシー","vocab_fr":"Floral, Doux, Épicé","components":"酢酸ベンジル、リナロール、ゲルマクレンD","sg":0.98,"defaultDilution":10.0,"desc_en":"Sweet, spicy, very sensual floral scent","ifra_en":"0.73% Skin sensitization","vocab_en":"Floral, Sweet, Spicy"},{"name":"Alchol","note":"-","family":"Solvent (溶剤)","desc":"香水用アルコール。無臭に近いが揮発時に特有の匂い。","ifra":"制限なし","vocab_ja":"アルコール、ニュートラル、ソルベント","vocab_fr":"Alcool, Neutre, Solvant","components":"エタノール","sg":0.798,"defaultDilution":10.0,"desc_en":"Perfumery alcohol. Nearly odorless but has a distinct scent on evaporation.","ifra_en":"No restriction","vocab_en":"Alcohol, Neutral, Solvent"}];
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>nehne調香ノート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#141f18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="nehne調香">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{
+  --ink-900:#141f18;
+  --ink-800:#1c2a21;
+  --ink-700:#243529;
+  --ink-600:#33473a;
+  --paper:#f2ead9;
+  --paper-dim:#cfc4a8;
+  --amber:#c8963f;
+  --amber-soft:#e0b869;
+  --rose:#b9836f;
+  --sage:#8ea683;
+  --line:rgba(242,234,217,0.14);
+  --line-strong:rgba(242,234,217,0.28);
+  --danger:#c46a5a;
+  --radius:14px;
+  --top-color:#c8963f;
+  --mid-color:#b9836f;
+  --base-color:#5f7a63;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse at 20% -10%, rgba(200,150,63,0.10), transparent 55%),
+    radial-gradient(ellipse at 100% 0%, rgba(185,131,111,0.08), transparent 50%),
+    var(--ink-900);
+  color:var(--paper);
+  font-family:"Noto Sans JP",sans-serif;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+}
+#app{
+  width:100%;
+  max-width:520px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  background:var(--ink-900);
+  border-left:1px solid var(--line);
+  border-right:1px solid var(--line);
+}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-thumb{background:var(--ink-600);border-radius:4px;}
+
+/* ---------- Header ---------- */
+header.top{
+  padding:22px 20px 16px;
+  border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:20;
+  background:linear-gradient(180deg, var(--ink-900) 70%, rgba(20,31,24,0.92));
+  backdrop-filter:blur(6px);
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+}
+.lang-toggle{
+  margin-left:auto; flex:0 0 auto;
+  background:var(--ink-700); border:1px solid var(--line-strong); color:var(--amber-soft);
+  font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:0.04em;
+  padding:6px 11px; border-radius:100px;
+}
+.brand svg{flex:0 0 auto;}
+.brand-text{display:flex; flex-direction:column; line-height:1.1;}
+.brand-text .en{
+  font-family:"Shippori Mincho",serif;
+  font-size:11px;
+  letter-spacing:0.32em;
+  color:var(--amber-soft);
+  text-transform:uppercase;
+}
+.brand-text h1{
+  font-family:"Shippori Mincho",serif;
+  font-weight:700;
+  font-size:22px;
+  margin:2px 0 0;
+  letter-spacing:0.04em;
+  color:var(--paper);
+}
+.page-label{
+  margin-top:14px;
+  font-family:"JetBrains Mono",monospace;
+  font-size:11px;
+  letter-spacing:0.18em;
+  color:var(--paper-dim);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.page-label::before{content:"";width:16px;height:1px;background:var(--amber);display:inline-block;}
+
+/* ---------- Main scroll area ---------- */
+main{
+  flex:1;
+  padding:18px 16px 100px;
+  overflow-y:auto;
+}
+.hidden{display:none !important;}
+
+/* ---------- Section heading ---------- */
+.section-title{
+  font-family:"Shippori Mincho",serif;
+  font-size:17px;
+  color:var(--amber-soft);
+  margin:26px 0 10px;
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+}
+.section-title:first-child{margin-top:4px;}
+.section-title small{
+  font-family:"JetBrains Mono",monospace;
+  font-size:10px;
+  color:var(--paper-dim);
+  letter-spacing:0.1em;
+}
+
+/* ---------- Search / filter bar ---------- */
+.search-row{
+  display:flex; gap:8px; margin-bottom:12px;
+}
+.search-box{
+  flex:1;
+  background:var(--ink-800);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px 12px;
+  color:var(--paper);
+  font-family:"Noto Sans JP",sans-serif;
+  font-size:14px;
+}
+.search-box::placeholder{color:var(--paper-dim);}
+.chip-row{
+  display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px;
+  scrollbar-width:none;
+}
+.chip-row::-webkit-scrollbar{display:none;}
+.chip{
+  flex:0 0 auto;
+  padding:6px 12px;
+  border-radius:100px;
+  border:1px solid var(--line-strong);
+  font-size:12px;
+  color:var(--paper-dim);
+  background:transparent;
+  white-space:nowrap;
+  cursor:pointer;
+  font-family:"Noto Sans JP",sans-serif;
+}
+.chip.active{
+  background:var(--amber);
+  border-color:var(--amber);
+  color:var(--ink-900);
+  font-weight:700;
+}
+
+/* ---------- Material card ---------- */
+.mat-card{
+  background:var(--ink-800);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:14px 14px;
+  margin-bottom:10px;
+  cursor:pointer;
+  transition:border-color .15s;
+}
+.mat-card:active{border-color:var(--amber);}
+.mat-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+.mat-name{font-weight:700; font-size:15px; color:var(--paper);}
+.mat-family{font-size:11.5px; color:var(--amber-soft); margin-top:2px;}
+.note-tag{
+  font-family:"JetBrains Mono",monospace;
+  font-size:10px;
+  letter-spacing:0.06em;
+  padding:3px 8px;
+  border-radius:100px;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+.note-Top{background:rgba(200,150,63,0.18); color:var(--top-color);}
+.note-Middle,.note-Mid,.note-Heart{background:rgba(185,131,111,0.18); color:var(--mid-color);}
+.note-Base{background:rgba(95,122,99,0.22); color:var(--base-color);}
+.note-Other{background:rgba(242,234,217,0.1); color:var(--paper-dim);}
+.mat-desc{font-size:12.5px; color:var(--paper-dim); margin-top:8px; line-height:1.6;}
+.mat-vocab{margin-top:8px; display:flex; flex-wrap:wrap; gap:5px;}
+.vocab-pill{font-size:10.5px; padding:2px 8px; border-radius:100px; border:1px solid var(--line-strong); color:var(--paper-dim);}
+.ifra-warn{margin-top:8px; font-size:11px; color:var(--danger); display:flex; gap:5px; align-items:center;}
+.ifra-ok{margin-top:8px; font-size:11px; color:var(--sage); display:flex; gap:5px; align-items:center;}
+
+/* ---------- Modal ---------- */
+.overlay{
+  position:fixed; inset:0; background:rgba(10,15,12,0.72);
+  z-index:50; display:flex; align-items:flex-end; justify-content:center;
+}
+.overlay.hidden{display:none;}
+.sheet{
+  width:100%; max-width:520px;
+  background:var(--ink-800);
+  border-top:1px solid var(--line-strong);
+  border-radius:20px 20px 0 0;
+  max-height:86vh;
+  overflow-y:auto;
+  padding:20px 20px 30px;
+  animation:slideup .22s ease-out;
+}
+@keyframes slideup{from{transform:translateY(24px); opacity:0.4;} to{transform:translateY(0); opacity:1;}}
+.sheet-handle{width:36px; height:4px; background:var(--line-strong); border-radius:4px; margin:0 auto 16px;}
+.sheet h2{font-family:"Shippori Mincho",serif; font-size:19px; margin:0 0 4px;}
+.sheet .row{display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--line); font-size:13px; gap:12px;}
+.sheet .row .k{color:var(--paper-dim); flex:0 0 34%;}
+.sheet .row .v{color:var(--paper); text-align:right; flex:1;}
+.close-btn{
+  position:absolute; top:16px; right:16px;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--ink-700); border:1px solid var(--line);
+  color:var(--paper-dim); font-size:16px; display:flex; align-items:center; justify-content:center;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  border:none; border-radius:10px; padding:12px 16px; font-size:14px; font-weight:700;
+  font-family:"Noto Sans JP",sans-serif; cursor:pointer; text-align:center;
+}
+.btn-primary{background:var(--amber); color:var(--ink-900);}
+.btn-secondary{background:var(--ink-700); color:var(--paper); border:1px solid var(--line-strong);}
+.btn-danger{background:transparent; color:var(--danger); border:1px solid rgba(196,106,90,0.4);}
+.btn-block{width:100%;}
+.btn-sm{padding:7px 12px; font-size:12px; border-radius:8px;}
+
+/* ---------- Pyramid bar ---------- */
+.pyramid{
+  height:14px; border-radius:100px; overflow:hidden; display:flex;
+  border:1px solid var(--line-strong); margin:10px 0 8px;
+  background:var(--ink-700);
+}
+.pyramid div{height:100%;}
+.pyramid-legend{display:flex; gap:14px; font-size:11px; color:var(--paper-dim); flex-wrap:wrap;}
+.pyramid-legend span{display:flex; align-items:center; gap:5px;}
+.dot{width:8px; height:8px; border-radius:50%; display:inline-block;}
+
+/* ---------- Formula builder ---------- */
+.builder-card{
+  background:var(--ink-800); border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px; margin-bottom:16px;
+}
+.builder-name-input{
+  width:100%; background:transparent; border:none; border-bottom:1px dashed var(--line-strong);
+  font-family:"Shippori Mincho",serif; font-size:19px; color:var(--paper); padding:4px 0 8px;
+  margin-bottom:14px;
+}
+.ingredient-row{
+  padding:12px 0; border-bottom:1px solid var(--line);
+}
+.ingredient-row:last-child{border-bottom:none;}
+.ing-top{display:flex; align-items:center; gap:10px;}
+.ing-main{flex:1; min-width:0;}
+.ing-name{font-size:13.5px; font-weight:500; color:var(--paper); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.ing-note{font-size:10.5px; color:var(--paper-dim); margin-top:2px;}
+.ing-remove{
+  width:26px; height:26px; border-radius:50%; background:transparent; color:var(--paper-dim);
+  border:1px solid var(--line-strong); font-size:14px; flex:0 0 auto;
+}
+.ing-controls{display:flex; align-items:flex-end; gap:8px; margin-top:9px;}
+.ing-field{flex:1; min-width:0;}
+.ing-field label{display:block; font-size:9.5px; color:var(--paper-dim); margin-bottom:4px; letter-spacing:0.03em;}
+.ing-parts, .ing-dilution{
+  width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
+  color:var(--paper); text-align:center; padding:8px 4px; font-family:"JetBrains Mono",monospace; font-size:13px;
+}
+.ing-dilution.invalid{border-color:var(--danger); color:var(--danger);}
+.ing-amount-display{flex:1.3;}
+.ing-amount{
+  background:rgba(200,150,63,0.1); border:1px solid rgba(200,150,63,0.3); border-radius:8px;
+  color:var(--amber-soft); text-align:center; padding:8px 4px; font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700;
+}
+.add-ing-btn{
+  width:100%; margin-top:10px; padding:12px; border-radius:10px; border:1px dashed var(--line-strong);
+  background:transparent; color:var(--amber-soft); font-size:13px; font-family:"Noto Sans JP",sans-serif;
+}
+
+/* ---------- Error banner ---------- */
+.error-banner{
+  background:rgba(196,106,90,0.12); border:1px solid rgba(196,106,90,0.4); color:#e39c8e;
+  font-size:12px; padding:10px 12px; border-radius:10px; margin-bottom:12px; line-height:1.6;
+}
+
+/* ---------- Help details ---------- */
+.help-details{margin-top:14px; border-top:1px dashed var(--line-strong); padding-top:12px;}
+.help-details summary{
+  font-size:12px; color:var(--amber-soft); cursor:pointer; list-style:none; font-weight:500;
+}
+.help-details summary::-webkit-details-marker{display:none;}
+.help-details p{font-size:11.5px; color:var(--paper-dim); line-height:1.7; margin:8px 0 0;}
+
+/* ---------- Mixing page ---------- */
+.mix-open-btn{
+  width:100%; margin-top:14px; padding:15px; border-radius:12px; border:none;
+  background:linear-gradient(135deg, var(--amber), var(--amber-soft)); color:var(--ink-900);
+  font-size:14.5px; font-weight:700; font-family:"Noto Sans JP",sans-serif;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.mix-sheet{padding-top:16px;}
+.mix-header{margin:6px 0 16px;}
+.mix-title{font-family:"Shippori Mincho",serif; font-size:20px; color:var(--paper);}
+.mix-sub{font-size:11.5px; color:var(--paper-dim); margin-top:3px; font-family:"JetBrains Mono",monospace;}
+.mix-progress-bar{height:6px; background:var(--ink-700); border-radius:100px; overflow:hidden; margin-top:14px;}
+.mix-progress-fill{height:100%; background:var(--amber); width:0%; transition:width .25s;}
+.mix-progress-text{font-size:11px; color:var(--paper-dim); margin-top:7px; font-family:"JetBrains Mono",monospace;}
+.mix-item{
+  display:flex; align-items:center; gap:12px;
+  padding:15px 14px; margin-bottom:9px; border-radius:14px;
+  border:1.5px solid var(--amber);
+  background:rgba(200,150,63,0.08);
+  transition:opacity .2s, background .2s, border-color .2s, transform .1s;
+  -webkit-user-select:none; user-select:none; touch-action:manipulation;
+}
+.mix-item:active{transform:scale(0.98);}
+.mix-item.done{
+  opacity:0.42;
+  border-color:var(--line);
+  background:var(--ink-700);
+}
+.mix-item-order{
+  width:28px; height:28px; border-radius:50%; background:var(--amber); color:var(--ink-900);
+  display:flex; align-items:center; justify-content:center; font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; flex:0 0 auto;
+}
+.mix-item.done .mix-item-order{background:var(--ink-600); color:var(--paper-dim);}
+.mix-item-main{flex:1; min-width:0;}
+.mix-item-name{font-size:15px; font-weight:700; color:var(--paper);}
+.mix-item-note{font-size:10.5px; color:var(--paper-dim); margin-top:3px;}
+.mix-item-amount{font-family:"JetBrains Mono",monospace; text-align:right; flex:0 0 auto;}
+.mix-item-amount .num{font-size:19px; font-weight:700; color:var(--amber-soft);}
+.mix-item.done .mix-item-amount .num{color:var(--paper-dim);}
+.mix-item-amount .drops{font-size:10.5px; color:var(--paper-dim); margin-top:1px;}
+.mix-item-check{width:22px; height:22px; flex:0 0 auto; color:var(--sage);}
+.mix-footer{display:flex; gap:10px; margin-top:6px; padding-bottom:6px;}
+.calc-inputs{display:flex; gap:10px; margin:16px 0;}
+.calc-field{flex:1;}
+.calc-field label{display:block; font-size:11px; color:var(--paper-dim); margin-bottom:5px;}
+.calc-field input{
+  width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
+  color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:14px;
+}
+.calc-field select{
+  width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
+  color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:14px;
+}
+.custom-badge{
+  display:inline-block; font-size:10px; padding:1px 8px; border-radius:9px;
+  background:var(--amber); color:var(--ink-900); font-weight:700; margin-left:6px; vertical-align:1px;
+}
+table.calc-table{width:100%; border-collapse:collapse; margin-top:6px; font-size:12px;}
+table.calc-table th{
+  text-align:right; font-weight:500; color:var(--paper-dim); padding:6px 4px; border-bottom:1px solid var(--line-strong);
+  font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:0.04em;
+}
+table.calc-table th:first-child, table.calc-table td:first-child{text-align:left;}
+table.calc-table td{padding:8px 4px; border-bottom:1px solid var(--line); font-family:"JetBrains Mono",monospace;}
+table.calc-table tr:last-child td{border-bottom:none;}
+.total-row td{font-weight:700; color:var(--amber-soft); border-top:1px solid var(--line-strong);}
+
+/* ---------- Dilution calc ---------- */
+.dil-result{
+  margin-top:14px; padding:14px; background:var(--ink-700); border-radius:10px;
+  font-family:"JetBrains Mono",monospace; font-size:13px; display:flex; flex-direction:column; gap:8px;
+}
+.dil-result .line{display:flex; justify-content:space-between;}
+.dil-result .line .lbl{color:var(--paper-dim); font-family:"Noto Sans JP",sans-serif; font-size:12px;}
+
+/* ---------- Formula library cards ---------- */
+.formula-card{
+  background:var(--ink-800); border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px; margin-bottom:12px;
+}
+.formula-card h3{font-family:"Shippori Mincho",serif; font-size:17px; margin:0 0 3px; color:var(--paper);}
+.formula-meta{font-size:11px; color:var(--paper-dim); font-family:"JetBrains Mono",monospace; margin-bottom:10px;}
+.formula-ing-list{font-size:12px; color:var(--paper-dim); line-height:1.9;}
+.formula-ing-list b{color:var(--paper); font-weight:500;}
+.formula-actions{display:flex; gap:8px; margin-top:12px;}
+
+/* ---------- Saved list ---------- */
+.empty-state{
+  text-align:center; padding:60px 20px; color:var(--paper-dim);
+}
+.empty-state svg{opacity:0.5; margin-bottom:14px;}
+.empty-state p{font-size:13px; line-height:1.7;}
+
+/* ---------- Bottom nav ---------- */
+nav.bottom{
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width:520px;
+  display:flex;
+  background:rgba(28,42,33,0.92);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--line-strong);
+  z-index:30;
+  padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+}
+.nav-btn{
+  flex:1; background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:4px;
+  padding:8px 2px; color:var(--paper-dim); font-family:"Noto Sans JP",sans-serif; font-size:10.5px;
+}
+.nav-btn.active{color:var(--amber-soft);}
+.nav-btn svg{width:20px; height:20px;}
+
+.toast{
+  position:fixed; bottom:78px; left:50%; transform:translateX(-50%);
+  background:var(--amber); color:var(--ink-900); padding:10px 18px; border-radius:100px;
+  font-size:12.5px; font-weight:700; z-index:60; opacity:0; pointer-events:none;
+  transition:opacity .2s, transform .2s;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(-6px);}
+
+@media (min-width:521px){
+  body{padding:24px 0;}
+  #app{border-radius:22px; box-shadow:0 30px 80px rgba(0,0,0,0.5); min-height:auto; max-height:920px;}
+}
+
+/* ---------- Display themes (背景テーマ) ---------- */
+html[data-theme="light"]{
+  --ink-900:#f6f1e4;
+  --ink-800:#efe8d6;
+  --ink-700:#e4dac2;
+  --ink-600:#cdbf9f;
+  --paper:#2b2418;
+  --paper-dim:#70654d;
+  --amber:#a5761f;
+  --amber-soft:#8a5f10;
+  --rose:#a05a41;
+  --sage:#5d7a50;
+  --line:rgba(43,36,24,0.16);
+  --line-strong:rgba(43,36,24,0.32);
+  --danger:#b0432e;
+}
+html[data-theme="light"] header.top{
+  background:linear-gradient(180deg, var(--ink-900) 70%, rgba(246,241,228,0.92));
+}
+html[data-theme="light"] nav.bottom{background:rgba(239,232,214,0.94);}
+html[data-theme="light"] .error-banner{color:var(--danger);}
+html[data-theme="light"] .overlay{background:rgba(58,45,26,0.42);}
+html[data-theme="light"] .brand svg [stroke]{stroke:var(--amber);}
+html[data-theme="light"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
+
+html[data-theme="sepia"]{
+  --ink-900:#efe2c9;
+  --ink-800:#e7d6b6;
+  --ink-700:#dcc79f;
+  --ink-600:#c4ab7f;
+  --paper:#3d2f1a;
+  --paper-dim:#7d6b48;
+  --amber:#96660f;
+  --amber-soft:#7c540a;
+  --rose:#98523a;
+  --sage:#5d744a;
+  --line:rgba(61,47,26,0.17);
+  --line-strong:rgba(61,47,26,0.34);
+  --danger:#a8482d;
+}
+html[data-theme="sepia"] header.top{
+  background:linear-gradient(180deg, var(--ink-900) 70%, rgba(239,226,201,0.92));
+}
+html[data-theme="sepia"] nav.bottom{background:rgba(231,214,182,0.94);}
+html[data-theme="sepia"] .error-banner{color:var(--danger);}
+html[data-theme="sepia"] .overlay{background:rgba(61,47,26,0.42);}
+html[data-theme="sepia"] .brand svg [stroke]{stroke:var(--amber);}
+html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
+
+/* ---------- Display settings panel (表示設定) ---------- */
+.settings-btn{
+  flex:0 0 auto; margin-left:8px;
+  width:32px; height:32px; border-radius:50%; padding:0;
+  background:var(--ink-700); border:1px solid var(--line-strong); color:var(--amber-soft);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.settings-btn svg{width:17px; height:17px;}
+.set-group{margin-top:20px;}
+.set-label{
+  font-size:12px; color:var(--paper-dim); letter-spacing:0.03em;
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+}
+.set-label b{color:var(--amber-soft); font-family:"JetBrains Mono",monospace; font-size:12px;}
+.seg{display:flex; gap:8px; margin-top:8px;}
+.seg button{
+  flex:1; padding:10px 4px; border-radius:10px; cursor:pointer;
+  border:1px solid var(--line-strong); background:var(--ink-700); color:var(--paper-dim);
+  font-family:"Noto Sans JP",sans-serif; font-size:13px; font-weight:500;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.seg button.active{background:var(--amber); color:var(--ink-900); border-color:var(--amber); font-weight:700;}
+.seg button.active .tdot{border-color:rgba(0,0,0,0.25);}
+.tdot{display:inline-block; width:11px; height:11px; border-radius:50%; border:1px solid var(--line-strong); flex:0 0 auto;}
+.set-group input[type=range]{width:100%; margin-top:12px; accent-color:var(--amber);}
+.range-ends{display:flex; justify-content:space-between; color:var(--paper-dim); margin-top:2px; align-items:baseline;}
+.display-reset-btn{
+  margin-top:26px; width:100%; padding:12px; border-radius:10px; cursor:pointer;
+  background:var(--ink-700); color:var(--paper); border:1px solid var(--line-strong);
+  font-family:"Noto Sans JP",sans-serif; font-size:13px; font-weight:500;
+}
+#brightOverlay{
+  position:fixed; inset:0; pointer-events:none; z-index:999;
+  background:#000; opacity:0; transition:opacity .15s;
+}
+.app-version{
+  margin-top:16px; text-align:center;
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:0.06em;
+  color:var(--paper-dim); opacity:0.8;
+}
+/* ---------- Print / PDF export ---------- */
+#printArea{display:none;}
+@media print{
+  body > *:not(#printArea){display:none !important;}
+  #printArea{display:block !important;}
+  html,body{background:#fff !important; color:#1a1a1a !important; margin:0; padding:0;}
+  #printArea{font-family:'Noto Sans JP',sans-serif; color:#1a1a1a; padding:8mm 4mm;}
+  .pr-brand{font-family:'Shippori Mincho',serif; font-size:13px; letter-spacing:.18em; color:#555; border-bottom:2px solid #1a1a1a; padding-bottom:6px; display:flex; justify-content:space-between; align-items:baseline;}
+  .pr-brand .pr-date{font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.05em;}
+  .pr-title{font-family:'Shippori Mincho',serif; font-size:22px; font-weight:700; margin:14px 0 2px;}
+  .pr-sub{font-size:11px; color:#555; margin-bottom:14px;}
+  .pr-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:6px;}
+  .pr-table th{border-top:1.5px solid #1a1a1a; border-bottom:1px solid #1a1a1a; padding:6px 8px; text-align:left; font-weight:700; white-space:nowrap;}
+  .pr-table td{border-bottom:1px solid #ccc; padding:6px 8px;}
+  .pr-table td.num, .pr-table th.num{text-align:right; font-family:'JetBrains Mono',monospace; white-space:nowrap;}
+  .pr-table tr.pr-total td{border-top:1.5px solid #1a1a1a; border-bottom:none; font-weight:700;}
+  .pr-note-tag{display:inline-block; font-size:9.5px; border:1px solid #999; border-radius:3px; padding:1px 5px; color:#555;}
+  .pr-footer{margin-top:18px; font-size:9.5px; color:#888; display:flex; justify-content:space-between; border-top:1px solid #ccc; padding-top:6px;}
+  @page{margin:14mm 12mm;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header class="top">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <path d="M13 3H17V7.5L20.5 11C21.7 12.2 22.4 13.9 22.4 15.6V23C22.4 25.4 20.4 27 18 27H12C9.6 27 7.6 25.4 7.6 23V15.6C7.6 13.9 8.3 12.2 9.5 11L13 7.5V3Z" stroke="#e0b869" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M8.2 17.5C8.2 17.5 10.5 19 15 19C19.5 19 21.8 17.5 21.8 17.5" stroke="#e0b869" stroke-width="1.2"/>
+        <circle cx="15" cy="5" r="1.4" fill="#c8963f"/>
+      </svg>
+      <div class="brand-text">
+        <span class="en">Perfumer's Notebook</span>
+        <h1 id="appTitleText">nehne調香ノート</h1>
+      </div>
+      <button class="lang-toggle" id="langToggleBtn" title="Switch language / 言語切替">EN</button>
+      <button class="settings-btn" id="settingsBtn" title="表示設定 / Display settings" aria-label="表示設定">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3.2"/>
+          <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.08A1.7 1.7 0 0 0 10 4.09V4a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56h.08a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.08A1.7 1.7 0 0 0 21 12h.09a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.6-1z" transform="scale(0.92) translate(1,1)"/>
+        </svg>
+      </button>
+    </div>
+    <div class="page-label" id="pageLabel">素材ライブラリ</div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===== TAB: MATERIALS ===== -->
+    <section id="tab-materials">
+      <div class="search-row">
+        <input class="search-box" id="matSearch" placeholder="素材名・成分・語彙で検索…">
+      </div>
+      <button class="add-ing-btn" id="addCustomMatBtn" style="margin:2px 0 10px;"><span id="addCustomMatBtnLabel">＋ 香料を追加（名前と比重だけでOK）</span></button>
+      <div class="chip-row" id="noteChips"></div>
+      <div class="chip-row" id="famChips"></div>
+      <div id="matList"></div>
+    </section>
+
+    <!-- ===== TAB: BUILDER ===== -->
+    <section id="tab-builder" class="hidden">
+      <div class="section-title"><span id="stCompound">配合の設計</span><small>COMPOUND</small></div>
+      <div class="builder-card">
+        <input class="builder-name-input" id="builderName" placeholder="フォーミュラ名を入力…" value="無題のフォーミュラ">
+
+        <div class="pyramid" id="pyramidBar"></div>
+        <div class="pyramid-legend">
+          <span><i class="dot" style="background:var(--top-color)"></i>Top <b id="pctTop">0%</b></span>
+          <span><i class="dot" style="background:var(--mid-color)"></i>Middle <b id="pctMid">0%</b></span>
+          <span><i class="dot" style="background:var(--base-color)"></i>Base <b id="pctBase">0%</b></span>
+        </div>
+
+        <div id="ingList" style="margin-top:14px;"></div>
+        <button class="add-ing-btn" id="addIngBtn"><span id="addIngBtnLabel">＋ 素材を追加</span></button>
+
+        <details class="help-details">
+          <summary id="helpDilutionSummary">？ 用語について</summary>
+          <p id="helpDilutionText">「希釈率」は、量り取る香料があらかじめアルコールなどで何%に薄められているかを表します（例：10%希釈＝香料原液1に対しアルコール9の割合）。数値が小さいほど、同じ「パーツ」を実現するのに多くの量を量る必要があります。</p>
+        </details>
+      </div>
+
+      <div class="section-title"><span id="stWeighout">原液の計算</span><small>WEIGH-OUT</small></div>
+      <div class="builder-card">
+        <div class="chip-row" id="calcModeChips" style="margin-bottom:12px;">
+          <button class="chip active" data-mode="ul">体積（μl・希釈済み香料）</button>
+          <button class="chip" data-mode="g">重量（g・比重から換算）</button>
+        </div>
+        <div class="calc-inputs">
+          <div class="calc-field" id="calcModeFieldWrap">
+            <label id="targetLabel">出来上がり総量</label>
+            <input type="number" id="targetWeight" value="100" min="0" step="1">
+          </div>
+          <div class="calc-field">
+            <label>単位</label>
+            <input value="μl" id="targetUnitDisplay" disabled style="opacity:.6">
+          </div>
+        </div>
+        <div class="error-banner hidden" id="calcErrorBanner"></div>
+        <div style="overflow-x:auto;">
+        <table class="calc-table" id="calcTable"></table>
+        </div>
+        <p id="calcHelpText" style="font-size:11px; color:var(--paper-dim); line-height:1.7; margin-top:10px;">
+          希釈済みの香料をマイクロピペット等で量り取り、出来上がり総量になるように配合する想定の計算です。各素材の希釈率は上の「配合の設計」欄で個別に設定できます（デフォルト10%）。滴数はドロッパー1滴≈0.05mlとして目安表示しています。
+        </p>
+        <button class="mix-open-btn" id="openMixBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span id="openMixBtnLabel">調香専用ページを開く</span>
+        </button>
+      </div>
+
+      <div class="section-title"><span id="stDilution">希釈と賦香率</span><small>DILUTION</small></div>
+      <div class="builder-card">
+        <div class="calc-inputs">
+          <div class="calc-field">
+            <label id="concPctLabel">目標賦香率（%）</label>
+            <input type="number" id="concPct" value="20" min="0.1" step="0.5">
+          </div>
+          <div class="calc-field">
+            <label id="finalVolLabel">仕上げ総量（ml）</label>
+            <input type="number" id="finalVol" value="50" min="1" step="1">
+          </div>
+        </div>
+        <div class="dil-result" id="dilResult"></div>
+        <details class="help-details">
+          <summary id="helpConcSummary">？ 用語について</summary>
+          <p id="helpConcText">「賦香率」は、出来上がった香水の中に純粋な香料コンパウンドが何%含まれているかを表します。目安：オードパルファン15〜20%、オードトワレ5〜15%、パルファン20〜30%。</p>
+        </details>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:4px;">
+        <button class="btn btn-secondary btn-block" id="clearBuilderBtn">クリア</button>
+        <button class="btn btn-primary btn-block" id="saveFormulaBtn">保存する</button>
+      </div>
+    </section>
+
+    <!-- ===== TAB: LIBRARY ===== -->
+    <section id="tab-library" class="hidden">
+      <div class="section-title"><span id="stLibrary">フォーミュラ集</span><small>REFERENCE · 18</small></div>
+      <p id="libraryDesc" style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:-4px 0 14px;">
+        既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。
+      </p>
+      <div id="libList"></div>
+    </section>
+
+    <!-- ===== TAB: SAVED ===== -->
+    <section id="tab-saved" class="hidden">
+      <div class="section-title"><span id="stSaved">マイフォーミュラ</span><small id="savedCount">SAVED</small></div>
+      <div id="savedList"></div>
+    </section>
+
+  </main>
+
+  <div class="overlay hidden" id="matOverlay">
+    <div class="sheet" style="position:relative;">
+      <button class="close-btn" id="matCloseBtn">✕</button>
+      <div class="sheet-handle"></div>
+      <div id="matDetail"></div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="cmOverlay">
+    <div class="sheet" style="position:relative;">
+      <button class="close-btn" id="cmCloseBtn">✕</button>
+      <div class="sheet-handle"></div>
+      <div id="cmForm"></div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="pickerOverlay">
+    <div class="sheet" style="position:relative; max-height:80vh;">
+      <button class="close-btn" id="pickerCloseBtn">✕</button>
+      <div class="sheet-handle"></div>
+      <h2 style="margin-bottom:12px;" id="pickerTitle">素材を選ぶ</h2>
+      <input class="search-box" id="pickerSearch" placeholder="検索…" style="margin-bottom:12px;">
+      <div id="pickerList"></div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="libOverlay">
+    <div class="sheet" style="position:relative;">
+      <button class="close-btn" id="libCloseBtn">✕</button>
+      <div class="sheet-handle"></div>
+      <div id="libDetail"></div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="mixOverlay">
+    <div class="sheet mix-sheet" style="position:relative; max-height:94vh;">
+      <button class="close-btn" id="mixCloseBtn">✕</button>
+      <div class="sheet-handle"></div>
+      <div class="mix-header">
+        <div class="mix-title" id="mixTitle">フォーミュラ名</div>
+        <div class="mix-sub" id="mixSub">出来上がり総量</div>
+        <div class="mix-progress-bar"><div class="mix-progress-fill" id="mixProgressFill"></div></div>
+        <div class="mix-progress-text" id="mixProgressText">0 / 0 完了</div>
+      </div>
+      <div id="mixList"></div>
+      <div class="mix-footer">
+        <button class="btn btn-secondary btn-block" id="mixResetBtn">進捗をリセット</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- ===== DISPLAY SETTINGS SHEET ===== -->
+  <div class="overlay hidden" id="settingsOverlay">
+    <div class="sheet" style="position:relative;">
+      <div class="sheet-handle"></div>
+      <button class="close-btn" id="settingsCloseBtn" aria-label="Close">×</button>
+      <h2 id="setTitle">表示設定</h2>
+
+      <div class="set-group">
+        <div class="set-label"><span id="setThemeLabel">背景テーマ</span></div>
+        <div class="seg" id="themeSeg">
+          <button data-theme="dark"><i class="tdot" style="background:#141f18"></i><span id="thDarkLabel">ダーク</span></button>
+          <button data-theme="light"><i class="tdot" style="background:#f6f1e4"></i><span id="thLightLabel">ライト</span></button>
+          <button data-theme="sepia"><i class="tdot" style="background:#e7d0a4"></i><span id="thSepiaLabel">セピア</span></button>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <div class="set-label"><span id="setFontLabel">文字サイズ</span><b id="fontVal">100%</b></div>
+        <input type="range" id="fontRange" min="85" max="135" step="5" value="100">
+        <div class="range-ends"><span style="font-size:11px;">A</span><span style="font-size:17px;">A</span></div>
+      </div>
+
+      <div class="set-group">
+        <div class="set-label"><span id="setBrightLabel">画面の明るさ</span><b id="brightVal">±0</b></div>
+        <input type="range" id="brightRange" min="-30" max="30" step="5" value="0">
+        <div class="range-ends"><span style="font-size:11px;" id="brightDarkEnd">暗く</span><span style="font-size:11px;" id="brightLightEnd">明るく</span></div>
+      </div>
+
+      <button class="display-reset-btn" id="displayResetBtn">標準に戻す</button>
+      <div class="app-version" id="appVersionLabel"></div>
+    </div>
+  </div>
+  <div id="brightOverlay"></div>
+
+  <nav class="bottom">
+    <button class="nav-btn active" data-tab="materials">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2h6v4l3.5 4.2c.7.9 1.1 2 1.1 3.1V19a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-5.7c0-1.1.4-2.2 1.1-3.1L9 6V2z"/><path d="M6.5 13.5s2 1.3 5.5 1.3 5.5-1.3 5.5-1.3"/></svg>
+      <span class="nav-label">素材</span>
+    </button>
+    <button class="nav-btn" data-tab="builder">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19h16"/><path d="M7 19v-5"/><path d="M12 19V8"/><path d="M17 19v-9"/><circle cx="7" cy="12" r="1.4"/><circle cx="12" cy="6.5" r="1.4"/><circle cx="17" cy="8" r="1.4"/></svg>
+      <span class="nav-label">処方</span>
+    </button>
+    <button class="nav-btn" data-tab="library">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h9l5 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v5h5"/><path d="M8 13h8M8 17h5"/></svg>
+      <span class="nav-label">フォーミュラ集</span>
+    </button>
+    <button class="nav-btn" data-tab="saved">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+      <span class="nav-label">マイ</span>
+    </button>
+  </nav>
+
+</div>
+
+<script src="materials.js"></script>
+<script src="formulas.js"></script>
+<script>
+/* BASE_MATERIALS は materials.js に外部化 (v1.5.0) */
+
+/* ---------------- Custom materials (user-added) ---------------- */
+const CUSTOM_MAT_KEY = 'nehne_custom_materials_v1';
+function loadCustomMaterials(){
+  try{
+    const a = JSON.parse(localStorage.getItem(CUSTOM_MAT_KEY) || '[]');
+    return Array.isArray(a) ? a.filter(x=>x && x.name) : [];
+  }catch(e){ return []; }
+}
+let CUSTOM_MATERIALS = loadCustomMaterials();
+let MATERIALS = BASE_MATERIALS.concat(CUSTOM_MATERIALS);
+function persistCustomMaterials(){
+  try{
+    localStorage.setItem(CUSTOM_MAT_KEY, JSON.stringify(CUSTOM_MATERIALS));
+    return true;
+  }catch(e){
+    toast(currentLang==='ja' ? '保存に失敗しました（容量不足の可能性）' : 'Save failed (storage may be full)');
+    return false;
+  }
+}
+/* FORMULA_LIB は formulas.js に外部化 (v1.5.0) */
+
+/* ---------------- i18n ---------------- */
+const LANG_KEY = 'nene_lang';
+let currentLang = 'ja';
+try{ currentLang = localStorage.getItem(LANG_KEY) || 'ja'; }catch(e){}
+
+const STR = {
+  ja: {
+    app_title:'nehne調香ノート', app_subtitle:"Perfumer's Notebook",
+    tab_materials:'素材', tab_builder:'処方', tab_library:'フォーミュラ集', tab_saved:'マイ',
+    page_materials:'素材ライブラリ', page_builder:'配合を作る', page_library:'フォーミュラ集', page_saved:'マイフォーミュラ',
+    search_materials_ph:'素材名・成分・語彙で検索…',
+    chip_all_notes:'すべてのノート', chip_all_families:'すべての系統',
+    section_compound:'配合の設計', section_weighout:'原液の計算', section_dilution:'希釈と賦香率',
+    section_library:'フォーミュラ集', section_saved:'マイフォーミュラ',
+    builder_name_ph:'フォーミュラ名を入力…', untitled_formula:'無題のフォーミュラ',
+    add_ingredient_btn:'＋ 素材を追加',
+    mode_volume:'体積（μl・希釈済み香料）', mode_weight:'重量（g・比重から換算）',
+    target_volume_label:'出来上がり総量', target_weight_label:'原液（コンパウンド）総量',
+    parts_label:'パーツ', dilution_pct_label:'希釈率(%)', amount_estimate_label:'使用量目安',
+    help_ul:'希釈済みの香料をマイクロピペット等で量り取り、出来上がり総量になるように配合する想定の計算です。各素材の希釈率は上の「配合の設計」欄で個別に設定できます（デフォルト10%）。滴数はドロッパー1滴≈0.05mlとして目安表示しています。',
+    help_g:'各素材は個別の希釈率とSG（比重）を用いて、実際に量り取る希釈液の重量（g）を算出しています。SGは素材詳細で確認できます（希釈率は上の欄で個別に設定）。',
+    open_mix_btn:'調香専用ページを開く',
+    target_conc_label:'目標賦香率（%）', final_vol_label:'仕上げ総量（ml）',
+    dil_compound:'コンパウンド（原液）', dil_alcohol:'エタノール（希釈剤）', dil_final:'仕上げ総量',
+    clear_btn:'クリア', save_btn:'保存する',
+    library_desc:'既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。（レシピ内の説明文は日本語のみです）',
+    saved_empty_title:'保存されたフォーミュラはまだありません。', saved_empty_body:'「処方」タブで配合を作り、保存してみましょう。',
+    edit_btn:'編集する', delete_btn:'削除', detail_btn:'詳細を見る', load_btn:'編集で使う',
+    load_into_editor_btn:'配合エディタに読み込む', add_to_formula_btn:'配合に追加する',
+    materials_unit:'種', and_more_prefix:'他 ', and_more_suffix:' 種…',
+    mat_desc_label:'香りの特徴', ifra_label:'安全基準・IFRA', vocab_ja_label:'日本語語彙', vocab_fr_label:'仏語/英語語彙',
+    components_label:'代表成分', default_dilution_label:'デフォルト希釈率', sg_label:'比重（SG）',
+    add_custom_btn:'＋ 香料を追加（名前と比重だけでOK）',
+    custom_badge:'カスタム',
+    cm_title_add:'香料を追加', cm_title_edit:'香料を編集',
+    cm_name_label:'香料名', cm_name_ph:'例：Yuzu Kochi',
+    cm_simple_hint:'名前と比重だけで登録できます。残りはアプリが自動で補完します（あとから編集OK）。細かく設定したいときは「詳細をカスタマイズ」を開いてください。',
+    cm_details_summary:'詳細をカスタマイズ（任意）',
+    cm_note_label:'ノート', cm_family_label:'系統',
+    cm_family_ph:'例：Citrus（空欄なら未分類）',
+    cm_desc_ph:'香りの説明（任意）',
+    cm_vocab_ph:'例：シトラス、フレッシュ（読点区切り）',
+    cm_ifra_ph:'例：2 光毒性（空欄なら未確認）',
+    cm_save:'保存する', cm_edit:'編集', cm_delete:'削除',
+    cm_delete_confirm:'この香料を削除しますか？配合内で使用中の場合、重量計算は比重1.0として扱われます。',
+    toast_cm_saved:'香料を保存しました', toast_cm_deleted:'香料を削除しました',
+    cm_dup_error:'同じ名前の香料がすでに存在します',
+    cm_name_required:'香料名を入力してください',
+    cm_sg_invalid:'比重は0より大きい数値を入力してください',
+    cm_default_family:'未分類', cm_default_ifra:'未確認',
+    tbl_material:'素材', tbl_dilution:'希釈率', tbl_amount:'使用量', tbl_drops:'滴数目安', tbl_total:'合計',
+    tbl_empty:'素材を追加すると計算されます',
+    print_btn:'印刷', print_created:'作成日', print_target:'総量設定',
+    print_mode_ul:'体積モード（μl・希釈済み香料）', print_mode_g:'重量モード（g・比重換算）',
+    print_col_note:'ノート', print_col_ratio:'比率', print_footer:'nehne調香ノートで作成',
+    toast_print_failed:'印刷用データの読み込みに失敗しました: ',
+    picker_title:'素材を選ぶ', picker_search_ph:'検索…', not_found:'見つかりませんでした',
+    mix_reset:'進捗をリセット', mix_done_suffix:' 完了', mix_measured:'計量済み', mix_all_done:'🎉 すべて完了しました',
+    confirm_clear:'現在の配合をクリアしますか？', confirm_delete:'このフォーミュラを削除しますか？', confirm_reset:'進捗をリセットしますか？',
+    toast_added_suffix:' を追加しました', toast_loaded_suffix:' を読み込みました',
+    toast_save_empty:'保存できません：素材が1つも追加されていません', toast_save_zero:'保存できません：すべての素材のパーツが0です',
+    toast_saved:'保存しました', toast_save_failed:'保存に失敗しました: ', toast_deleted:'削除しました',
+    toast_add_materials_first:'先に素材を追加してください', toast_parts_missing:'パーツが未入力の素材があります。「処方」タブで入力してください',
+    load_failed:'読み込みに失敗しました。',
+    err_zero_parts:'⚠ エラー：すべての素材のパーツ（配合比）が0のため計算できません。各素材にパーツを入力してください。',
+    err_zero_target:'⚠ エラー：出来上がり総量が0以下、または未入力です。1以上の数値を入力してください。',
+    err_dilution_range:'⚠ エラー：希釈率が範囲外（1〜100%）の素材があります。該当する素材の希釈率を修正してください。',
+    help_terms_summary:'？ 用語について',
+    help_dilution_text:'「希釈率」は、量り取る香料があらかじめアルコールなどで何%に薄められているかを表します（例：10%希釈＝香料原液1に対しアルコール9の割合）。数値が小さいほど、同じ「パーツ」を実現するのに多くの量を量る必要があります。',
+    help_conc_text:'「賦香率」は、出来上がった香水の中に純粋な香料コンパウンドが何%含まれているかを表します。目安：オードパルファン15〜20%、オードトワレ5〜15%、パルファン20〜30%。',
+  },
+  en: {
+    app_title:"nehne Perfumer's Notebook", app_subtitle:"Perfumer's Notebook",
+    tab_materials:'Materials', tab_builder:'Formula', tab_library:'Library', tab_saved:'Saved',
+    page_materials:'Material Library', page_builder:'Build a Blend', page_library:'Formula Library', page_saved:'My Formulas',
+    search_materials_ph:'Search by name, component, or descriptor…',
+    chip_all_notes:'All notes', chip_all_families:'All families',
+    section_compound:'Formula Design', section_weighout:'Weigh-out Calculator', section_dilution:'Dilution & Concentration',
+    section_library:'Formula Library', section_saved:'My Formulas',
+    builder_name_ph:'Enter a name for your formula…', untitled_formula:'Untitled formula',
+    add_ingredient_btn:'+ Add material',
+    mode_volume:'Volume (μl · pre-diluted)', mode_weight:'Weight (g · via specific gravity)',
+    target_volume_label:'Total finished amount', target_weight_label:'Total compound weight',
+    parts_label:'Parts', dilution_pct_label:'Dilution (%)', amount_estimate_label:'Est. amount',
+    help_ul:'Assumes you measure pre-diluted fragrance with a micropipette to reach the total finished amount. Each material\'s dilution rate can be set individually above in "Formula Design" (default 10%). Drop counts assume 1 drop ≈ 0.05ml.',
+    help_g:'Each material\'s weigh-out (g) is calculated from its individual dilution rate and specific gravity (SG). SG can be checked in the material detail view (dilution rate is set in the field above).',
+    open_mix_btn:'Open Compounding Mode',
+    target_conc_label:'Target concentration (%)', final_vol_label:'Finished total volume (ml)',
+    dil_compound:'Compound (concentrate)', dil_alcohol:'Ethanol (diluent)', dil_final:'Finished total',
+    clear_btn:'Clear', save_btn:'Save',
+    library_desc:'Reference formulas. Tap to see details, or "Use in editor" to load into the formula builder. (Recipe notes remain in Japanese.)',
+    saved_empty_title:'No saved formulas yet.', saved_empty_body:'Build a blend in the "Formula" tab and save it here.',
+    edit_btn:'Edit', delete_btn:'Delete', detail_btn:'View details', load_btn:'Use in editor',
+    load_into_editor_btn:'Load into formula editor', add_to_formula_btn:'Add to formula',
+    materials_unit:'materials', and_more_prefix:'+', and_more_suffix:' more…',
+    mat_desc_label:'Scent character', ifra_label:'Safety / IFRA', vocab_ja_label:'Descriptors (JP)', vocab_fr_label:'Descriptors (FR/EN)',
+    components_label:'Representative components', default_dilution_label:'Default dilution rate', sg_label:'Specific gravity (SG)',
+    add_custom_btn:'+ Add material (name & SG only)',
+    custom_badge:'CUSTOM',
+    cm_title_add:'Add material', cm_title_edit:'Edit material',
+    cm_name_label:'Material name', cm_name_ph:'e.g. Yuzu Kochi',
+    cm_simple_hint:'Just enter a name and specific gravity — the app fills in the rest (editable anytime). Open "Customize details" for full control.',
+    cm_details_summary:'Customize details (optional)',
+    cm_note_label:'Note', cm_family_label:'Family',
+    cm_family_ph:'e.g. Citrus (blank = Uncategorized)',
+    cm_desc_ph:'Scent description (optional)',
+    cm_vocab_ph:'e.g. Citrus, Fresh (comma-separated)',
+    cm_ifra_ph:'e.g. 2% Phototoxicity (blank = Not verified)',
+    cm_save:'Save', cm_edit:'Edit', cm_delete:'Delete',
+    cm_delete_confirm:'Delete this material? If it is used in a formula, weight calculations will assume SG 1.0.',
+    toast_cm_saved:'Material saved', toast_cm_deleted:'Material deleted',
+    cm_dup_error:'A material with the same name already exists',
+    cm_name_required:'Please enter a material name',
+    cm_sg_invalid:'Specific gravity must be a number greater than 0',
+    cm_default_family:'Uncategorized', cm_default_ifra:'Not verified',
+    tbl_material:'Material', tbl_dilution:'Dilution', tbl_amount:'Amount', tbl_drops:'Est. drops', tbl_total:'Total',
+    tbl_empty:'Amounts appear once you add materials',
+    print_btn:'Print', print_created:'Created', print_target:'Target',
+    print_mode_ul:'Volume mode (μl, pre-diluted)', print_mode_g:'Weight mode (g, SG-converted)',
+    print_col_note:'Note', print_col_ratio:'Ratio', print_footer:'Created with nehne Blending Note',
+    toast_print_failed:'Failed to load formula for printing: ',
+    picker_title:'Choose a material', picker_search_ph:'Search…', not_found:'No results found',
+    mix_reset:'Reset progress', mix_done_suffix:' done', mix_measured:'Measured', mix_all_done:'🎉 All done',
+    confirm_clear:'Clear the current formula?', confirm_delete:'Delete this formula?', confirm_reset:'Reset progress?',
+    toast_added_suffix:' added', toast_loaded_suffix:' loaded',
+    toast_save_empty:"Can't save: no materials added yet", toast_save_zero:"Can't save: all material parts are 0",
+    toast_saved:'Saved', toast_save_failed:'Save failed: ', toast_deleted:'Deleted',
+    toast_add_materials_first:'Please add materials first', toast_parts_missing:'Some materials have no parts set. Enter them in the "Formula" tab',
+    load_failed:'Failed to load.',
+    err_zero_parts:'⚠ Error: all material parts are 0, so nothing can be calculated. Enter parts for each material.',
+    err_zero_target:'⚠ Error: total finished amount is 0 or empty. Enter a number greater than 0.',
+    err_dilution_range:'⚠ Error: one or more materials have a dilution rate outside 1–100%. Please correct it.',
+    help_terms_summary:'？ About these terms',
+    help_dilution_text:'"Dilution rate" is the strength (%) at which the fragrance you\'re measuring has already been pre-diluted in alcohol (e.g. 10% dilution = 1 part fragrance concentrate to 9 parts alcohol). The lower the number, the more of it you need to weigh out to deliver the same number of "parts".',
+    help_conc_text:'"Concentration" (賦香率) is the percentage of pure fragrance compound in the finished perfume. Typical ranges: Eau de Parfum 15–20%, Eau de Toilette 5–15%, Parfum/Extrait 20–30%.',
+  }
+};
+function t(key){
+  const d = STR[currentLang] || STR.ja;
+  return (d[key] !== undefined) ? d[key] : (STR.ja[key] !== undefined ? STR.ja[key] : key);
+}
+function setLang(lang){
+  currentLang = lang;
+  try{ localStorage.setItem(LANG_KEY, lang); }catch(e){}
+  document.documentElement.lang = lang==='ja' ? 'ja' : 'en';
+  document.getElementById('langToggleBtn').textContent = lang==='ja' ? 'EN' : 'JA';
+  applyStaticLang();
+  buildChips();
+  renderMaterials();
+  renderBuilder();
+  renderLibrary();
+  if(!document.getElementById('tab-saved').classList.contains('hidden')) renderSaved();
+}
+function applyStaticLang(){
+  document.getElementById('appTitleText').textContent = t('app_title');
+  document.getElementById('matSearch').placeholder = t('search_materials_ph');
+  document.getElementById('addCustomMatBtnLabel').textContent = t('add_custom_btn');
+  document.getElementById('stCompound').textContent = t('section_compound');
+  document.getElementById('stWeighout').textContent = t('section_weighout');
+  document.getElementById('stDilution').textContent = t('section_dilution');
+  document.getElementById('stLibrary').textContent = t('section_library');
+  document.getElementById('stSaved').textContent = t('section_saved');
+  document.getElementById('builderName').placeholder = t('builder_name_ph');
+  document.getElementById('addIngBtnLabel').textContent = t('add_ingredient_btn');
+  document.querySelector('#calcModeChips [data-mode="ul"]').textContent = t('mode_volume');
+  document.querySelector('#calcModeChips [data-mode="g"]').textContent = t('mode_weight');
+  document.getElementById('openMixBtnLabel').textContent = t('open_mix_btn');
+  document.getElementById('concPctLabel').textContent = t('target_conc_label');
+  document.getElementById('finalVolLabel').textContent = t('final_vol_label');
+  document.getElementById('clearBuilderBtn').textContent = t('clear_btn');
+  document.getElementById('saveFormulaBtn').textContent = t('save_btn');
+  document.getElementById('libraryDesc').textContent = t('library_desc');
+  document.getElementById('helpDilutionSummary').textContent = t('help_terms_summary');
+  document.getElementById('helpDilutionText').textContent = t('help_dilution_text');
+  document.getElementById('helpConcSummary').textContent = t('help_terms_summary');
+  document.getElementById('helpConcText').textContent = t('help_conc_text');
+  document.getElementById('pickerTitle').textContent = t('picker_title');
+  document.getElementById('pickerSearch').placeholder = t('picker_search_ph');
+  document.getElementById('mixResetBtn').textContent = t('mix_reset');
+  document.querySelectorAll('.nav-label').forEach(el=>{
+    const tab = el.closest('.nav-btn').dataset.tab;
+    el.textContent = t('tab_'+tab);
+  });
+  const activeTab = document.querySelector('.nav-btn.active').dataset.tab;
+  document.getElementById('pageLabel').textContent = t('page_'+activeTab);
+  const modeChip = document.querySelector('#calcModeChips .chip.active');
+  const mode = modeChip ? modeChip.dataset.mode : 'ul';
+  document.getElementById('targetLabel').textContent = mode==='ul' ? t('target_volume_label') : t('target_weight_label');
+  document.getElementById('calcHelpText').textContent = mode==='ul' ? t('help_ul') : t('help_g');
+}
+document.getElementById('langToggleBtn').addEventListener('click', ()=>{
+  setLang(currentLang==='ja' ? 'en' : 'ja');
+});
+
+/* ---------------- Helpers ---------------- */
+function noteClass(note){
+  if(!note) return 'note-Other';
+  const n = note.trim();
+  if(n.startsWith('Top')||n.startsWith('トップ')) return 'note-Top';
+  if(n.startsWith('Middle')||n.startsWith('Mid')||n.startsWith('Heart')||n.startsWith('ミドル')||n.startsWith('ハート')) return 'note-Middle';
+  if(n.startsWith('Base')||n.startsWith('ベース')) return 'note-Base';
+  return 'note-Other';
+}
+function noteGroup(note){
+  if(!note) return 'other';
+  const n = note.trim();
+  if(n.startsWith('Top')||n.startsWith('トップ')) return 'top';
+  if(n.startsWith('Middle')||n.startsWith('Mid')||n.startsWith('Heart')||n.startsWith('ミドル')||n.startsWith('ハート')) return 'mid';
+  if(n.startsWith('Base')||n.startsWith('ベース')) return 'base';
+  return 'other';
+}
+function isRestricted(ifra){
+  if(!ifra) return false;
+  const s = String(ifra);
+  return !(s.includes('制限なし') && !s.match(/[0-9]/) ) && !(s.trim()==='制限なし') && s!=='No restriction';
+}
+function findMaterial(name){
+  return MATERIALS.find(m => m.name === name);
+}
+function toast(msg){
+  const elToast = document.getElementById('toast');
+  elToast.textContent = msg;
+  elToast.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=>elToast.classList.remove('show'), 1800);
+}
+function esc(s){ return (s===undefined||s===null) ? '' : String(s); }
+
+/* ---------------- Tabs ---------------- */
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    ['materials','builder','library','saved'].forEach(tabName=>{
+      document.getElementById('tab-'+tabName).classList.toggle('hidden', tabName!==tab);
+    });
+    document.getElementById('pageLabel').textContent = t('page_'+tab);
+    document.getElementById('main').scrollTo(0,0);
+    if(tab==='saved') renderSaved();
+    if(tab==='builder') renderBuilder();
+  });
+});
+
+
+/* ---------------- Materials tab ---------------- */
+let matFilterNote = 'all';
+let matFilterFam = 'all';
+
+const NOTE_OPTIONS = ['all','Top','Middle','Base'];
+let FAM_OPTIONS = [];
+function rebuildFamOptions(){
+  FAM_OPTIONS = ['all', ...Array.from(new Set(MATERIALS.map(m=>m.family).filter(Boolean))).sort()];
+}
+rebuildFamOptions();
+
+function buildChips(){
+  const noteWrap = document.getElementById('noteChips');
+  noteWrap.innerHTML = NOTE_OPTIONS.map(n=>`<button class="chip ${matFilterNote===n?'active':''}" data-note="${n}">${n==='all'?t('chip_all_notes'):n}</button>`).join('');
+  noteWrap.querySelectorAll('.chip').forEach(c=>c.addEventListener('click', ()=>{matFilterNote=c.dataset.note; buildChips(); renderMaterials();}));
+
+  const famWrap = document.getElementById('famChips');
+  famWrap.innerHTML = FAM_OPTIONS.map(f=>`<button class="chip ${matFilterFam===f?'active':''}" data-fam="${f}">${f==='all'?t('chip_all_families'):f}</button>`).join('');
+  famWrap.querySelectorAll('.chip').forEach(c=>c.addEventListener('click', ()=>{matFilterFam=c.dataset.fam; buildChips(); renderMaterials();}));
+}
+
+function renderMaterials(){
+  const q = document.getElementById('matSearch').value.trim().toLowerCase();
+  const list = MATERIALS.filter(m=>{
+    if(matFilterNote!=='all'){
+      const g = noteGroup(m.note);
+      if(matFilterNote==='Top' && g!=='top') return false;
+      if(matFilterNote==='Middle' && g!=='mid') return false;
+      if(matFilterNote==='Base' && g!=='base') return false;
+    }
+    if(matFilterFam!=='all' && m.family!==matFilterFam) return false;
+    if(q){
+      const hay = [m.name,m.family,m.desc,m.desc_en,m.vocab_ja,m.vocab_en,m.vocab_fr,m.components].join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const wrap = document.getElementById('matList');
+  if(list.length===0){
+    wrap.innerHTML = `<div class="empty-state"><p>${esc(t('not_found'))}</p></div>`;
+    return;
+  }
+  const isEn = currentLang==='en';
+  wrap.innerHTML = list.map(m=>{
+    const desc = isEn ? (m.desc_en||m.desc) : m.desc;
+    const vocab = isEn ? (m.vocab_en||m.vocab_ja) : m.vocab_ja;
+    const ifra = isEn ? (m.ifra_en||m.ifra) : m.ifra;
+    return `
+    <div class="mat-card" data-name="${esc(m.name)}">
+      <div class="mat-head">
+        <div>
+          <div class="mat-name">${esc(m.name)}</div>
+          <div class="mat-family">${esc(m.family)}${m.custom ? ` <span class="custom-badge">${esc(t('custom_badge'))}</span>` : ''}</div>
+        </div>
+        <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
+      </div>
+      <div class="mat-desc">${esc(desc)}</div>
+      <div class="mat-vocab">${(vocab||'').split(/[、,]/).filter(Boolean).map(v=>`<span class="vocab-pill">${esc(v.trim())}</span>`).join('')}</div>
+      ${isRestricted(m.ifra) ? `<div class="ifra-warn">⚠ IFRA: ${esc(ifra)}</div>` : `<div class="ifra-ok">✓ IFRA: ${esc(ifra)}</div>`}
+    </div>
+  `;}).join('');
+  wrap.querySelectorAll('.mat-card').forEach(c=>c.addEventListener('click', ()=>openMaterialDetail(c.dataset.name)));
+}
+document.getElementById('matSearch').addEventListener('input', renderMaterials);
+
+function openMaterialDetail(name){
+  const m = findMaterial(name);
+  if(!m) return;
+  const isEn = currentLang==='en';
+  const desc = isEn ? (m.desc_en||m.desc) : m.desc;
+  const vocab = isEn ? (m.vocab_en||m.vocab_ja) : m.vocab_ja;
+  const ifra = isEn ? (m.ifra_en||m.ifra) : m.ifra;
+  const detail = document.getElementById('matDetail');
+  detail.innerHTML = `
+    <h2>${esc(m.name)}</h2>
+    <div class="formula-meta">${esc(m.family)} ・ <span class="note-tag ${noteClass(m.note)}" style="margin-left:2px;">${esc(m.note)}</span></div>
+    <div class="row"><div class="k">${esc(t('mat_desc_label'))}</div><div class="v">${esc(desc)}</div></div>
+    <div class="row"><div class="k">${esc(t('ifra_label'))}</div><div class="v">${esc(ifra)}</div></div>
+    <div class="row"><div class="k">${esc(t('vocab_ja_label'))}</div><div class="v">${esc(vocab)}</div></div>
+    <div class="row"><div class="k">${esc(t('vocab_fr_label'))}</div><div class="v">${esc(m.vocab_fr)}</div></div>
+    <div class="row"><div class="k">${esc(t('components_label'))}</div><div class="v">${esc(m.components)}</div></div>
+    <div class="row"><div class="k">${esc(t('default_dilution_label'))}</div><div class="v">${esc(m.defaultDilution)}%</div></div>
+    <div class="row"><div class="k">${esc(t('sg_label'))}</div><div class="v">${esc(m.sg)}</div></div>
+    <button class="btn btn-primary btn-block" style="margin-top:18px;" id="addFromDetailBtn">${esc(t('add_to_formula_btn'))}</button>
+    ${m.custom ? `<div style="display:flex; gap:10px; margin-top:10px;">
+      <button class="btn btn-block" id="editCustomBtn">${esc(t('cm_edit'))}</button>
+      <button class="btn btn-block" id="deleteCustomBtn" style="color:#e07a5f;">${esc(t('cm_delete'))}</button>
+    </div>` : ''}
+  `;
+  document.getElementById('addFromDetailBtn').addEventListener('click', ()=>{
+    addIngredient(m.name);
+    document.getElementById('matOverlay').classList.add('hidden');
+    toast(m.name + t('toast_added_suffix'));
+  });
+  if(m.custom){
+    document.getElementById('editCustomBtn').addEventListener('click', ()=>{
+      document.getElementById('matOverlay').classList.add('hidden');
+      openCustomMatForm(m.name);
+    });
+    document.getElementById('deleteCustomBtn').addEventListener('click', ()=>{
+      if(!confirm(t('cm_delete_confirm'))) return;
+      CUSTOM_MATERIALS = CUSTOM_MATERIALS.filter(x=>x.name!==m.name);
+      if(persistCustomMaterials()){
+        refreshMaterialsData();
+        document.getElementById('matOverlay').classList.add('hidden');
+        toast(t('toast_cm_deleted'));
+      }
+    });
+  }
+  document.getElementById('matOverlay').classList.remove('hidden');
+}
+/* ---------------- Custom material add / edit ---------------- */
+const FAMILY_GUESS = [
+  [/ムスク|musk/i,'Musky'],
+  [/レモン|ライム|オレンジ|柑橘|シトラス|ゆず|柚子|citrus|lemon|lime|orange|bergamot|grapefruit|yuzu|mandarin/i,'Citrus'],
+  [/ローズ|ジャスミン|フローラル|花|rose|jasmin|floral|flower|blossom|neroli|ylang|tuberose/i,'Floral'],
+  [/ウッド|サンダル|シダー|ヒノキ|檜|wood|cedar|sandal|vetiver|hinoki/i,'Woody'],
+  [/バニラ|樹脂|ベンゾ|バルサム|ミルラ|vanilla|benzoin|balsam|resin|labdanum|myrrh|tonka/i,'Balsamic'],
+  [/ミント|ハッカ|mint|menth/i,'Minty'],
+  [/スパイス|ペッパー|胡椒|シナモン|クローブ|ジンジャー|生姜|spice|pepper|cinnamon|clove|ginger|cardamom/i,'Spicy'],
+  [/グリーン|リーフ|葉|green|leaf|galbanum/i,'Green'],
+  [/ハーブ|セージ|ローズマリー|タイム|ラベンダー|ユーカリ|herb|sage|rosemary|thyme|lavender|eucalyptus/i,'Aromatic'],
+  [/フルーツ|ピーチ|桃|アップル|林檎|ベリー|カシス|fruit|peach|apple|berry|cassis/i,'Fruity'],
+  [/マリン|海|オゾン|marine|ozon|sea|aqua/i,'Marine'],
+  [/レザー|革|leather|birch tar/i,'Leather'],
+  [/パウダ|アイリス|イリス|powder|iris|orris/i,'Powdery'],
+  [/アンバー|amber/i,'Ambery'],
+  [/モス|苔|moss/i,'Mossy']
+];
+const NOTE_GUESS = [
+  [/シトラス|レモン|ライム|オレンジ|柑橘|ミント|ユーカリ|citrus|lemon|lime|orange|mint|eucalyptus|bergamot|grapefruit|yuzu/i,'Top'],
+  [/ウッド|バニラ|ムスク|樹脂|モス|アンバー|ベチバー|パチュリ|wood|vanilla|musk|resin|moss|amber|vetiver|patch|labdanum|benzoin|tonka|sandal|cedar/i,'Base']
+];
+function guessFamily(name){ for(const p of FAMILY_GUESS){ if(p[0].test(name)) return p[1]; } return ''; }
+function guessNote(name){ for(const p of NOTE_GUESS){ if(p[0].test(name)) return p[1]; } return 'Middle'; }
+
+let cmEditingName = null;
+function openCustomMatForm(editName){
+  cmEditingName = editName || null;
+  const m = editName ? findMaterial(editName) : null;
+  const famList = Array.from(new Set(MATERIALS.map(x=>x.family).filter(Boolean))).sort();
+  const form = document.getElementById('cmForm');
+  form.innerHTML = `
+    <h2>${esc(m ? t('cm_title_edit') : t('cm_title_add'))}</h2>
+    <p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:4px 0 14px;">${esc(t('cm_simple_hint'))}</p>
+    <div class="calc-field" style="margin-bottom:12px;">
+      <label>${esc(t('cm_name_label'))} *</label>
+      <input id="cmName" value="${esc(m?m.name:'')}" ${m?'disabled style="opacity:.6"':''} placeholder="${esc(t('cm_name_ph'))}">
+    </div>
+    <div class="calc-field" style="margin-bottom:12px;">
+      <label>${esc(t('sg_label'))} *</label>
+      <input id="cmSg" type="number" step="0.001" min="0.1" max="2" value="${esc(m?m.sg:'1.00')}">
+    </div>
+    <details class="help-details" ${m?'open':''} style="margin-top:4px;">
+      <summary>${esc(t('cm_details_summary'))}</summary>
+      <div class="calc-field" style="margin:12px 0;">
+        <label>${esc(t('cm_note_label'))}</label>
+        <select id="cmNote">${['Top','Middle','Base','-'].map(n=>`<option ${m&&m.note===n?'selected':''}>${n}</option>`).join('')}</select>
+      </div>
+      <div class="calc-field" style="margin-bottom:12px;">
+        <label>${esc(t('cm_family_label'))}</label>
+        <input id="cmFamily" list="cmFamList" value="${esc(m?m.family:'')}" placeholder="${esc(t('cm_family_ph'))}">
+        <datalist id="cmFamList">${famList.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+      </div>
+      <div class="calc-field" style="margin-bottom:12px;">
+        <label>${esc(t('default_dilution_label'))} (%)</label>
+        <input id="cmDil" type="number" step="0.5" min="0.1" max="100" value="${esc(m?m.defaultDilution:10)}">
+      </div>
+      <div class="calc-field" style="margin-bottom:12px;">
+        <label>${esc(t('mat_desc_label'))}</label>
+        <input id="cmDesc" value="${esc(m?m.desc:'')}" placeholder="${esc(t('cm_desc_ph'))}">
+      </div>
+      <div class="calc-field" style="margin-bottom:12px;">
+        <label>${esc(t('vocab_ja_label'))}</label>
+        <input id="cmVocab" value="${esc(m?m.vocab_ja:'')}" placeholder="${esc(t('cm_vocab_ph'))}">
+      </div>
+      <div class="calc-field" style="margin-bottom:12px;">
+        <label>${esc(t('ifra_label'))}</label>
+        <input id="cmIfra" value="${esc(m?m.ifra:'')}" placeholder="${esc(t('cm_ifra_ph'))}">
+      </div>
+      <div class="calc-field" style="margin-bottom:12px;">
+        <label>${esc(t('components_label'))}</label>
+        <input id="cmComp" value="${esc(m?m.components:'')}">
+      </div>
+    </details>
+    <button class="btn btn-primary btn-block" style="margin-top:16px;" id="cmSaveBtn">${esc(t('cm_save'))}</button>
+  `;
+  if(!m){
+    const nameEl = document.getElementById('cmName');
+    nameEl.addEventListener('input', ()=>{
+      const famEl = document.getElementById('cmFamily');
+      const noteEl = document.getElementById('cmNote');
+      if(!famEl.dataset.touched) famEl.value = guessFamily(nameEl.value);
+      if(!noteEl.dataset.touched) noteEl.value = guessNote(nameEl.value);
+    });
+    document.getElementById('cmFamily').addEventListener('input', e=>{ e.target.dataset.touched='1'; });
+    document.getElementById('cmNote').addEventListener('change', e=>{ e.target.dataset.touched='1'; });
+  }
+  document.getElementById('cmSaveBtn').addEventListener('click', saveCustomMatForm);
+  document.getElementById('cmOverlay').classList.remove('hidden');
+}
+
+function saveCustomMatForm(){
+  const name = document.getElementById('cmName').value.trim();
+  const sg = parseFloat(document.getElementById('cmSg').value);
+  if(!name){ toast(t('cm_name_required')); return; }
+  if(!(sg>0)){ toast(t('cm_sg_invalid')); return; }
+  if(!cmEditingName && MATERIALS.some(x=>x.name.toLowerCase()===name.toLowerCase())){ toast(t('cm_dup_error')); return; }
+  const dil = parseFloat(document.getElementById('cmDil').value);
+  const obj = {
+    name, custom:true,
+    note: document.getElementById('cmNote').value,
+    family: document.getElementById('cmFamily').value.trim() || t('cm_default_family'),
+    desc: document.getElementById('cmDesc').value.trim(), desc_en:'',
+    ifra: document.getElementById('cmIfra').value.trim() || t('cm_default_ifra'), ifra_en:'',
+    vocab_ja: document.getElementById('cmVocab').value.trim(), vocab_en:'', vocab_fr:'',
+    components: document.getElementById('cmComp').value.trim(),
+    sg: sg,
+    defaultDilution: (dil>0 && dil<=100) ? dil : 10
+  };
+  if(cmEditingName){
+    const i = CUSTOM_MATERIALS.findIndex(x=>x.name===cmEditingName);
+    if(i>=0) CUSTOM_MATERIALS[i] = obj; else CUSTOM_MATERIALS.push(obj);
+  }else{
+    CUSTOM_MATERIALS.push(obj);
+  }
+  if(!persistCustomMaterials()) return;
+  refreshMaterialsData();
+  document.getElementById('cmOverlay').classList.add('hidden');
+  toast(t('toast_cm_saved'));
+}
+
+function refreshMaterialsData(){
+  MATERIALS = BASE_MATERIALS.concat(CUSTOM_MATERIALS);
+  rebuildFamOptions();
+  if(matFilterFam!=='all' && !FAM_OPTIONS.includes(matFilterFam)) matFilterFam='all';
+  buildChips();
+  renderMaterials();
+}
+
+document.getElementById('addCustomMatBtn').addEventListener('click', ()=>openCustomMatForm());
+document.getElementById('cmCloseBtn').addEventListener('click', ()=>document.getElementById('cmOverlay').classList.add('hidden'));
+document.getElementById('cmOverlay').addEventListener('click', (e)=>{ if(e.target.id==='cmOverlay') e.currentTarget.classList.add('hidden'); });
+
+document.getElementById('matCloseBtn').addEventListener('click', ()=>document.getElementById('matOverlay').classList.add('hidden'));
+document.getElementById('matOverlay').addEventListener('click', (e)=>{ if(e.target.id==='matOverlay') e.currentTarget.classList.add('hidden'); });
+
+/* ---------------- Builder tab ---------------- */
+let builderIngredients = []; // {name, parts, note, dilution}
+
+function addIngredient(name, parts, note, dilution){
+  const mat = findMaterial(name);
+  builderIngredients.push({
+    name,
+    parts: parts!==undefined ? parts : 10,
+    note: note || (mat ? mat.note : 'Middle'),
+    dilution: dilution!==undefined ? dilution : (mat && mat.defaultDilution ? mat.defaultDilution : 10)
+  });
+  renderBuilder();
+}
+
+function renderBuilder(){
+  const wrap = document.getElementById('ingList');
+  if(builderIngredients.length===0){
+    wrap.innerHTML = `<div class="empty-state" style="padding:30px 10px;"><p>${esc(t('toast_add_materials_first'))}<br>「${esc(t('add_ingredient_btn'))}」</p></div>`;
+  } else {
+    wrap.innerHTML = builderIngredients.map((ing,i)=>`
+      <div class="ingredient-row">
+        <div class="ing-top">
+          <div class="ing-main">
+            <div class="ing-name">${esc(ing.name)}</div>
+            <div class="ing-note"><span class="note-tag ${noteClass(ing.note)}">${esc(ing.note)}</span></div>
+          </div>
+          <button class="ing-remove" data-i="${i}">✕</button>
+        </div>
+        <div class="ing-controls">
+          <div class="ing-field">
+            <label>${esc(t('parts_label'))}</label>
+            <input class="ing-parts" type="number" min="0" step="0.1" value="${ing.parts}" data-i="${i}">
+          </div>
+          <div class="ing-field">
+            <label>${esc(t('dilution_pct_label'))}</label>
+            <input class="ing-dilution" type="number" min="1" max="100" step="1" value="${ing.dilution}" data-i="${i}">
+          </div>
+          <div class="ing-field ing-amount-display">
+            <label>${esc(t('amount_estimate_label'))}</label>
+            <div class="ing-amount" data-amount-i="${i}">—</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    wrap.querySelectorAll('.ing-parts').forEach(inp=>{
+      inp.addEventListener('input', (e)=>{
+        builderIngredients[e.target.dataset.i].parts = parseFloat(e.target.value)||0;
+        updatePyramid();
+        updateCalcTable();
+        updateDilution();
+      });
+    });
+    wrap.querySelectorAll('.ing-dilution').forEach(inp=>{
+      inp.addEventListener('input', (e)=>{
+        const i = e.target.dataset.i;
+        let v = parseFloat(e.target.value);
+        if(isNaN(v)){ e.target.classList.add('invalid'); return; }
+        if(v<=0 || v>100){ e.target.classList.add('invalid'); }
+        else { e.target.classList.remove('invalid'); }
+        builderIngredients[i].dilution = v;
+        updateCalcTable();
+      });
+      inp.addEventListener('blur', (e)=>{
+        const i = e.target.dataset.i;
+        let v = parseFloat(e.target.value);
+        if(isNaN(v) || v<=0) v = 10;
+        if(v>100) v = 100;
+        builderIngredients[i].dilution = v;
+        e.target.value = v;
+        e.target.classList.remove('invalid');
+        updateCalcTable();
+      });
+    });
+    wrap.querySelectorAll('.ing-remove').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        builderIngredients.splice(e.target.dataset.i,1);
+        renderBuilder();
+      });
+    });
+  }
+  updatePyramid();
+  updateCalcTable();
+  updateDilution();
+}
+
+function updatePyramid(){
+  const totals = {top:0, mid:0, base:0, other:0};
+  let sum = 0;
+  builderIngredients.forEach(ing=>{
+    const g = noteGroup(ing.note);
+    totals[g] = (totals[g]||0) + ing.parts;
+    sum += ing.parts;
+  });
+  const bar = document.getElementById('pyramidBar');
+  if(sum<=0){
+    bar.innerHTML = `<div style="width:100%; background:var(--ink-700);"></div>`;
+  } else {
+    bar.innerHTML = `
+      <div style="width:${totals.top/sum*100}%; background:var(--top-color);"></div>
+      <div style="width:${totals.mid/sum*100}%; background:var(--mid-color);"></div>
+      <div style="width:${totals.base/sum*100}%; background:var(--base-color);"></div>
+      <div style="width:${totals.other/sum*100}%; background:var(--paper-dim);"></div>
+    `;
+  }
+  document.getElementById('pctTop').textContent = sum? Math.round(totals.top/sum*100)+'%' : '0%';
+  document.getElementById('pctMid').textContent = sum? Math.round(totals.mid/sum*100)+'%' : '0%';
+  document.getElementById('pctBase').textContent = sum? Math.round(totals.base/sum*100)+'%' : '0%';
+}
+
+let calcMode = 'ul'; // 'ul' = volume-based (pre-diluted fragrance), 'g' = weight-based (per-material dilution/SG)
+
+document.getElementById('calcModeChips').querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    calcMode = chip.dataset.mode;
+    document.getElementById('calcModeChips').querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c===chip));
+    const targetInput = document.getElementById('targetWeight');
+    const targetLabel = document.getElementById('targetLabel');
+    const unitDisplay = document.getElementById('targetUnitDisplay');
+    const help = document.getElementById('calcHelpText');
+    if(calcMode==='ul'){
+      targetLabel.textContent = t('target_volume_label');
+      unitDisplay.value = 'μl';
+      if(targetInput.value=='10') targetInput.value = 100;
+      help.textContent = t('help_ul');
+    } else {
+      targetLabel.textContent = t('target_weight_label');
+      unitDisplay.value = 'g';
+      if(targetInput.value=='100') targetInput.value = 10;
+      help.textContent = t('help_g');
+    }
+    updateCalcTable();
+  });
+});
+
+/* Computes weigh-out amounts for every ingredient, in builderIngredients order.
+   'ul' mode: amount_i (μl) = [parts_i / (dilution_i/100)] normalized ×targetTotal
+   'g' mode : amount_i (g)  = pureG_i / (dilution_i/100), pureG_i = (parts_i/sumParts) × targetTotal */
+function computeMixItems(){
+  const targetWeight = parseFloat(document.getElementById('targetWeight').value) || 0;
+  if(calcMode==='ul'){
+    const weighted = builderIngredients.map(ing=>{
+      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+      return ing.parts>0 ? ing.parts/(dil/100) : 0;
+    });
+    const sumW = weighted.reduce((a,b)=>a+b,0);
+    return builderIngredients.map((ing,i)=>{
+      const amount = sumW>0 ? weighted[i]/sumW*targetWeight : 0;
+      return {name:ing.name, note:ing.note, dilution: ing.dilution||10, amount, unit:'μl', drops: amount/50};
+    });
+  } else {
+    const sumParts = builderIngredients.reduce((a,b)=>a+b.parts,0);
+    return builderIngredients.map(ing=>{
+      const mat = findMaterial(ing.name) || {sg:1};
+      const pct = sumParts>0 ? ing.parts/sumParts*100 : 0;
+      const pureG = pct/100*targetWeight;
+      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+      const dilutedG = dil>0 ? pureG/(dil/100) : pureG;
+      const ulEquiv = mat.sg>0 ? dilutedG/mat.sg*1000 : 0;
+      return {name:ing.name, note:ing.note, dilution:dil, amount:dilutedG, unit:'g', drops: ulEquiv/50};
+    });
+  }
+}
+
+function updateCalcTable(){
+  const targetWeight = parseFloat(document.getElementById('targetWeight').value) || 0;
+  const sumParts = builderIngredients.reduce((a,b)=>a+b.parts,0);
+  const banner = document.getElementById('calcErrorBanner');
+  let errMsg = '';
+  if(builderIngredients.length>0 && sumParts<=0){
+    errMsg = t('err_zero_parts');
+  } else if(builderIngredients.length>0 && (isNaN(targetWeight) || targetWeight<=0)){
+    errMsg = t('err_zero_target');
+  } else if(builderIngredients.some(ing=>!ing.dilution || ing.dilution<=0 || ing.dilution>100)){
+    errMsg = t('err_dilution_range');
+  }
+  if(errMsg){ banner.textContent = errMsg; banner.classList.remove('hidden'); }
+  else { banner.classList.add('hidden'); }
+
+  const items = computeMixItems();
+  const table = document.getElementById('calcTable');
+  let rows = '';
+  let totalOut = 0;
+  const isUl = calcMode==='ul';
+  const dilPrefix = currentLang==='ja' ? '希釈' : '';
+  const dilSuffix = currentLang==='ja' ? '%' : '%';
+  const dropsSuffix = currentLang==='ja' ? '滴' : ' drops';
+  items.forEach(it=>{
+    totalOut += it.amount;
+    rows += `<tr>
+      <td>${esc(it.name)}</td>
+      <td>${dilPrefix}${it.dilution}${dilSuffix}</td>
+      <td>${it.amount.toFixed(isUl?1:3)}${it.unit}</td>
+      <td>${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
+    </tr>`;
+  });
+  table.innerHTML = `
+    <thead><tr><th>${esc(t('tbl_material'))}</th><th>${esc(t('tbl_dilution'))}</th><th>${esc(t('tbl_amount'))}</th><th>${esc(t('tbl_drops'))}</th></tr></thead>
+    <tbody>${rows || `<tr><td colspan="4" style="color:var(--paper-dim); text-align:center; padding:16px 0;">${esc(t('tbl_empty'))}</td></tr>`}</tbody>
+    ${items.length ? `<tfoot><tr class="total-row"><td>${esc(t('tbl_total'))}</td><td>—</td><td>${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td>—</td></tr></tfoot>` : ''}
+  `;
+  updateIngredientAmounts(items);
+}
+function updateIngredientAmounts(items){
+  const isUl = calcMode==='ul';
+  items.forEach((it,i)=>{
+    const el = document.querySelector(`.ing-amount[data-amount-i="${i}"]`);
+    if(el) el.textContent = it.amount>0 ? `${it.amount.toFixed(isUl?1:3)}${it.unit}` : '—';
+  });
+}
+document.getElementById('targetWeight').addEventListener('input', updateCalcTable);
+
+function updateDilution(){
+  const conc = parseFloat(document.getElementById('concPct').value) || 0;
+  const finalVol = parseFloat(document.getElementById('finalVol').value) || 0;
+  const compoundG = finalVol * (conc/100);
+  const alcoholVol = finalVol - compoundG;
+  const box = document.getElementById('dilResult');
+  box.innerHTML = `
+    <div class="line"><span class="lbl">${esc(t('dil_compound'))}</span><span>${compoundG.toFixed(2)} g / ml</span></div>
+    <div class="line"><span class="lbl">${esc(t('dil_alcohol'))}</span><span>${alcoholVol.toFixed(2)} ml</span></div>
+    <div class="line"><span class="lbl">${esc(t('dil_final'))}</span><span>${finalVol.toFixed(2)} ml</span></div>
+  `;
+}
+document.getElementById('concPct').addEventListener('input', updateDilution);
+document.getElementById('finalVol').addEventListener('input', updateDilution);
+
+document.getElementById('clearBuilderBtn').addEventListener('click', ()=>{
+  if(builderIngredients.length===0) return;
+  if(confirm(t('confirm_clear'))){
+    builderIngredients = [];
+    document.getElementById('builderName').value = t('untitled_formula');
+    renderBuilder();
+  }
+});
+
+/* ---------------- 調香専用ページ (mixing mode) ---------------- */
+let mixDoneSet = new Set();
+let wakeLockRef = null;
+
+document.getElementById('openMixBtn').addEventListener('click', openMixPage);
+document.getElementById('mixCloseBtn').addEventListener('click', closeMixPage);
+document.getElementById('mixOverlay').addEventListener('click', (e)=>{ if(e.target.id==='mixOverlay') closeMixPage(); });
+document.getElementById('mixResetBtn').addEventListener('click', ()=>{
+  if(mixDoneSet.size===0) return;
+  if(confirm(t('confirm_reset'))){
+    mixDoneSet.clear();
+    renderMixList();
+    if(navigator.vibrate) navigator.vibrate(10);
+  }
+});
+
+async function openMixPage(){
+  if(builderIngredients.length===0){ toast(t('toast_add_materials_first')); return; }
+  const sumParts = builderIngredients.reduce((a,b)=>a+b.parts,0);
+  if(sumParts<=0){ toast(t('toast_parts_missing')); return; }
+  mixDoneSet.clear();
+  const targetWeight = parseFloat(document.getElementById('targetWeight').value) || 0;
+  const isUl = calcMode==='ul';
+  document.getElementById('mixTitle').textContent = document.getElementById('builderName').value.trim() || t('untitled_formula');
+  const modeNote = currentLang==='ja' ? (isUl?'（希釈済み香料）':'（原液）') : (isUl?' (pre-diluted fragrance)':' (concentrate)');
+  document.getElementById('mixSub').textContent = `${t('target_volume_label')} ${targetWeight}${isUl?'μl':'g'}${modeNote}`;
+  renderMixList();
+  document.getElementById('mixOverlay').classList.remove('hidden');
+  try{
+    if('wakeLock' in navigator){
+      wakeLockRef = await navigator.wakeLock.request('screen');
+    }
+  }catch(err){
+    // Wake Lock unsupported / denied — not critical, mixing still works without it.
+  }
+}
+
+function closeMixPage(){
+  document.getElementById('mixOverlay').classList.add('hidden');
+  if(wakeLockRef){
+    wakeLockRef.release().catch(()=>{});
+    wakeLockRef = null;
+  }
+}
+
+function renderMixList(){
+  const isUl = calcMode==='ul';
+  const raw = computeMixItems();
+  const items = raw.map((it,origIndex)=>({...it, origIndex})).sort((a,b)=> b.amount - a.amount);
+  const wrap = document.getElementById('mixList');
+  const dilLabel = currentLang==='ja' ? '希釈' : 'dilution ';
+  const dropsPrefix = currentLang==='ja' ? '約' : '~';
+  const dropsSuffix = currentLang==='ja' ? '滴' : ' drops';
+  wrap.innerHTML = items.map((it,i)=>{
+    const isDone = mixDoneSet.has(it.origIndex);
+    return `
+    <div class="mix-item ${isDone?'done':''}" data-orig="${it.origIndex}">
+      <div class="mix-item-order">${isDone ? '✓' : (i+1)}</div>
+      <div class="mix-item-main">
+        <div class="mix-item-name">${esc(it.name)}</div>
+        <div class="mix-item-note"><span class="note-tag ${noteClass(it.note)}">${esc(it.note)}</span> ・ ${dilLabel}${it.dilution}%</div>
+      </div>
+      <div class="mix-item-amount">
+        <div class="num">${it.amount.toFixed(isUl?1:3)}${it.unit}</div>
+        <div class="drops">${it.amount>0 ? dropsPrefix+it.drops.toFixed(1)+dropsSuffix : ''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  wrap.querySelectorAll('.mix-item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const idx = parseInt(el.dataset.orig);
+      if(mixDoneSet.has(idx)) mixDoneSet.delete(idx); else mixDoneSet.add(idx);
+      if(navigator.vibrate) navigator.vibrate(mixDoneSet.has(idx) ? 18 : 8);
+      renderMixList();
+    });
+  });
+  const total = items.length;
+  const done = items.filter(it=>mixDoneSet.has(it.origIndex)).length;
+  const measured = items.filter(it=>mixDoneSet.has(it.origIndex)).reduce((a,b)=>a+b.amount,0);
+  const totalTarget = items.reduce((a,b)=>a+b.amount,0);
+  document.getElementById('mixProgressFill').style.width = (total? (done/total*100) : 0)+'%';
+  document.getElementById('mixProgressText').textContent =
+    `${done} / ${total}${t('mix_done_suffix')} ・ ${t('mix_measured')} ${measured.toFixed(isUl?1:3)} / ${totalTarget.toFixed(isUl?1:3)}${isUl?'μl':'g'}`
+    + (total>0 && done===total ? ' '+t('mix_all_done') : '');
+}
+
+/* ---------------- Picker (add ingredient modal) ---------------- */
+document.getElementById('addIngBtn').addEventListener('click', ()=>{
+  document.getElementById('pickerSearch').value = '';
+  renderPicker();
+  document.getElementById('pickerOverlay').classList.remove('hidden');
+});
+document.getElementById('pickerCloseBtn').addEventListener('click', ()=>document.getElementById('pickerOverlay').classList.add('hidden'));
+document.getElementById('pickerOverlay').addEventListener('click', (e)=>{ if(e.target.id==='pickerOverlay') e.currentTarget.classList.add('hidden'); });
+document.getElementById('pickerSearch').addEventListener('input', renderPicker);
+
+function renderPicker(){
+  const q = document.getElementById('pickerSearch').value.trim().toLowerCase();
+  let list = MATERIALS;
+  if(q){
+    list = list.filter(m=>[m.name,m.family,m.desc,m.desc_en].join(' ').toLowerCase().includes(q));
+  }
+  const wrap = document.getElementById('pickerList');
+  wrap.innerHTML = list.map(m=>`
+    <div class="mat-card" style="padding:11px 12px; margin-bottom:8px;" data-name="${esc(m.name)}">
+      <div class="mat-head">
+        <div>
+          <div class="mat-name" style="font-size:13.5px;">${esc(m.name)}</div>
+          <div class="mat-family" style="font-size:11px;">${esc(m.family)}</div>
+        </div>
+        <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
+      </div>
+    </div>
+  `).join('') || `<div class="empty-state"><p>${esc(t('not_found'))}</p></div>`;
+  wrap.querySelectorAll('.mat-card').forEach(c=>c.addEventListener('click', ()=>{
+    addIngredient(c.dataset.name);
+    document.getElementById('pickerOverlay').classList.add('hidden');
+  }));
+}
+
+/* ---------------- Formula library tab ---------------- */
+function renderLibrary(){
+  const wrap = document.getElementById('libList');
+  wrap.innerHTML = FORMULA_LIB.map((f,i)=>`
+    <div class="formula-card">
+      <h3>${esc(f.name)}</h3>
+      <div class="formula-meta">${f.items.length} ${esc(t('materials_unit'))} ・ ${esc(f.unit)} ・ ${esc(t('tbl_total'))} ${f.total}</div>
+      <div class="formula-ing-list">
+        ${f.items.slice(0,4).map(it=>`<div><b>${esc(it.material)}</b> — ${it.amount}</div>`).join('')}
+        ${f.items.length>4 ? `<div style="opacity:.6;">${esc(t('and_more_prefix'))}${f.items.length-4}${esc(t('and_more_suffix'))}</div>` : ''}
+      </div>
+      <div class="formula-actions">
+        <button class="btn btn-secondary btn-sm" style="flex:1;" data-detail="${i}">${esc(t('detail_btn'))}</button>
+        <button class="btn btn-primary btn-sm" style="flex:1;" data-load="${i}">${esc(t('load_btn'))}</button>
+      </div>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('[data-detail]').forEach(b=>b.addEventListener('click', ()=>openLibDetail(parseInt(b.dataset.detail))));
+  wrap.querySelectorAll('[data-load]').forEach(b=>b.addEventListener('click', ()=>loadLibIntoBuilder(parseInt(b.dataset.load))));
+}
+
+function openLibDetail(i){
+  const f = FORMULA_LIB[i];
+  const detail = document.getElementById('libDetail');
+  const altLabel = currentLang==='ja' ? '代替: ' : 'Alt: ';
+  detail.innerHTML = `
+    <h2>${esc(f.name)}</h2>
+    <div class="formula-meta">${esc(f.unit)} ・ ${esc(t('tbl_total'))} ${f.total}</div>
+    ${f.note_text ? `<p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:8px 0 14px;">${esc(f.note_text)}</p>` : ''}
+    ${f.items.map(it=>`
+      <div class="row">
+        <div class="k"><span class="note-tag ${noteClass(it.note)}">${esc(it.note)}</span></div>
+        <div class="v" style="text-align:left; flex:2;">
+          <div style="color:var(--paper); font-weight:500;">${esc(it.material)} <span style="color:var(--amber-soft); font-family:'JetBrains Mono',monospace;">${it.amount}</span></div>
+          ${it.role ? `<div style="font-size:11px; color:var(--paper-dim); margin-top:2px;">${esc(it.role)}</div>` : ''}
+          ${it.alt ? `<div style="font-size:10.5px; color:var(--sage); margin-top:2px;">${altLabel}${esc(it.alt)}</div>` : ''}
+        </div>
+      </div>
+    `).join('')}
+    <button class="btn btn-primary btn-block" style="margin-top:18px;" id="loadFromDetailBtn">${esc(t('load_into_editor_btn'))}</button>
+  `;
+  document.getElementById('loadFromDetailBtn').addEventListener('click', ()=>{
+    loadLibIntoBuilder(i);
+    document.getElementById('libOverlay').classList.add('hidden');
+  });
+  document.getElementById('libOverlay').classList.remove('hidden');
+}
+document.getElementById('libCloseBtn').addEventListener('click', ()=>document.getElementById('libOverlay').classList.add('hidden'));
+document.getElementById('libOverlay').addEventListener('click', (e)=>{ if(e.target.id==='libOverlay') e.currentTarget.classList.add('hidden'); });
+
+function loadLibIntoBuilder(i){
+  const f = FORMULA_LIB[i];
+  builderIngredients = f.items.map(it=>{
+    const mat = findMaterial(it.material);
+    return {name:it.material, parts:it.amount, note: it.note, dilution: (mat && mat.defaultDilution) || 10};
+  });
+  document.getElementById('builderName').value = f.name;
+  document.querySelector('.nav-btn[data-tab="builder"]').click();
+  toast(f.name + t('toast_loaded_suffix'));
+}
+
+/* ---------------- Local storage layer ----------------
+   NOTE: This app runs as a standalone downloaded file / home-screen PWA,
+   not inside the Claude.ai artifact frame, so Anthropic's window.storage
+   API (which needs a signed-in Claude session) is not available there and
+   causes errors / unexpected login prompts. We use the browser's own
+   localStorage instead — it works fully offline, requires no account or
+   password, and keeps every formula only on this device. */
+const nStorage = {
+  available(){
+    try{
+      const k='__nene_test__';
+      localStorage.setItem(k,'1');
+      localStorage.removeItem(k);
+      return true;
+    }catch(e){ return false; }
+  },
+  list(prefix){
+    if(!this.available()) throw new Error(currentLang==='ja' ? 'このブラウザではローカル保存が利用できません（プライベートブラウズ中など）' : 'Local storage is unavailable in this browser (e.g. private browsing mode)');
+    const keys = [];
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(k && k.startsWith(prefix)) keys.push(k);
+    }
+    return keys;
+  },
+  get(key){
+    if(!this.available()) throw new Error(currentLang==='ja' ? 'このブラウザではローカル保存が利用できません' : 'Local storage is unavailable in this browser');
+    return localStorage.getItem(key);
+  },
+  set(key, value){
+    if(!this.available()) throw new Error(currentLang==='ja' ? 'このブラウザではローカル保存が利用できません' : 'Local storage is unavailable in this browser');
+    try{
+      localStorage.setItem(key, value);
+      return true;
+    }catch(e){
+      throw new Error(currentLang==='ja' ? '保存容量が不足しているか、書き込みが拒否されました' : 'Storage quota exceeded or write was denied');
+    }
+  },
+  delete(key){
+    if(!this.available()) throw new Error(currentLang==='ja' ? 'このブラウザではローカル保存が利用できません' : 'Local storage is unavailable in this browser');
+    localStorage.removeItem(key);
+    return true;
+  }
+};
+
+/* ---------------- Saved (local storage) ---------------- */
+/* ---------- Print / PDF export for saved formulas ----------
+   Computes weigh-out amounts from saved data (independent of current builder state),
+   using the same math as computeMixItems(), then opens the browser print dialog.
+   Users can choose "Save as PDF" in the dialog. */
+function computeMixItemsFor(f){
+  const items = f.items || [];
+  const targetWeight = parseFloat(f.targetWeight) || 0;
+  const mode = f.calcMode || 'ul';
+  const sumParts = items.reduce((a,b)=>a+(b.parts||0),0);
+  if(mode==='ul'){
+    const weighted = items.map(ing=>{
+      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+      return ing.parts>0 ? ing.parts/(dil/100) : 0;
+    });
+    const sumW = weighted.reduce((a,b)=>a+b,0);
+    return items.map((ing,i)=>{
+      const amount = sumW>0 ? weighted[i]/sumW*targetWeight : 0;
+      const pct = sumParts>0 ? (ing.parts||0)/sumParts*100 : 0;
+      return {name:ing.name, note:ing.note, pct, dilution:(ing.dilution>0&&ing.dilution<=100)?ing.dilution:10, amount, unit:'μl', drops:amount/50};
+    });
+  } else {
+    return items.map(ing=>{
+      const mat = findMaterial(ing.name) || {sg:1};
+      const pct = sumParts>0 ? (ing.parts||0)/sumParts*100 : 0;
+      const pureG = pct/100*targetWeight;
+      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+      const dilutedG = dil>0 ? pureG/(dil/100) : pureG;
+      const ulEquiv = (mat.sg||1)>0 ? dilutedG/(mat.sg||1)*1000 : 0;
+      return {name:ing.name, note:ing.note, pct, dilution:dil, amount:dilutedG, unit:'g', drops:ulEquiv/50};
+    });
+  }
+}
+function printSavedFormula(key){
+  let f;
+  try{
+    f = JSON.parse(nStorage.get(key));
+  }catch(err){
+    toast(t('toast_print_failed') + (err && err.message ? err.message : String(err)));
+    return;
+  }
+  if(!f || !Array.isArray(f.items)){ toast(t('toast_print_failed') + 'invalid data'); return; }
+  const isUl = (f.calcMode||'ul')==='ul';
+  const items = computeMixItemsFor(f);
+  const totalOut = items.reduce((a,b)=>a+b.amount,0);
+  const locale = currentLang==='ja' ? 'ja-JP' : 'en-US';
+  const created = f.savedAt ? new Date(f.savedAt).toLocaleDateString(locale) : '—';
+  const today = new Date().toLocaleDateString(locale);
+  const dropsSuffix = currentLang==='ja' ? '滴' : '';
+  const rows = items.map(it=>`
+    <tr>
+      <td>${esc(it.name)}</td>
+      <td>${it.note ? `<span class="pr-note-tag">${esc(it.note)}</span>` : '—'}</td>
+      <td class="num">${it.pct.toFixed(1)}%</td>
+      <td class="num">${it.dilution}%</td>
+      <td class="num">${it.amount.toFixed(isUl?1:3)}${it.unit}</td>
+      <td class="num">${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
+    </tr>`).join('');
+  let area = document.getElementById('printArea');
+  if(!area){
+    area = document.createElement('div');
+    area.id = 'printArea';
+    document.body.appendChild(area);
+  }
+  area.innerHTML = `
+    <div class="pr-brand"><span>nehne — ${esc(currentLang==='ja'?'調香ノート':'Blending Note')}</span><span class="pr-date">${esc(today)}</span></div>
+    <div class="pr-title">${esc(f.name || t('untitled_formula'))}</div>
+    <div class="pr-sub">
+      ${esc(t('print_created'))}: ${esc(created)} ・
+      ${esc(isUl ? t('print_mode_ul') : t('print_mode_g'))} ・
+      ${esc(t('print_target'))}: ${parseFloat(f.targetWeight)||0}${isUl?'μl':'g'}
+    </div>
+    <table class="pr-table">
+      <thead><tr>
+        <th>${esc(t('tbl_material'))}</th>
+        <th>${esc(t('print_col_note'))}</th>
+        <th class="num">${esc(t('print_col_ratio'))}</th>
+        <th class="num">${esc(t('tbl_dilution'))}</th>
+        <th class="num">${esc(t('tbl_amount'))}</th>
+        <th class="num">${esc(t('tbl_drops'))}</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+      <tbody><tr class="pr-total">
+        <td>${esc(t('tbl_total'))}</td><td>—</td><td class="num">100%</td><td class="num">—</td>
+        <td class="num">${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td class="num">—</td>
+      </tr></tbody>
+    </table>
+    <div class="pr-footer"><span>${esc(t('print_footer'))}</span><span>v${APP_VERSION}</span></div>`;
+  setTimeout(()=>window.print(), 50);
+}
+
+function renderSaved(){
+  const wrap = document.getElementById('savedList');
+  try{
+    const keys = nStorage.list('myformula:');
+    if(keys.length===0){
+      document.getElementById('savedCount').textContent = 'SAVED · 0';
+      wrap.innerHTML = `<div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+        <p>${esc(t('saved_empty_title'))}<br>${esc(t('saved_empty_body'))}</p>
+      </div>`;
+      return;
+    }
+    document.getElementById('savedCount').textContent = 'SAVED · ' + keys.length;
+    const entries = [];
+    const failedKeys = [];
+    for(const k of keys){
+      try{
+        const raw = nStorage.get(k);
+        if(raw) entries.push({key:k, data: JSON.parse(raw)});
+        else failedKeys.push(k);
+      }catch(e){
+        failedKeys.push(k);
+      }
+    }
+    entries.sort((a,b)=> (b.data.savedAt||0) - (a.data.savedAt||0));
+    const failedBanner = failedKeys.length
+      ? `<div class="error-banner">⚠ ${currentLang==='ja' ? `${failedKeys.length}件のフォーミュラの読み込みに失敗しました（データ破損の可能性があります）。` : `Failed to load ${failedKeys.length} formula(s) — the saved data may be corrupted.`}</div>`
+      : '';
+    wrap.innerHTML = failedBanner + entries.map(e=>{
+      const f = e.data;
+      const sum = (f.items||[]).reduce((a,b)=>a+(b.parts||0),0);
+      return `
+      <div class="formula-card">
+        <h3>${esc(f.name)}</h3>
+        <div class="formula-meta">${(f.items||[]).length} ${t('materials_unit')} ・ ${new Date(f.savedAt).toLocaleDateString(currentLang==='ja'?'ja-JP':'en-US')}</div>
+        <div class="formula-ing-list">
+          ${f.items.slice(0,4).map(it=>`<div><b>${esc(it.name)}</b> — ${sum>0 ? ((it.parts/sum)*100).toFixed(1) : '0.0'}%</div>`).join('')}
+          ${f.items.length>4 ? `<div style="opacity:.6;">${t('and_more_prefix')}${f.items.length-4}${t('and_more_suffix')}</div>` : ''}
+        </div>
+        <div class="formula-actions">
+          <button class="btn btn-secondary btn-sm" style="flex:1;" data-edit="${e.key}">${esc(t('edit_btn'))}</button>
+          <button class="btn btn-secondary btn-sm" style="flex:1;" data-print="${e.key}">🖨 ${esc(t('print_btn'))}</button>
+          <button class="btn btn-danger btn-sm" style="flex:1;" data-del="${e.key}">${esc(t('delete_btn'))}</button>
+        </div>
+      </div>`;
+    }).join('');
+    wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click', ()=>{
+      try{
+        const raw = nStorage.get(b.dataset.edit);
+        const f = JSON.parse(raw);
+        builderIngredients = f.items.map(it=>({
+          name: it.name, parts: it.parts, note: it.note,
+          dilution: it.dilution || (findMaterial(it.name)||{}).defaultDilution || 10
+        }));
+        document.getElementById('builderName').value = f.name;
+        document.getElementById('targetWeight').value = f.targetWeight || 100;
+        document.querySelector('.nav-btn[data-tab="builder"]').click();
+      }catch(err){
+        toast((currentLang==='ja'?'編集用データの読み込みに失敗しました: ':'Failed to load formula for editing: ') + (err && err.message ? err.message : String(err)));
+      }
+    }));
+    wrap.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click', ()=>printSavedFormula(b.dataset.print)));
+    wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', ()=>{
+      if(!confirm(t('confirm_delete'))) return;
+      try{
+        nStorage.delete(b.dataset.del);
+        renderSaved();
+        toast(t('toast_deleted'));
+      }catch(err){
+        toast((currentLang==='ja'?'削除に失敗しました: ':'Failed to delete: ') + (err && err.message ? err.message : String(err)));
+      }
+    }));
+  }catch(err){
+    wrap.innerHTML = `<div class="empty-state"><p>${esc(t('load_failed'))}<br>
+      <span style="color:var(--danger); font-family:'JetBrains Mono',monospace; font-size:11px;">${esc(err && err.message ? err.message : String(err))}</span>
+    </p></div>`;
+  }
+}
+
+document.getElementById('saveFormulaBtn').addEventListener('click', ()=>{
+  if(builderIngredients.length===0){ toast(t('toast_save_empty')); return; }
+  const sumParts = builderIngredients.reduce((a,b)=>a+b.parts,0);
+  if(sumParts<=0){ toast(t('toast_save_zero')); return; }
+  const name = document.getElementById('builderName').value.trim() || t('untitled_formula');
+  const key = 'myformula:' + Date.now();
+  const data = {
+    name,
+    items: builderIngredients,
+    targetWeight: parseFloat(document.getElementById('targetWeight').value)||100,
+    calcMode,
+    savedAt: Date.now()
+  };
+  try{
+    nStorage.set(key, JSON.stringify(data));
+    toast(t('toast_saved'));
+  }catch(e){
+    toast(t('toast_save_failed') + (e && e.message ? e.message : String(e)));
+  }
+});
+
+/* ---------------- Display settings (表示設定) ---------------- */
+const DISPLAY_KEY = 'nene_display';
+const DISPLAY_DEFAULT = {theme:'dark', font:100, bright:0};
+let displayCfg = Object.assign({}, DISPLAY_DEFAULT);
+try{
+  const savedDisp = JSON.parse(localStorage.getItem(DISPLAY_KEY) || 'null');
+  if(savedDisp && typeof savedDisp === 'object') displayCfg = Object.assign({}, DISPLAY_DEFAULT, savedDisp);
+}catch(e){}
+if(!['dark','light','sepia'].includes(displayCfg.theme)) displayCfg.theme = 'dark';
+displayCfg.font = Math.min(135, Math.max(85, Number(displayCfg.font) || 100));
+displayCfg.bright = Math.min(30, Math.max(-30, Number(displayCfg.bright) || 0));
+
+const THEME_META_COLOR = {dark:'#141f18', light:'#f6f1e4', sepia:'#efe2c9'};
+
+const DISPLAY_STR = {
+  ja: {title:'表示設定', theme:'背景テーマ', dark:'ダーク', light:'ライト', sepia:'セピア',
+       font:'文字サイズ', bright:'画面の明るさ', darker:'暗く', lighter:'明るく',
+       reset:'標準に戻す', reset_done:'表示設定を標準に戻しました'},
+  en: {title:'Display settings', theme:'Background theme', dark:'Dark', light:'Light', sepia:'Sepia',
+       font:'Text size', bright:'Screen brightness', darker:'Darker', lighter:'Brighter',
+       reset:'Reset to default', reset_done:'Display settings reset'}
+};
+function dt(key){
+  const d = DISPLAY_STR[currentLang] || DISPLAY_STR.ja;
+  return d[key] !== undefined ? d[key] : DISPLAY_STR.ja[key];
+}
+function applySettingsLang(){
+  document.getElementById('setTitle').textContent = dt('title');
+  document.getElementById('setThemeLabel').textContent = dt('theme');
+  document.getElementById('thDarkLabel').textContent = dt('dark');
+  document.getElementById('thLightLabel').textContent = dt('light');
+  document.getElementById('thSepiaLabel').textContent = dt('sepia');
+  document.getElementById('setFontLabel').textContent = dt('font');
+  document.getElementById('setBrightLabel').textContent = dt('bright');
+  document.getElementById('brightDarkEnd').textContent = dt('darker');
+  document.getElementById('brightLightEnd').textContent = dt('lighter');
+  document.getElementById('displayResetBtn').textContent = dt('reset');
+}
+
+function applyDisplay(){
+  /* テーマ */
+  document.documentElement.setAttribute('data-theme', displayCfg.theme);
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if(metaTheme) metaTheme.setAttribute('content', THEME_META_COLOR[displayCfg.theme] || THEME_META_COLOR.dark);
+  /* 文字サイズ（画面全体をスケール） */
+  try{ document.body.style.zoom = String(displayCfg.font / 100); }catch(e){}
+  /* 明るさ（オーバーレイの濃度で調整） */
+  const ov = document.getElementById('brightOverlay');
+  if(displayCfg.bright < 0){
+    ov.style.background = '#000';
+    ov.style.opacity = String(Math.min(Math.abs(displayCfg.bright) / 100 * 1.3, 0.42));
+  } else if(displayCfg.bright > 0){
+    ov.style.background = '#fff';
+    ov.style.opacity = String(Math.min(displayCfg.bright / 100 * 0.85, 0.28));
+  } else {
+    ov.style.opacity = '0';
+  }
+  /* パネルUIの状態を同期 */
+  document.querySelectorAll('#themeSeg button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.theme === displayCfg.theme);
+  });
+  document.getElementById('fontRange').value = displayCfg.font;
+  document.getElementById('brightRange').value = displayCfg.bright;
+  document.getElementById('fontVal').textContent = displayCfg.font + '%';
+  document.getElementById('brightVal').textContent = (displayCfg.bright > 0 ? '+' : (displayCfg.bright === 0 ? '±' : '')) + displayCfg.bright;
+}
+function saveDisplay(){
+  try{ localStorage.setItem(DISPLAY_KEY, JSON.stringify(displayCfg)); }catch(e){}
+}
+
+document.getElementById('settingsBtn').addEventListener('click', ()=>{
+  document.getElementById('settingsOverlay').classList.remove('hidden');
+});
+document.getElementById('settingsCloseBtn').addEventListener('click', ()=>{
+  document.getElementById('settingsOverlay').classList.add('hidden');
+});
+document.getElementById('settingsOverlay').addEventListener('click', (e)=>{
+  if(e.target === document.getElementById('settingsOverlay')){
+    document.getElementById('settingsOverlay').classList.add('hidden');
+  }
+});
+document.querySelectorAll('#themeSeg button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    displayCfg.theme = b.dataset.theme;
+    applyDisplay(); saveDisplay();
+  });
+});
+document.getElementById('fontRange').addEventListener('input', (e)=>{
+  displayCfg.font = Number(e.target.value);
+  applyDisplay(); saveDisplay();
+});
+document.getElementById('brightRange').addEventListener('input', (e)=>{
+  displayCfg.bright = Number(e.target.value);
+  applyDisplay(); saveDisplay();
+});
+document.getElementById('displayResetBtn').addEventListener('click', ()=>{
+  displayCfg = Object.assign({}, DISPLAY_DEFAULT);
+  applyDisplay(); saveDisplay();
+  if(typeof toast === 'function') toast(dt('reset_done'));
+});
+/* 言語切替時に設定パネルの表記も更新（既存リスナーの後に発火） */
+document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
+
+/* ---------------- Version & auto-update ---------------- */
+const APP_VERSION = '1.5.0';  /* ← 更新のたびにここの数字を上げる */
+document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
+
+/* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
+   ネットワーク優先方式なので、GitHub上のファイルを置き換えるだけで
+   次回アプリ起動時に自動で最新版が読み込まれる。オフライン時は前回版で動く） */
+if('serviceWorker' in navigator && (location.protocol === 'https:')){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
+
+/* ---------------- Init ---------------- */
+document.documentElement.lang = currentLang==='ja' ? 'ja' : 'en';
+document.getElementById('langToggleBtn').textContent = currentLang==='ja' ? 'EN' : 'JA';
+applyStaticLang();
+applySettingsLang();
+applyDisplay();
+buildChips();
+renderMaterials();
+renderBuilder();
+renderLibrary();
+</script>
+</body>
+</html>
