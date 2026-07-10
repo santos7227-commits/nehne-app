@@ -598,7 +598,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
     <section id="tab-builder" class="hidden">
       <div class="section-title"><span id="stCompound">配合の設計</span><small>COMPOUND</small></div>
       <div class="builder-card">
-        <input class="builder-name-input" id="builderName" placeholder="フォーミュラ名を入力…" value="無題のフォーミュラ">
+        <input class="builder-name-input" id="builderName" placeholder="フォーミュラ名を入力…" value="Untitled Formula">
 
         <div class="pyramid" id="pyramidBar"></div>
         <div class="pyramid-legend">
@@ -835,7 +835,7 @@ const STR = {
     chip_all_notes:'すべてのノート', chip_all_families:'すべての系統',
     section_compound:'配合の設計', section_weighout:'原液の計算', section_dilution:'希釈と賦香率',
     section_library:'フォーミュラ集', section_saved:'マイフォーミュラ',
-    builder_name_ph:'フォーミュラ名を入力…', untitled_formula:'無題のフォーミュラ',
+    builder_name_ph:'フォーミュラ名を入力…', untitled_formula:'Untitled Formula',
     add_ingredient_btn:'＋ 素材を追加',
     mode_volume:'体積（μl・希釈済み香料）', mode_weight:'重量（g・比重から換算）',
     target_volume_label:'出来上がり総量', target_weight_label:'原液（コンパウンド）総量',
@@ -900,7 +900,7 @@ const STR = {
     chip_all_notes:'All notes', chip_all_families:'All families',
     section_compound:'Formula Design', section_weighout:'Weigh-out Calculator', section_dilution:'Dilution & Concentration',
     section_library:'Formula Library', section_saved:'My Formulas',
-    builder_name_ph:'Enter a name for your formula…', untitled_formula:'Untitled formula',
+    builder_name_ph:'Enter a name for your formula…', untitled_formula:'Untitled Formula',
     add_ingredient_btn:'+ Add material',
     mode_volume:'Volume (μl · pre-diluted)', mode_weight:'Weight (g · via specific gravity)',
     target_volume_label:'Total finished amount', target_weight_label:'Total compound weight',
@@ -970,7 +970,7 @@ function setLang(lang){
   applyStaticLang();
   const bn = document.getElementById('builderName');
   if(bn){
-    if(bn.value==='無題のフォーミュラ' || bn.value==='Untitled formula'){ bn.value = t('untitled_formula'); }
+    if(bn.value==='無題のフォーミュラ' || bn.value==='Untitled formula' || bn.value==='Untitled Formula'){ bn.value = t('untitled_formula'); }
     bn.placeholder = t('builder_name_ph');
   }
   buildChips();
@@ -1030,6 +1030,8 @@ function fmlUnit(u){ return currentLang==='en' ? String(u).replace('比率（%�
 function fmlRole(it){ return currentLang==='en' && it.role_en ? it.role_en : it.role; }
 function fmlAlt(it){ return currentLang==='en' && it.alt_en ? it.alt_en : it.alt; }
 function fmlNoteText(f){ return currentLang==='en' && f.note_text_en ? f.note_text_en : f.note_text; }
+const FAM_EN = {'シトラス':'Citrus','フローラル':'Floral','グリーン・フルーティー':'Green / Fruity','ハーバル':'Herbal','スパイシー':'Spicy','ウッディ':'Woody','バルサム・レジン':'Balsamic / Resin','ムスク・アニマリック':'Musky / Animalic','その他':'Other'};
+function famLabel(f){ return currentLang==='en' ? (FAM_EN[f]||f) : f; }
 function noteClass(note){
   if(!note) return 'note-Other';
   const n = note.trim();
@@ -1097,7 +1099,7 @@ function buildChips(){
   noteWrap.querySelectorAll('.chip').forEach(c=>c.addEventListener('click', ()=>{matFilterNote=c.dataset.note; buildChips(); renderMaterials();}));
 
   const famWrap = document.getElementById('famChips');
-  famWrap.innerHTML = FAM_OPTIONS.map(f=>`<button class="chip ${matFilterFam===f?'active':''}" data-fam="${f}">${f==='all'?t('chip_all_families'):f}</button>`).join('');
+  famWrap.innerHTML = FAM_OPTIONS.map(f=>`<button class="chip ${matFilterFam===f?'active':''}" data-fam="${f}">${f==='all'?t('chip_all_families'):esc(famLabel(f))}</button>`).join('');
   famWrap.querySelectorAll('.chip').forEach(c=>c.addEventListener('click', ()=>{matFilterFam=c.dataset.fam; buildChips(); renderMaterials();}));
 }
 
@@ -1145,7 +1147,7 @@ function renderMaterials(){
       <div class="mat-head">
         <div>
           <div class="mat-name">${esc(m.name)}</div>
-          <div class="mat-family">${esc(m.family)}${m.custom ? ` <span class="custom-badge">${esc(t('custom_badge'))}</span>` : ''}</div>
+          <div class="mat-family">${esc(famLabel(m.family))}${m.custom ? ` <span class="custom-badge">${esc(t('custom_badge'))}</span>` : ''}</div>
         </div>
         <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
       </div>
@@ -1168,7 +1170,7 @@ function openMaterialDetail(name){
   const detail = document.getElementById('matDetail');
   detail.innerHTML = `
     <h2>${esc(m.name)}</h2>
-    <div class="formula-meta">${esc(m.family)} ・ <span class="note-tag ${noteClass(m.note)}" style="margin-left:2px;">${esc(m.note)}</span></div>
+    <div class="formula-meta">${esc(famLabel(m.family))} ・ <span class="note-tag ${noteClass(m.note)}" style="margin-left:2px;">${esc(m.note)}</span></div>
     <div class="row"><div class="k">${esc(t('mat_desc_label'))}</div><div class="v">${esc(desc)}</div></div>
     <div class="row"><div class="k">${esc(t('ifra_label'))}</div><div class="v">${esc(ifra)}</div></div>
     <div class="row"><div class="k">${esc(t('vocab_ja_label'))}</div><div class="v">${esc(vocab)}</div></div>
@@ -1683,7 +1685,7 @@ function renderPicker(){
       <div class="mat-head">
         <div>
           <div class="mat-name" style="font-size:13.5px;">${esc(m.name)}</div>
-          <div class="mat-family" style="font-size:11px;">${esc(m.family)}</div>
+          <div class="mat-family" style="font-size:11px;">${esc(famLabel(m.family))}</div>
         </div>
         <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
       </div>
@@ -2096,7 +2098,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.7';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.8';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
