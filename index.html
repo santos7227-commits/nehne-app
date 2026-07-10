@@ -9,26 +9,26 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#141f18">
+<meta name="theme-color" content="#1c2b22">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="nehne調香">
 <meta name="mobile-web-app-capable" content="yes">
 <style>
 :root{
-  --ink-900:#141f18;
-  --ink-800:#1c2a21;
-  --ink-700:#243529;
-  --ink-600:#33473a;
+  --ink-900:#1c2b22;
+  --ink-800:#26382d;
+  --ink-700:#304536;
+  --ink-600:#425848;
   --paper:#f2ead9;
-  --paper-dim:#cfc4a8;
+  --paper-dim:#dcd3bd;
   --amber:#c8963f;
   --amber-soft:#e0b869;
   --rose:#b9836f;
   --sage:#8ea683;
-  --line:rgba(242,234,217,0.14);
-  --line-strong:rgba(242,234,217,0.28);
-  --danger:#c46a5a;
+  --line:rgba(242,234,217,0.20);
+  --line-strong:rgba(242,234,217,0.36);
+  --danger:#ef9078;
   --radius:14px;
   --top-color:#c8963f;
   --mid-color:#b9836f;
@@ -43,6 +43,7 @@ body{
     var(--ink-900);
   color:var(--paper);
   font-family:"Noto Sans JP",sans-serif;
+  font-weight:500;
   min-height:100vh;
   display:flex;
   justify-content:center;
@@ -145,6 +146,7 @@ main{
   padding:10px 12px;
   color:var(--paper);
   font-family:"Noto Sans JP",sans-serif;
+  font-weight:500;
   font-size:14px;
 }
 .search-box::placeholder{color:var(--paper-dim);}
@@ -202,8 +204,8 @@ main{
 .mat-desc{font-size:12.5px; color:var(--paper-dim); margin-top:8px; line-height:1.6;}
 .mat-vocab{margin-top:8px; display:flex; flex-wrap:wrap; gap:5px;}
 .vocab-pill{font-size:10.5px; padding:2px 8px; border-radius:100px; border:1px solid var(--line-strong); color:var(--paper-dim);}
-.ifra-warn{margin-top:8px; font-size:11px; color:var(--danger); display:flex; gap:5px; align-items:center;}
-.ifra-ok{margin-top:8px; font-size:11px; color:var(--sage); display:flex; gap:5px; align-items:center;}
+.ifra-warn{margin-top:8px; font-size:12.5px; font-weight:700; color:var(--danger); display:flex; gap:5px; align-items:center;}
+.ifra-ok{margin-top:8px; font-size:12.5px; font-weight:600; color:var(--sage); display:flex; gap:5px; align-items:center;}
 
 /* ---------- Modal ---------- */
 .overlay{
@@ -739,7 +741,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <div class="set-group">
         <div class="set-label"><span id="setThemeLabel">背景テーマ</span></div>
         <div class="seg" id="themeSeg">
-          <button data-theme="dark"><i class="tdot" style="background:#141f18"></i><span id="thDarkLabel">ダーク</span></button>
+          <button data-theme="dark"><i class="tdot" style="background:#1c2b22"></i><span id="thDarkLabel">ダーク</span></button>
           <button data-theme="light"><i class="tdot" style="background:#f6f1e4"></i><span id="thLightLabel">ライト</span></button>
           <button data-theme="sepia"><i class="tdot" style="background:#e7d0a4"></i><span id="thSepiaLabel">セピア</span></button>
         </div>
@@ -1966,7 +1968,7 @@ if(!['dark','light','sepia'].includes(displayCfg.theme)) displayCfg.theme = 'dar
 displayCfg.font = Math.min(135, Math.max(85, Number(displayCfg.font) || 100));
 displayCfg.bright = Math.min(30, Math.max(-30, Number(displayCfg.bright) || 0));
 
-const THEME_META_COLOR = {dark:'#141f18', light:'#f6f1e4', sepia:'#efe2c9'};
+const THEME_META_COLOR = {dark:'#1c2b22', light:'#f6f1e4', sepia:'#efe2c9'};
 
 const DISPLAY_STR = {
   ja: {title:'表示設定', theme:'背景テーマ', dark:'ダーク', light:'ライト', sepia:'セピア',
@@ -2058,7 +2060,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.1';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
