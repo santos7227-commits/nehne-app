@@ -1027,6 +1027,9 @@ function fmlName(f){ return currentLang==='en' && f.name_en ? f.name_en : f.name
 function fmlMat(it){ return currentLang==='en' && it.material_en ? it.material_en : it.material; }
 function fmlNote(n){ return currentLang==='en' ? (FML_NOTE_EN[n]||n) : n; }
 function fmlUnit(u){ return currentLang==='en' ? String(u).replace('比率（%）','Ratio (%)') : u; }
+function fmlRole(it){ return currentLang==='en' && it.role_en ? it.role_en : it.role; }
+function fmlAlt(it){ return currentLang==='en' && it.alt_en ? it.alt_en : it.alt; }
+function fmlNoteText(f){ return currentLang==='en' && f.note_text_en ? f.note_text_en : f.note_text; }
 function noteClass(note){
   if(!note) return 'note-Other';
   const n = note.trim();
@@ -1720,14 +1723,14 @@ function openLibDetail(i){
   detail.innerHTML = `
     <h2>${esc(fmlName(f))}</h2>
     <div class="formula-meta">${esc(fmlUnit(f.unit))} ・ ${esc(t('tbl_total'))} ${f.total}</div>
-    ${f.note_text ? `<p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:8px 0 14px;">${esc(f.note_text)}</p>` : ''}
+    ${f.note_text ? `<p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:8px 0 14px;">${esc(fmlNoteText(f))}</p>` : ''}
     ${f.items.map(it=>`
       <div class="row">
         <div class="k"><span class="note-tag ${noteClass(it.note)}">${esc(fmlNote(it.note))}</span></div>
         <div class="v" style="text-align:left; flex:2;">
           <div style="color:var(--paper); font-weight:500;">${esc(fmlMat(it))} <span style="color:var(--amber-soft); font-family:'JetBrains Mono',monospace;">${it.amount}</span></div>
-          ${it.role ? `<div style="font-size:11px; color:var(--paper-dim); margin-top:2px;">${esc(it.role)}</div>` : ''}
-          ${it.alt ? `<div style="font-size:10.5px; color:var(--sage); margin-top:2px;">${altLabel}${esc(it.alt)}</div>` : ''}
+          ${it.role ? `<div style="font-size:11px; color:var(--paper-dim); margin-top:2px;">${esc(fmlRole(it))}</div>` : ''}
+          ${it.alt ? `<div style="font-size:10.5px; color:var(--sage); margin-top:2px;">${altLabel}${esc(fmlAlt(it))}</div>` : ''}
         </div>
       </div>
     `).join('')}
@@ -2093,7 +2096,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.6';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.7';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
