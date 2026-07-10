@@ -1032,7 +1032,17 @@ function fmlAlt(it){ return currentLang==='en' && it.alt_en ? it.alt_en : it.alt
 function fmlNoteText(f){ return currentLang==='en' && f.note_text_en ? f.note_text_en : f.note_text; }
 const FAM_EN = {'シトラス':'Citrus','フローラル':'Floral','グリーン・フルーティー':'Green / Fruity','ハーバル':'Herbal','スパイシー':'Spicy','ウッディ':'Woody','バルサム・レジン':'Balsamic / Resin','ムスク・アニマリック':'Musky / Animalic','その他':'Other'};
 function famLabel(f){ return currentLang==='en' ? (FAM_EN[f]||f) : f; }
-function ingName(ing){ return currentLang==='en' && ing.name_en ? ing.name_en : ing.name; }
+/* 全プリセット処方から「素材名→英語名」辞書を構築し、描画の瞬間に変換する。
+   これによりデータの新旧・読み込み経路を問わず英語表示が保証される */
+const MAT_EN_BY_NAME = {};
+if(typeof FORMULA_LIB !== 'undefined'){
+  FORMULA_LIB.forEach(f=>f.items.forEach(it=>{ if(it.material_en) MAT_EN_BY_NAME[it.material] = it.material_en; }));
+}
+function matEnName(name, name_en){
+  if(currentLang!=='en') return name;
+  return name_en || MAT_EN_BY_NAME[name] || name;
+}
+function ingName(ing){ return matEnName(ing.name, ing.name_en); }
 function noteClass(note){
   if(!note) return 'note-Other';
   const n = note.trim();
@@ -1931,7 +1941,7 @@ function renderSaved(){
         <h3>${esc(fmlName(f))}</h3>
         <div class="formula-meta">${(f.items||[]).length} ${t('materials_unit')} ・ ${new Date(f.savedAt).toLocaleDateString(currentLang==='ja'?'ja-JP':'en-US')}</div>
         <div class="formula-ing-list">
-          ${f.items.slice(0,4).map(it=>`<div><b>${esc(it.name)}</b> — ${sum>0 ? ((it.parts/sum)*100).toFixed(1) : '0.0'}%</div>`).join('')}
+          ${f.items.slice(0,4).map(it=>`<div><b>${esc(matEnName(it.name, it.name_en))}</b> — ${sum>0 ? ((it.parts/sum)*100).toFixed(1) : '0.0'}%</div>`).join('')}
           ${f.items.length>4 ? `<div style="opacity:.6;">${t('and_more_prefix')}${f.items.length-4}${t('and_more_suffix')}</div>` : ''}
         </div>
         <div class="formula-actions">
@@ -2099,7 +2109,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.10';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.11';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
