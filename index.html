@@ -708,7 +708,8 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <button class="close-btn" id="pickerCloseBtn">✕</button>
       <div class="sheet-handle"></div>
       <h2 style="margin-bottom:12px;" id="pickerTitle">素材を選ぶ</h2>
-      <input class="search-box" id="pickerSearch" placeholder="検索…" style="margin-bottom:12px;">
+      <input class="search-box" id="pickerSearch" placeholder="検索…" style="margin-bottom:10px;">
+      <div class="chips" id="pickerNoteChips" style="margin-bottom:12px; display:flex; gap:6px; flex-wrap:wrap;"></div>
       <div id="pickerList"></div>
     </div>
   </div>
@@ -1679,14 +1680,28 @@ document.getElementById('addIngBtn').addEventListener('click', ()=>{
   document.getElementById('pickerSearch').value = '';
   renderPicker();
   document.getElementById('pickerOverlay').classList.remove('hidden');
+  pickerFilterNote='all'; buildPickerChips();
 });
 document.getElementById('pickerCloseBtn').addEventListener('click', ()=>document.getElementById('pickerOverlay').classList.add('hidden'));
 document.getElementById('pickerOverlay').addEventListener('click', (e)=>{ if(e.target.id==='pickerOverlay') e.currentTarget.classList.add('hidden'); });
 document.getElementById('pickerSearch').addEventListener('input', renderPicker);
 
+let pickerFilterNote = 'all';
+function buildPickerChips(){
+  const wrap = document.getElementById('pickerNoteChips');
+  const opts = [['all', t('chip_all_notes')], ['top','Top'], ['mid','Middle'], ['base','Base']];
+  wrap.innerHTML = opts.map(([v,label])=>
+    `<button class="chip ${pickerFilterNote===v?'active':''}" data-pnote="${v}">${esc(label)}</button>`).join('');
+  wrap.querySelectorAll('[data-pnote]').forEach(b=>b.addEventListener('click', ()=>{
+    pickerFilterNote = b.dataset.pnote; buildPickerChips(); renderPicker();
+  }));
+}
 function renderPicker(){
   const q = document.getElementById('pickerSearch').value.trim().toLowerCase();
   let list = MATERIALS;
+  if(pickerFilterNote!=='all'){
+    list = list.filter(m=>noteGroup(m.note)===pickerFilterNote);
+  }
   if(q){
     list = list.filter(m=>[m.name,m.family,m.desc,m.desc_en].join(' ').toLowerCase().includes(q));
   }
@@ -2109,7 +2124,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.11';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.12';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
