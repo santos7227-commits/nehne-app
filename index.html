@@ -1946,7 +1946,7 @@ function renderSaved(){
         const raw = nStorage.get(b.dataset.edit);
         const f = JSON.parse(raw);
         builderIngredients = f.items.map(it=>({
-          name: it.name, parts: it.parts, note: it.note,
+          name: it.name, name_en: it.name_en, parts: it.parts, note: it.note,
           dilution: it.dilution || (findMaterial(it.name)||{}).defaultDilution || 10
         }));
         document.getElementById('builderName').value = f.name;
@@ -2099,7 +2099,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.9';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.10';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
