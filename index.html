@@ -1032,6 +1032,7 @@ function fmlAlt(it){ return currentLang==='en' && it.alt_en ? it.alt_en : it.alt
 function fmlNoteText(f){ return currentLang==='en' && f.note_text_en ? f.note_text_en : f.note_text; }
 const FAM_EN = {'シトラス':'Citrus','フローラル':'Floral','グリーン・フルーティー':'Green / Fruity','ハーバル':'Herbal','スパイシー':'Spicy','ウッディ':'Woody','バルサム・レジン':'Balsamic / Resin','ムスク・アニマリック':'Musky / Animalic','その他':'Other'};
 function famLabel(f){ return currentLang==='en' ? (FAM_EN[f]||f) : f; }
+function ingName(ing){ return currentLang==='en' && ing.name_en ? ing.name_en : ing.name; }
 function noteClass(note){
   if(!note) return 'note-Other';
   const n = note.trim();
@@ -1365,8 +1366,8 @@ function renderBuilder(){
       <div class="ingredient-row">
         <div class="ing-top">
           <div class="ing-main">
-            <div class="ing-name">${esc(ing.name)}</div>
-            <div class="ing-note"><span class="note-tag ${noteClass(ing.note)}">${esc(ing.note)}</span></div>
+            <div class="ing-name">${esc(ingName(ing))}</div>
+            <div class="ing-note"><span class="note-tag ${noteClass(ing.note)}">${esc(fmlNote(ing.note))}</span></div>
           </div>
           <button class="ing-remove" data-i="${i}">✕</button>
         </div>
@@ -1489,7 +1490,7 @@ function computeMixItems(){
     const sumW = weighted.reduce((a,b)=>a+b,0);
     return builderIngredients.map((ing,i)=>{
       const amount = sumW>0 ? weighted[i]/sumW*targetWeight : 0;
-      return {name:ing.name, note:ing.note, dilution: ing.dilution||10, amount, unit:'μl', drops: amount/50};
+      return {name:ingName(ing), note:ing.note, dilution: ing.dilution||10, amount, unit:'μl', drops: amount/50};
     });
   } else {
     const sumParts = builderIngredients.reduce((a,b)=>a+b.parts,0);
@@ -1500,7 +1501,7 @@ function computeMixItems(){
       const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
       const dilutedG = dil>0 ? pureG/(dil/100) : pureG;
       const ulEquiv = mat.sg>0 ? dilutedG/mat.sg*1000 : 0;
-      return {name:ing.name, note:ing.note, dilution:dil, amount:dilutedG, unit:'g', drops: ulEquiv/50};
+      return {name:ingName(ing), note:ing.note, dilution:dil, amount:dilutedG, unit:'g', drops: ulEquiv/50};
     });
   }
 }
@@ -1751,11 +1752,11 @@ function loadLibIntoBuilder(i){
   const f = FORMULA_LIB[i];
   builderIngredients = f.items.map(it=>{
     const mat = findMaterial(it.material);
-    return {name:it.material, parts:it.amount, note: it.note, dilution: (mat && mat.defaultDilution) || 10};
+    return {name:it.material, name_en:it.material_en, parts:it.amount, note: it.note, dilution: (mat && mat.defaultDilution) || 10};
   });
-  document.getElementById('builderName').value = f.name;
+  document.getElementById('builderName').value = fmlName(f);
   document.querySelector('.nav-btn[data-tab="builder"]').click();
-  toast(f.name + t('toast_loaded_suffix'));
+  toast(fmlName(f) + t('toast_loaded_suffix'));
 }
 
 /* ---------------- Local storage layer ----------------
@@ -1822,7 +1823,7 @@ function computeMixItemsFor(f){
     return items.map((ing,i)=>{
       const amount = sumW>0 ? weighted[i]/sumW*targetWeight : 0;
       const pct = sumParts>0 ? (ing.parts||0)/sumParts*100 : 0;
-      return {name:ing.name, note:ing.note, pct, dilution:(ing.dilution>0&&ing.dilution<=100)?ing.dilution:10, amount, unit:'μl', drops:amount/50};
+      return {name:ingName(ing), note:ing.note, pct, dilution:(ing.dilution>0&&ing.dilution<=100)?ing.dilution:10, amount, unit:'μl', drops:amount/50};
     });
   } else {
     return items.map(ing=>{
@@ -1832,7 +1833,7 @@ function computeMixItemsFor(f){
       const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
       const dilutedG = dil>0 ? pureG/(dil/100) : pureG;
       const ulEquiv = (mat.sg||1)>0 ? dilutedG/(mat.sg||1)*1000 : 0;
-      return {name:ing.name, note:ing.note, pct, dilution:dil, amount:dilutedG, unit:'g', drops:ulEquiv/50};
+      return {name:ingName(ing), note:ing.note, pct, dilution:dil, amount:dilutedG, unit:'g', drops:ulEquiv/50};
     });
   }
 }
@@ -1855,7 +1856,7 @@ function printSavedFormula(key){
   const rows = items.map(it=>`
     <tr>
       <td>${esc(it.name)}</td>
-      <td>${it.note ? `<span class="pr-note-tag">${esc(it.note)}</span>` : '—'}</td>
+      <td>${it.note ? `<span class="pr-note-tag">${esc(fmlNote(it.note))}</span>` : '—'}</td>
       <td class="num">${it.pct.toFixed(1)}%</td>
       <td class="num">${it.dilution}%</td>
       <td class="num">${it.amount.toFixed(isUl?1:3)}${it.unit}</td>
@@ -2098,7 +2099,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.8';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.9';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
