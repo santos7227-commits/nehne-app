@@ -968,6 +968,11 @@ function setLang(lang){
   document.documentElement.lang = lang==='ja' ? 'ja' : 'en';
   document.getElementById('langToggleBtn').textContent = lang==='ja' ? 'EN' : 'JA';
   applyStaticLang();
+  const bn = document.getElementById('builderName');
+  if(bn){
+    if(bn.value==='無題のフォーミュラ' || bn.value==='Untitled formula'){ bn.value = t('untitled_formula'); }
+    bn.placeholder = t('builder_name_ph');
+  }
   buildChips();
   renderMaterials();
   renderBuilder();
@@ -1016,6 +1021,12 @@ document.getElementById('langToggleBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Helpers ---------------- */
+/* v1.5.6: 処方の英語表示ヘルパー */
+const FML_NOTE_EN = {'トップ':'Top','ミドル':'Middle','ベース':'Base','トップ/ミドル':'Top/Mid','ミドル/ベース':'Mid/Base','ハート':'Heart','希釈剤':'Diluent'};
+function fmlName(f){ return currentLang==='en' && f.name_en ? f.name_en : f.name; }
+function fmlMat(it){ return currentLang==='en' && it.material_en ? it.material_en : it.material; }
+function fmlNote(n){ return currentLang==='en' ? (FML_NOTE_EN[n]||n) : n; }
+function fmlUnit(u){ return currentLang==='en' ? String(u).replace('比率（%）','Ratio (%)') : u; }
 function noteClass(note){
   if(!note) return 'note-Other';
   const n = note.trim();
@@ -1621,7 +1632,7 @@ function renderMixList(){
       <div class="mix-item-order">${isDone ? '✓' : (i+1)}</div>
       <div class="mix-item-main">
         <div class="mix-item-name">${esc(it.name)}</div>
-        <div class="mix-item-note"><span class="note-tag ${noteClass(it.note)}">${esc(it.note)}</span> ・ ${dilLabel}${it.dilution}%</div>
+        <div class="mix-item-note"><span class="note-tag ${noteClass(it.note)}">${esc(fmlNote(it.note))}</span> ・ ${dilLabel}${it.dilution}%</div>
       </div>
       <div class="mix-item-amount">
         <div class="num">${it.amount.toFixed(isUl?1:3)}${it.unit}</div>
@@ -1686,10 +1697,10 @@ function renderLibrary(){
   const wrap = document.getElementById('libList');
   wrap.innerHTML = FORMULA_LIB.map((f,i)=>`
     <div class="formula-card">
-      <h3>${esc(f.name)}</h3>
-      <div class="formula-meta">${f.items.length} ${esc(t('materials_unit'))} ・ ${esc(f.unit)} ・ ${esc(t('tbl_total'))} ${f.total}</div>
+      <h3>${esc(fmlName(f))}</h3>
+      <div class="formula-meta">${f.items.length} ${esc(t('materials_unit'))} ・ ${esc(fmlUnit(f.unit))} ・ ${esc(t('tbl_total'))} ${f.total}</div>
       <div class="formula-ing-list">
-        ${f.items.slice(0,4).map(it=>`<div><b>${esc(it.material)}</b> — ${it.amount}</div>`).join('')}
+        ${f.items.slice(0,4).map(it=>`<div><b>${esc(fmlMat(it))}</b> — ${it.amount}</div>`).join('')}
         ${f.items.length>4 ? `<div style="opacity:.6;">${esc(t('and_more_prefix'))}${f.items.length-4}${esc(t('and_more_suffix'))}</div>` : ''}
       </div>
       <div class="formula-actions">
@@ -1707,14 +1718,14 @@ function openLibDetail(i){
   const detail = document.getElementById('libDetail');
   const altLabel = currentLang==='ja' ? '代替: ' : 'Alt: ';
   detail.innerHTML = `
-    <h2>${esc(f.name)}</h2>
-    <div class="formula-meta">${esc(f.unit)} ・ ${esc(t('tbl_total'))} ${f.total}</div>
+    <h2>${esc(fmlName(f))}</h2>
+    <div class="formula-meta">${esc(fmlUnit(f.unit))} ・ ${esc(t('tbl_total'))} ${f.total}</div>
     ${f.note_text ? `<p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:8px 0 14px;">${esc(f.note_text)}</p>` : ''}
     ${f.items.map(it=>`
       <div class="row">
-        <div class="k"><span class="note-tag ${noteClass(it.note)}">${esc(it.note)}</span></div>
+        <div class="k"><span class="note-tag ${noteClass(it.note)}">${esc(fmlNote(it.note))}</span></div>
         <div class="v" style="text-align:left; flex:2;">
-          <div style="color:var(--paper); font-weight:500;">${esc(it.material)} <span style="color:var(--amber-soft); font-family:'JetBrains Mono',monospace;">${it.amount}</span></div>
+          <div style="color:var(--paper); font-weight:500;">${esc(fmlMat(it))} <span style="color:var(--amber-soft); font-family:'JetBrains Mono',monospace;">${it.amount}</span></div>
           ${it.role ? `<div style="font-size:11px; color:var(--paper-dim); margin-top:2px;">${esc(it.role)}</div>` : ''}
           ${it.alt ? `<div style="font-size:10.5px; color:var(--sage); margin-top:2px;">${altLabel}${esc(it.alt)}</div>` : ''}
         </div>
@@ -1911,7 +1922,7 @@ function renderSaved(){
       const sum = (f.items||[]).reduce((a,b)=>a+(b.parts||0),0);
       return `
       <div class="formula-card">
-        <h3>${esc(f.name)}</h3>
+        <h3>${esc(fmlName(f))}</h3>
         <div class="formula-meta">${(f.items||[]).length} ${t('materials_unit')} ・ ${new Date(f.savedAt).toLocaleDateString(currentLang==='ja'?'ja-JP':'en-US')}</div>
         <div class="formula-ing-list">
           ${f.items.slice(0,4).map(it=>`<div><b>${esc(it.name)}</b> — ${sum>0 ? ((it.parts/sum)*100).toFixed(1) : '0.0'}%</div>`).join('')}
@@ -2082,7 +2093,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.5';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.6';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
