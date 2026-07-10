@@ -30,9 +30,9 @@
   --line-strong:rgba(242,234,217,0.36);
   --danger:#ef9078;
   --radius:14px;
-  --top-color:#c8963f;
-  --mid-color:#b9836f;
-  --base-color:#5f7a63;
+  --top-color:#e8b562;
+  --mid-color:#dfa38c;
+  --base-color:#93b598;
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;}
@@ -197,9 +197,9 @@ main{
   flex:0 0 auto;
   white-space:nowrap;
 }
-.note-Top{background:rgba(200,150,63,0.18); color:var(--top-color);}
-.note-Middle,.note-Mid,.note-Heart{background:rgba(185,131,111,0.18); color:var(--mid-color);}
-.note-Base{background:rgba(95,122,99,0.22); color:var(--base-color);}
+.note-Top{background:rgba(200,150,63,0.32); color:var(--top-color); font-weight:700; border:1px solid rgba(232,181,98,0.45);}
+.note-Middle,.note-Mid,.note-Heart{background:rgba(185,131,111,0.32); color:var(--mid-color); font-weight:700; border:1px solid rgba(223,163,140,0.45);}
+.note-Base{background:rgba(95,122,99,0.36); color:var(--base-color); font-weight:700; border:1px solid rgba(147,181,152,0.45);}
 .note-Other{background:rgba(242,234,217,0.1); color:var(--paper-dim);}
 .mat-desc{font-size:12.5px; color:var(--paper-dim); margin-top:8px; line-height:1.6;}
 .mat-vocab{margin-top:8px; display:flex; flex-wrap:wrap; gap:5px;}
@@ -2060,7 +2060,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.1';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.2';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
