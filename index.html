@@ -80,10 +80,11 @@ header.top{
   padding:6px 11px; border-radius:100px;
 }
 .brand svg{flex:0 0 auto;}
-.brand-text{display:flex; flex-direction:column; line-height:1.1;}
+.brand-text{display:flex; flex-direction:column; line-height:1.1; flex:1 1 auto; min-width:0; overflow:hidden;}
 .brand-text .en{
   font-family:"Shippori Mincho",serif;
   font-size:11px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   letter-spacing:0.32em;
   color:var(--amber-soft);
   text-transform:uppercase;
@@ -92,6 +93,7 @@ header.top{
   font-family:"Shippori Mincho",serif;
   font-weight:700;
   font-size:22px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   margin:2px 0 0;
   letter-spacing:0.04em;
   color:var(--paper);
@@ -2080,7 +2082,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.4';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.5';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
