@@ -171,8 +171,7 @@ main{
   background:var(--amber);
   border-color:var(--amber);
   color:var(--ink-900);
-  font-weight:700;
-}
+  font-weight:700; box-shadow:0 0 0 2px var(--amber) inset; font-weight:700;}
 
 /* ---------- Material card ---------- */
 .mat-card{
@@ -438,6 +437,9 @@ nav.bottom{
 
 /* ---------- Display themes (背景テーマ) ---------- */
 html[data-theme="light"]{
+  --top-color:#8a6116;
+  --mid-color:#96543d;
+  --base-color:#44603f;
   --ink-900:#f6f1e4;
   --ink-800:#efe8d6;
   --ink-700:#e4dac2;
@@ -462,6 +464,9 @@ html[data-theme="light"] .brand svg [stroke]{stroke:var(--amber);}
 html[data-theme="light"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 
 html[data-theme="sepia"]{
+  --top-color:#7c560e;
+  --mid-color:#8a4b34;
+  --base-color:#3f5c3a;
   --ink-900:#efe2c9;
   --ink-800:#e7d6b6;
   --ink-700:#dcc79f;
@@ -1096,7 +1101,20 @@ function renderMaterials(){
   });
   const wrap = document.getElementById('matList');
   if(list.length===0){
-    wrap.innerHTML = `<div class="empty-state"><p>${esc(t('not_found'))}</p></div>`;
+    const hasFilter = matFilterNote!=='all' || matFilterFam!=='all' || q;
+    const hint = currentLang==='en'
+      ? 'No match for the current Note × Family filters.'
+      : 'ノート×系統の絞り込みに一致する香料がありません。';
+    const btn = currentLang==='en' ? 'Clear filters' : '絞り込みを解除';
+    wrap.innerHTML = `<div class="empty-state"><p>${esc(t('not_found'))}</p>`
+      + (hasFilter ? `<p style="font-size:12px; color:var(--paper-dim); margin:6px 0 10px;">${hint}</p><button class="chip active" id="clearMatFilters">${btn}</button>` : '')
+      + `</div>`;
+    const cb = document.getElementById('clearMatFilters');
+    if(cb) cb.addEventListener('click', ()=>{
+      matFilterNote='all'; matFilterFam='all';
+      document.getElementById('matSearch').value='';
+      buildChips(); renderMaterials();
+    });
     return;
   }
   const isEn = currentLang==='en';
@@ -2060,7 +2078,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.2';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.3';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
