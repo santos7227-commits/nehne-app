@@ -672,7 +672,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 
     <!-- ===== TAB: LIBRARY ===== -->
     <section id="tab-library" class="hidden">
-      <div class="section-title"><span id="stLibrary">フォーミュラ集</span><small>REFERENCE · 18</small></div>
+      <div class="section-title"><span id="stLibrary">フォーミュラ集</span><small id="libraryCount">REFERENCE · 35</small></div>
       <p id="libraryDesc" style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:-4px 0 14px;">
         既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。
       </p>
@@ -1726,6 +1726,8 @@ function renderPicker(){
 /* ---------------- Formula library tab ---------------- */
 function renderLibrary(){
   const wrap = document.getElementById('libList');
+  const cntEl = document.getElementById('libraryCount');
+  if(cntEl) cntEl.textContent = 'REFERENCE · ' + FORMULA_LIB.length;
   wrap.innerHTML = FORMULA_LIB.map((f,i)=>`
     <div class="formula-card">
       <h3>${esc(fmlName(f))}</h3>
