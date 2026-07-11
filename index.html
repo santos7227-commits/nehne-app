@@ -672,7 +672,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 
     <!-- ===== TAB: LIBRARY ===== -->
     <section id="tab-library" class="hidden">
-      <div class="section-title"><span id="stLibrary">フォーミュラ集</span><small id="libraryCount">REFERENCE · 35</small></div>
+      <div class="section-title"><span id="stLibrary">フォーミュラ集</span><small>REFERENCE · <span id="libCount">35</span></small></div>
       <p id="libraryDesc" style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:-4px 0 14px;">
         既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。
       </p>
@@ -1725,9 +1725,9 @@ function renderPicker(){
 
 /* ---------------- Formula library tab ---------------- */
 function renderLibrary(){
+  const lc = document.getElementById('libCount');
+  if(lc) lc.textContent = FORMULA_LIB.length;
   const wrap = document.getElementById('libList');
-  const cntEl = document.getElementById('libraryCount');
-  if(cntEl) cntEl.textContent = 'REFERENCE · ' + FORMULA_LIB.length;
   wrap.innerHTML = FORMULA_LIB.map((f,i)=>`
     <div class="formula-card">
       <h3>${esc(fmlName(f))}</h3>
@@ -2126,7 +2126,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.12';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.5.13';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
