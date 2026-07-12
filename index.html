@@ -612,7 +612,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 
         <details class="help-details">
           <summary id="helpDilutionSummary">？ 用語について</summary>
-          <p id="helpDilutionText">「希釈率」は、量り取る香料があらかじめアルコールなどで何%に薄められているかを表します（例：10%希釈＝香料原液1に対しアルコール9の割合）。数値が小さいほど、同じ「パーツ」を実現するのに多くの量を量る必要があります。</p>
+          <p id="helpDilutionText">「配合比」は処方そのもの（純香料どうしの比率）で、右の‰表示がその正体です。「希釈率」は、その素材を量るときに使う液の濃さです（例：10%希釈＝香料原液1に対しアルコール9）。希釈率を変えても配合比＝香りは変わりません。変わるのは量り取る液の体積だけです。だから同じ処方を、0.1mlの希釈液でも、300mlの原液でもブレずに再現できます。</p>
         </details>
       </div>
 
@@ -660,7 +660,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <div class="dil-result" id="dilResult"></div>
         <details class="help-details">
           <summary id="helpConcSummary">？ 用語について</summary>
-          <p id="helpConcText">「賦香率」は、出来上がった香水の中に純粋な香料コンパウンドが何%含まれているかを表します。目安：オードパルファン15〜20%、オードトワレ5〜15%、パルファン20〜30%。</p>
+          <p id="helpConcText">「賦香率」は、出来上がった香水の中に純香料が何%含まれているかを表します。目安：オーデコロン2〜5%、オードトワレ5〜15%、オードパルファン15〜20%、パルファン20〜30%。希釈率とは別の軸です（希釈率＝素材側の話、賦香率＝完成品側の話）。ただし10%希釈の液だけで調合する場合、賦香率は10%が物理的な上限になります。それ以上濃くしたいときは原液での調合が必要です。</p>
         </details>
       </div>
 
@@ -840,7 +840,7 @@ const STR = {
     add_ingredient_btn:'＋ 素材を追加',
     mode_volume:'体積（μl・希釈済み香料）', mode_weight:'重量（g・比重から換算）',
     target_volume_label:'出来上がり総量', target_weight_label:'原液（コンパウンド）総量',
-    parts_label:'パーツ', dilution_pct_label:'希釈率(%)', amount_estimate_label:'使用量目安',
+    parts_label:'配合比', dilution_pct_label:'希釈率(%)', amount_estimate_label:'使用量目安',
     help_ul:'希釈済みの香料をマイクロピペット等で量り取り、出来上がり総量になるように配合する想定の計算です。各素材の希釈率は上の「配合の設計」欄で個別に設定できます（デフォルト10%）。滴数はドロッパー1滴≈0.05mlとして目安表示しています。',
     help_g:'各素材は個別の希釈率とSG（比重）を用いて、実際に量り取る希釈液の重量（g）を算出しています。SGは素材詳細で確認できます（希釈率は上の欄で個別に設定）。',
     open_mix_btn:'調香専用ページを開く',
@@ -872,7 +872,7 @@ const STR = {
     cm_name_required:'香料名を入力してください',
     cm_sg_invalid:'比重は0より大きい数値を入力してください',
     cm_default_family:'未分類', cm_default_ifra:'未確認',
-    tbl_material:'素材', tbl_dilution:'希釈率', tbl_amount:'使用量', tbl_drops:'滴数目安', tbl_total:'合計',
+    tbl_material:'素材', tbl_permille:'‰', tbl_dilution:'希釈率', tbl_amount:'使用量', tbl_drops:'滴数目安', tbl_total:'合計',
     tbl_empty:'素材を追加すると計算されます',
     print_btn:'印刷', print_created:'作成日', print_target:'総量設定',
     print_mode_ul:'体積モード（μl・希釈済み香料）', print_mode_g:'重量モード（g・比重換算）',
@@ -882,16 +882,16 @@ const STR = {
     mix_reset:'進捗をリセット', mix_done_suffix:' 完了', mix_measured:'計量済み', mix_all_done:'🎉 すべて完了しました',
     confirm_clear:'現在の配合をクリアしますか？', confirm_delete:'このフォーミュラを削除しますか？', confirm_reset:'進捗をリセットしますか？',
     toast_added_suffix:' を追加しました', toast_loaded_suffix:' を読み込みました',
-    toast_save_empty:'保存できません：素材が1つも追加されていません', toast_save_zero:'保存できません：すべての素材のパーツが0です',
+    toast_save_empty:'保存できません：素材が1つも追加されていません', toast_save_zero:'保存できません：すべての素材の配合比が0です',
     toast_saved:'保存しました', toast_save_failed:'保存に失敗しました: ', toast_deleted:'削除しました',
-    toast_add_materials_first:'先に素材を追加してください', toast_parts_missing:'パーツが未入力の素材があります。「処方」タブで入力してください',
+    toast_add_materials_first:'先に素材を追加してください', toast_parts_missing:'配合比が未入力の素材があります。「処方」タブで入力してください',
     load_failed:'読み込みに失敗しました。',
-    err_zero_parts:'⚠ エラー：すべての素材のパーツ（配合比）が0のため計算できません。各素材にパーツを入力してください。',
+    err_zero_parts:'⚠ エラー：すべての素材の配合比が0のため計算できません。各素材に配合比を入力してください。',
     err_zero_target:'⚠ エラー：出来上がり総量が0以下、または未入力です。1以上の数値を入力してください。',
     err_dilution_range:'⚠ エラー：希釈率が範囲外（1〜100%）の素材があります。該当する素材の希釈率を修正してください。',
     help_terms_summary:'？ 用語について',
-    help_dilution_text:'「希釈率」は、量り取る香料があらかじめアルコールなどで何%に薄められているかを表します（例：10%希釈＝香料原液1に対しアルコール9の割合）。数値が小さいほど、同じ「パーツ」を実現するのに多くの量を量る必要があります。',
-    help_conc_text:'「賦香率」は、出来上がった香水の中に純粋な香料コンパウンドが何%含まれているかを表します。目安：オードパルファン15〜20%、オードトワレ5〜15%、パルファン20〜30%。',
+    help_dilution_text:'「配合比」は処方そのもの（純香料どうしの比率）で、右の‰表示がその正体です。「希釈率」は、その素材を量るときに使う液の濃さです（例：10%希釈＝香料原液1に対しアルコール9）。希釈率を変えても配合比＝香りは変わりません。変わるのは量り取る液の体積だけです。だから同じ処方を、0.1mlの希釈液でも、300mlの原液でもブレずに再現できます。',
+    help_conc_text:'「賦香率」は、出来上がった香水の中に純香料が何%含まれているかを表します。目安：オーデコロン2〜5%、オードトワレ5〜15%、オードパルファン15〜20%、パルファン20〜30%。希釈率とは別の軸です（希釈率＝素材側の話、賦香率＝完成品側の話）。ただし10%希釈の液だけで調合する場合、賦香率は10%が物理的な上限になります。それ以上濃くしたいときは原液での調合が必要です。',
   },
   en: {
     app_title:"nehne Perfumer's Notebook", app_subtitle:"Perfumer's Notebook",
@@ -937,7 +937,7 @@ const STR = {
     cm_name_required:'Please enter a material name',
     cm_sg_invalid:'Specific gravity must be a number greater than 0',
     cm_default_family:'Uncategorized', cm_default_ifra:'Not verified',
-    tbl_material:'Material', tbl_dilution:'Dilution', tbl_amount:'Amount', tbl_drops:'Est. drops', tbl_total:'Total',
+    tbl_material:'Material', tbl_permille:'‰', tbl_dilution:'Dilution', tbl_amount:'Amount', tbl_drops:'Est. drops', tbl_total:'Total',
     tbl_empty:'Amounts appear once you add materials',
     print_btn:'Print', print_created:'Created', print_target:'Target',
     print_mode_ul:'Volume mode (μl, pre-diluted)', print_mode_g:'Weight mode (g, SG-converted)',
@@ -1488,33 +1488,49 @@ document.getElementById('calcModeChips').querySelectorAll('.chip').forEach(chip=
   });
 });
 
-/* Computes weigh-out amounts for every ingredient, in builderIngredients order.
-   'ul' mode: amount_i (μl) = [parts_i / (dilution_i/100)] normalized ×targetTotal
-   'g' mode : amount_i (g)  = pureG_i / (dilution_i/100), pureG_i = (parts_i/sumParts) × targetTotal */
+/* ── 純香料換算(neat)を軸にした計算 ────────────────────────────
+   処方の正体 = neatRatio_i ∝ parts_i (配合比はすでに純香料ベースの比率)
+   希釈率は「量るときの液の濃さ」であり、香りの組成には影響しない。
+   ul モード: 純香料量 = 総量×fragranceLoad×neatRatio、量る量 = 純香料量/希釈率
+   g  モード: 同じ計算を重量で行う */
+const MIN_PIPETTE_UL = 0.5;          /* 最小計量体積 */
+const DILUTION_LADDER = [100, 10, 1]; /* 原液 / 10%希釈 / 1%希釈 */
+
+function neatRatios(){
+  const sum = builderIngredients.reduce((a,b)=>a+(b.parts>0?b.parts:0),0);
+  return builderIngredients.map(ing => sum>0 ? (ing.parts>0?ing.parts:0)/sum : 0);
+}
+
 function computeMixItems(){
   const targetWeight = parseFloat(document.getElementById('targetWeight').value) || 0;
-  if(calcMode==='ul'){
-    const weighted = builderIngredients.map(ing=>{
-      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
-      return ing.parts>0 ? ing.parts/(dil/100) : 0;
-    });
-    const sumW = weighted.reduce((a,b)=>a+b,0);
-    return builderIngredients.map((ing,i)=>{
-      const amount = sumW>0 ? weighted[i]/sumW*targetWeight : 0;
-      return {name:ingName(ing), note:ing.note, dilution: ing.dilution||10, amount, unit:'μl', drops: amount/50};
-    });
-  } else {
-    const sumParts = builderIngredients.reduce((a,b)=>a+b.parts,0);
-    return builderIngredients.map(ing=>{
-      const mat = findMaterial(ing.name) || {sg:1};
-      const pct = sumParts>0 ? ing.parts/sumParts*100 : 0;
-      const pureG = pct/100*targetWeight;
-      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
-      const dilutedG = dil>0 ? pureG/(dil/100) : pureG;
-      const ulEquiv = mat.sg>0 ? dilutedG/mat.sg*1000 : 0;
-      return {name:ingName(ing), note:ing.note, dilution:dil, amount:dilutedG, unit:'g', drops: ulEquiv/50};
-    });
-  }
+  const ratios = neatRatios();
+  const isUl = calcMode==='ul';
+  return builderIngredients.map((ing,i)=>{
+    const mat = findMaterial(ing.name) || {sg:0.9};
+    const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+    /* 純香料としての量。希釈率を変えてもここは動かない = 香りが変わらない */
+    const neat = ratios[i] * targetWeight;
+    /* 実際に量り取る液の量 */
+    const measured = neat / (dil/100);
+    const sg = mat.sg>0 ? mat.sg : 0.9;
+    const ulEquiv = isUl ? measured : (measured/sg*1000);
+    return {
+      name: ingName(ing), note: ing.note, dilution: dil,
+      neat, amount: measured, unit: isUl?'μl':'g',
+      permille: ratios[i]*1000,
+      drops: ulEquiv/50,
+      belowPipette: isUl && measured>0 && measured < MIN_PIPETTE_UL
+    };
+  });
+}
+
+/* この処方を原液だけで組める最小バッチ体積(ml)。賦香率と最小計量から逆算 */
+function minNeatBatchMl(concPct){
+  const ratios = neatRatios().filter(r=>r>0);
+  if(!ratios.length) return null;
+  const smallest = Math.min(...ratios);
+  const load = (concPct>0?concPct:10)/100;
+  return MIN_PIPETTE_UL / (load * smallest) / 1000;
 }
 
 function updateCalcTable(){
@@ -1542,19 +1558,22 @@ function updateCalcTable(){
   const dropsSuffix = currentLang==='ja' ? '滴' : ' drops';
   items.forEach(it=>{
     totalOut += it.amount;
+    const warn = it.belowPipette ? ' <span style="color:var(--danger);font-weight:700;" title="最小計量0.5μlを下回ります">⚠</span>' : '';
     rows += `<tr>
       <td>${esc(it.name)}</td>
+      <td style="font-family:'JetBrains Mono',monospace;">${it.permille.toFixed(1)}‰</td>
       <td>${dilPrefix}${it.dilution}${dilSuffix}</td>
-      <td>${it.amount.toFixed(isUl?1:3)}${it.unit}</td>
+      <td>${it.amount.toFixed(isUl?1:3)}${it.unit}${warn}</td>
       <td>${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
     </tr>`;
   });
   table.innerHTML = `
-    <thead><tr><th>${esc(t('tbl_material'))}</th><th>${esc(t('tbl_dilution'))}</th><th>${esc(t('tbl_amount'))}</th><th>${esc(t('tbl_drops'))}</th></tr></thead>
-    <tbody>${rows || `<tr><td colspan="4" style="color:var(--paper-dim); text-align:center; padding:16px 0;">${esc(t('tbl_empty'))}</td></tr>`}</tbody>
-    ${items.length ? `<tfoot><tr class="total-row"><td>${esc(t('tbl_total'))}</td><td>—</td><td>${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td>—</td></tr></tfoot>` : ''}
+    <thead><tr><th>${esc(t('tbl_material'))}</th><th>${esc(t('tbl_permille'))}</th><th>${esc(t('tbl_dilution'))}</th><th>${esc(t('tbl_amount'))}</th><th>${esc(t('tbl_drops'))}</th></tr></thead>
+    <tbody>${rows || `<tr><td colspan="5" style="color:var(--paper-dim); text-align:center; padding:16px 0;">${esc(t('tbl_empty'))}</td></tr>`}</tbody>
+    ${items.length ? `<tfoot><tr class="total-row"><td>${esc(t('tbl_total'))}</td><td>1000.0‰</td><td>—</td><td>${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td>—</td></tr></tfoot>` : ''}
   `;
   updateIngredientAmounts(items);
+  updateDilution();
 }
 function updateIngredientAmounts(items){
   const isUl = calcMode==='ul';
@@ -1571,10 +1590,46 @@ function updateDilution(){
   const compoundG = finalVol * (conc/100);
   const alcoholVol = finalVol - compoundG;
   const box = document.getElementById('dilResult');
+
+  /* この処方を原液だけで組める最小バッチ体積 */
+  let advice = '';
+  const minMl = minNeatBatchMl(conc);
+  if(minMl != null && isFinite(minMl)){
+    const ja = currentLang==='ja';
+    if(finalVol >= minMl){
+      advice = `<div class="line" style="border-top:1px solid var(--line-strong); margin-top:6px; padding-top:8px;">
+        <span class="lbl">${ja?'調合の方法':'Compounding'}</span>
+        <span style="color:var(--sage); font-weight:700;">${ja?'原液で調合できます':'Neat compounding OK'}</span></div>
+        <div style="font-size:11px; color:var(--paper-dim); line-height:1.6; margin-top:4px;">
+        ${ja
+          ? `この処方は約${minMl.toFixed(1)}ml以上のバッチなら、希釈液を使わず原液から調合できます。希釈液の在庫を消費せず、賦香率の上限もなくなります。`
+          : `At ${minMl.toFixed(1)}ml or above, this formula can be built from neat materials.`}</div>`;
+    } else {
+      advice = `<div class="line" style="border-top:1px solid var(--line-strong); margin-top:6px; padding-top:8px;">
+        <span class="lbl">${ja?'調合の方法':'Compounding'}</span>
+        <span style="color:var(--amber-soft); font-weight:700;">${ja?'希釈液が必要です':'Dilutions required'}</span></div>
+        <div style="font-size:11px; color:var(--paper-dim); line-height:1.6; margin-top:4px;">
+        ${ja
+          ? `${finalVol}mlでは微量成分が最小計量(${MIN_PIPETTE_UL}μl)を下回るため、希釈液での調合が必要です。原液で組むなら約${minMl.toFixed(1)}ml以上のバッチにしてください。`
+          : `At ${finalVol}ml, trace materials fall below the ${MIN_PIPETTE_UL}μl minimum. Use dilutions, or scale up to about ${minMl.toFixed(1)}ml.`}</div>`;
+    }
+  }
+
+  /* 10%希釈液だけで組む場合の賦香率の天井 */
+  let ceiling = '';
+  if(conc > 10){
+    const ja = currentLang==='ja';
+    ceiling = `<div style="font-size:11px; color:var(--danger); line-height:1.6; margin-top:6px; font-weight:700;">
+      ⚠ ${ja
+        ? '賦香率10%超は、10%希釈液だけでは物理的に作れません（希釈液の量がバッチ体積を超えます）。原液または高濃度の希釈液で調合してください。'
+        : 'Above 10%, this cannot be built from 10% dilutions alone. Use neat or higher-concentration materials.'}</div>`;
+  }
+
   box.innerHTML = `
     <div class="line"><span class="lbl">${esc(t('dil_compound'))}</span><span>${compoundG.toFixed(2)} g / ml</span></div>
     <div class="line"><span class="lbl">${esc(t('dil_alcohol'))}</span><span>${alcoholVol.toFixed(2)} ml</span></div>
     <div class="line"><span class="lbl">${esc(t('dil_final'))}</span><span>${finalVol.toFixed(2)} ml</span></div>
+    ${advice}${ceiling}
   `;
 }
 document.getElementById('concPct').addEventListener('input', updateDilution);
@@ -2126,7 +2181,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.5.13';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.6.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
