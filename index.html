@@ -682,6 +682,18 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
     <!-- ===== TAB: SAVED ===== -->
     <section id="tab-saved" class="hidden">
       <div class="section-title"><span id="stSaved">マイフォーミュラ</span><small id="savedCount">SAVED</small></div>
+      <div id="savedTools" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+        <button class="chip" id="btnExportCsv" style="flex:1 1 auto; min-width:132px; padding:10px 12px; font-size:13px;">
+          <span id="lblExportCsv">Excelに書き出す</span>
+        </button>
+        <button class="chip" id="btnExportJson" style="flex:1 1 auto; min-width:120px; padding:10px 12px; font-size:13px;">
+          <span id="lblExportJson">バックアップ</span>
+        </button>
+        <button class="chip" id="btnImportJson" style="flex:1 1 auto; min-width:120px; padding:10px 12px; font-size:13px;">
+          <span id="lblImportJson">復元</span>
+        </button>
+        <input type="file" id="importFile" accept="application/json,.json" style="display:none;">
+      </div>
       <div id="savedList"></div>
     </section>
 
@@ -845,6 +857,7 @@ const STR = {
     help_g:'各素材は個別の希釈率とSG（比重）を用いて、実際に量り取る希釈液の重量（g）を算出しています。SGは素材詳細で確認できます（希釈率は上の欄で個別に設定）。',
     open_mix_btn:'調香専用ページを開く',
     target_conc_label:'目標賦香率（%）', final_vol_label:'仕上げ総量（ml）',
+    exp_csv:'Excelに書き出す', exp_json:'バックアップ', exp_import:'復元',
     dil_compound:'コンパウンド（原液）', dil_alcohol:'無水エタノール', dil_final:'合計', dil_weight:'重量', dil_volume:'容量', dil_density:'香水の比重',
     clear_btn:'クリア', save_btn:'保存する',
     library_desc:'既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。（レシピ内の説明文は日本語のみです）',
@@ -910,6 +923,7 @@ const STR = {
     help_g:'Each material\'s weigh-out (g) is calculated from its individual dilution rate and specific gravity (SG). SG can be checked in the material detail view (dilution rate is set in the field above).',
     open_mix_btn:'Open Compounding Mode',
     target_conc_label:'Target concentration (%)', final_vol_label:'Finished total volume (ml)',
+    exp_csv:'Export to Excel', exp_json:'Backup', exp_import:'Restore',
     dil_compound:'Compound (concentrate)', dil_alcohol:'Ethanol (anhydrous)', dil_final:'Total', dil_weight:'Weight', dil_volume:'Volume', dil_density:'Perfume density',
     clear_btn:'Clear', save_btn:'Save',
     library_desc:'Reference formulas. Tap to see details, or "Use in editor" to load into the formula builder. (Recipe notes remain in Japanese.)',
@@ -981,6 +995,10 @@ function setLang(lang){
   if(!document.getElementById('tab-saved').classList.contains('hidden')) renderSaved();
 }
 function applyStaticLang(){
+  ['ExportCsv','ExportJson','ImportJson'].forEach((n,i)=>{
+    const el = document.getElementById('lbl'+n);
+    if(el) el.textContent = t(['exp_csv','exp_json','exp_import'][i]);
+  });
   document.getElementById('appTitleText').textContent = t('app_title');
   document.getElementById('matSearch').placeholder = t('search_materials_ph');
   document.getElementById('addCustomMatBtnLabel').textContent = t('add_custom_btn');
@@ -1982,33 +2000,154 @@ const nStorage = {
    Computes weigh-out amounts from saved data (independent of current builder state),
    using the same math as computeMixItems(), then opens the browser print dialog.
    Users can choose "Save as PDF" in the dialog. */
+/* 保存済みフォーミュラの計算。computeMixItems() と同じモデルを使う。
+   ‰ = 配合比の正規化(不変量)、使用量 = (配合比÷希釈率)を正規化して総量に一致させる */
 function computeMixItemsFor(f){
   const items = f.items || [];
   const targetWeight = parseFloat(f.targetWeight) || 0;
-  const mode = f.calcMode || 'ul';
-  const sumParts = items.reduce((a,b)=>a+(b.parts||0),0);
-  if(mode==='ul'){
-    const weighted = items.map(ing=>{
-      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
-      return ing.parts>0 ? ing.parts/(dil/100) : 0;
-    });
-    const sumW = weighted.reduce((a,b)=>a+b,0);
-    return items.map((ing,i)=>{
-      const amount = sumW>0 ? weighted[i]/sumW*targetWeight : 0;
-      const pct = sumParts>0 ? (ing.parts||0)/sumParts*100 : 0;
-      return {name:ingName(ing), note:ing.note, pct, dilution:(ing.dilution>0&&ing.dilution<=100)?ing.dilution:10, amount, unit:'μl', drops:amount/50};
-    });
-  } else {
-    return items.map(ing=>{
-      const mat = findMaterial(ing.name) || {sg:1};
-      const pct = sumParts>0 ? (ing.parts||0)/sumParts*100 : 0;
-      const pureG = pct/100*targetWeight;
-      const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
-      const dilutedG = dil>0 ? pureG/(dil/100) : pureG;
-      const ulEquiv = (mat.sg||1)>0 ? dilutedG/(mat.sg||1)*1000 : 0;
-      return {name:ingName(ing), note:ing.note, pct, dilution:dil, amount:dilutedG, unit:'g', drops:ulEquiv/50};
+  const isUl = (f.calcMode || 'ul') === 'ul';
+  const sumParts = items.reduce((a,b)=>a+(b.parts>0?b.parts:0),0);
+  const dilOf = (ing)=> (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+
+  const weights = items.map(ing => (ing.parts>0 ? ing.parts : 0) / (dilOf(ing)/100));
+  const wSum = weights.reduce((a,b)=>a+b,0);
+
+  return items.map((ing,i)=>{
+    const mat = findMaterial(ing.name) || {sg:0.9};
+    const dil = dilOf(ing);
+    const amount = wSum>0 ? weights[i]/wSum*targetWeight : 0;
+    const neat = amount * (dil/100);
+    const pct = sumParts>0 ? (ing.parts>0?ing.parts:0)/sumParts*100 : 0;
+    const sg = mat.sg>0 ? mat.sg : 0.9;
+    const ulEquiv = isUl ? amount : (amount/sg*1000);
+    return {
+      name:ingName(ing), note:ing.note, parts:(ing.parts||0),
+      pct, permille: pct*10, dilution:dil, neat,
+      amount, unit: isUl?'μl':'g', drops: ulEquiv/50
+    };
+  });
+}
+
+/* ---------- エクスポート ----------
+   CSV は Excel / Google スプレッドシート / Numbers でそのまま開ける。
+   日本語が化けないよう UTF-8 BOM を付ける。 */
+function csvCell(v){
+  const s = (v==null) ? '' : String(v);
+  return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+}
+
+function buildSavedCsv(){
+  const keys = nStorage.list('myformula:');
+  const rows = [];
+  const ja = currentLang==='ja';
+  rows.push([
+    ja?'処方名':'Formula', ja?'保存日':'Saved',
+    ja?'素材':'Material', ja?'ノート':'Note',
+    ja?'配合比':'Parts', '‰', ja?'希釈率(%)':'Dilution(%)',
+    ja?'使用量':'Amount', ja?'単位':'Unit',
+    ja?'純香料量':'Neat', ja?'滴数目安':'Est. drops',
+    ja?'出来上がり総量':'Batch total', ja?'計算モード':'Mode',
+    ja?'目標賦香率(%)':'Fragrance load(%)', ja?'仕上げ総量(ml)':'Finished vol(ml)'
+  ]);
+
+  const entries = [];
+  for(const k of keys){
+    try{ const d = JSON.parse(nStorage.get(k)); if(d && Array.isArray(d.items)) entries.push(d); }catch(e){}
+  }
+  entries.sort((a,b)=> (b.savedAt||0) - (a.savedAt||0));
+
+  const locale = ja ? 'ja-JP' : 'en-US';
+  for(const f of entries){
+    const items = computeMixItemsFor(f);
+    const isUl = (f.calcMode||'ul')==='ul';
+    const saved = f.savedAt ? new Date(f.savedAt).toLocaleDateString(locale) : '';
+    items.forEach(it=>{
+      rows.push([
+        f.name || t('untitled_formula'), saved,
+        it.name, it.note ? fmlNote(it.note) : '',
+        it.parts, it.permille.toFixed(1), it.dilution,
+        it.amount.toFixed(isUl?1:3), it.unit,
+        it.neat.toFixed(isUl?2:4), it.drops.toFixed(1),
+        parseFloat(f.targetWeight)||0, isUl?'μl':'g',
+        (f.concPct!=null?f.concPct:''), (f.finalVol!=null?f.finalVol:'')
+      ]);
     });
   }
+  return '\uFEFF' + rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+}
+
+function buildSavedJson(){
+  const keys = nStorage.list('myformula:');
+  const out = [];
+  for(const k of keys){
+    try{ out.push({key:k, data: JSON.parse(nStorage.get(k))}); }catch(e){}
+  }
+  return JSON.stringify({app:'nehne', version:APP_VERSION, exportedAt:Date.now(), formulas:out}, null, 2);
+}
+
+async function shareOrDownload(text, filename, mime){
+  const blob = new Blob([text], {type: mime + ';charset=utf-8'});
+  const file = new File([blob], filename, {type: mime});
+  /* スマホでは共有シート経由のほうが確実（ドライブ・メール・Excelへ直接渡せる） */
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{ await navigator.share({files:[file], title:filename}); return; }catch(e){ if(e.name==='AbortError') return; }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+function stamp(){
+  const d = new Date(), p = n => String(n).padStart(2,'0');
+  return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}`;
+}
+
+async function exportSavedCsv(){
+  try{
+    const keys = nStorage.list('myformula:');
+    if(!keys.length){ toast(currentLang==='ja'?'保存された処方がありません':'No saved formulas'); return; }
+    await shareOrDownload(buildSavedCsv(), `nehne_formulas_${stamp()}.csv`, 'text/csv');
+    toast(currentLang==='ja'?`${keys.length}件を書き出しました`:`Exported ${keys.length} formula(s)`);
+  }catch(e){ toast((currentLang==='ja'?'書き出しに失敗しました: ':'Export failed: ') + (e.message||e)); }
+}
+
+async function exportSavedJson(){
+  try{
+    const keys = nStorage.list('myformula:');
+    if(!keys.length){ toast(currentLang==='ja'?'保存された処方がありません':'No saved formulas'); return; }
+    await shareOrDownload(buildSavedJson(), `nehne_backup_${stamp()}.json`, 'application/json');
+    toast(currentLang==='ja'?`${keys.length}件をバックアップしました`:`Backed up ${keys.length} formula(s)`);
+  }catch(e){ toast((currentLang==='ja'?'バックアップに失敗しました: ':'Backup failed: ') + (e.message||e)); }
+}
+
+function importSavedJson(fileInput){
+  const file = fileInput.files && fileInput.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const obj = JSON.parse(reader.result);
+      if(!obj || !Array.isArray(obj.formulas)) throw new Error(currentLang==='ja'?'nehneのバックアップファイルではありません':'Not a nehne backup file');
+      let n = 0;
+      for(const f of obj.formulas){
+        if(!f || !f.data || !Array.isArray(f.data.items)) continue;
+        /* 既存を上書きしないよう、キーが衝突したら新しいキーを振る */
+        let key = f.key && f.key.startsWith('myformula:') ? f.key : ('myformula:' + Date.now() + '_' + n);
+        if(nStorage.get(key)) key = 'myformula:' + Date.now() + '_' + n;
+        nStorage.set(key, JSON.stringify(f.data));
+        n++;
+      }
+      toast(currentLang==='ja'?`${n}件を読み込みました`:`Imported ${n} formula(s)`);
+      renderSaved();
+    }catch(e){
+      toast((currentLang==='ja'?'読み込みに失敗しました: ':'Import failed: ') + (e.message||e));
+    }
+    fileInput.value = '';
+  };
+  reader.readAsText(file);
 }
 function printSavedFormula(key){
   let f;
@@ -2030,7 +2169,7 @@ function printSavedFormula(key){
     <tr>
       <td>${esc(it.name)}</td>
       <td>${it.note ? `<span class="pr-note-tag">${esc(fmlNote(it.note))}</span>` : '—'}</td>
-      <td class="num">${it.pct.toFixed(1)}%</td>
+      <td class="num">${it.permille.toFixed(1)}‰</td>
       <td class="num">${it.dilution}%</td>
       <td class="num">${it.amount.toFixed(isUl?1:3)}${it.unit}</td>
       <td class="num">${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
@@ -2053,20 +2192,34 @@ function printSavedFormula(key){
       <thead><tr>
         <th>${esc(t('tbl_material'))}</th>
         <th>${esc(t('print_col_note'))}</th>
-        <th class="num">${esc(t('print_col_ratio'))}</th>
+        <th class="num">${esc(t('tbl_permille'))}</th>
         <th class="num">${esc(t('tbl_dilution'))}</th>
         <th class="num">${esc(t('tbl_amount'))}</th>
         <th class="num">${esc(t('tbl_drops'))}</th>
       </tr></thead>
       <tbody>${rows}</tbody>
       <tbody><tr class="pr-total">
-        <td>${esc(t('tbl_total'))}</td><td>—</td><td class="num">100%</td><td class="num">—</td>
+        <td>${esc(t('tbl_total'))}</td><td>—</td><td class="num">1000.0‰</td><td class="num">—</td>
         <td class="num">${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td class="num">—</td>
       </tr></tbody>
     </table>
     <div class="pr-footer"><span>${esc(t('print_footer'))}</span><span>v${APP_VERSION}</span></div>`;
   setTimeout(()=>window.print(), 50);
 }
+
+/* エクスポート／インポートのボタン配線 */
+(function wireExportButtons(){
+  const csvBtn = document.getElementById('btnExportCsv');
+  const jsonBtn = document.getElementById('btnExportJson');
+  const impBtn = document.getElementById('btnImportJson');
+  const impFile = document.getElementById('importFile');
+  if(csvBtn)  csvBtn.addEventListener('click', exportSavedCsv);
+  if(jsonBtn) jsonBtn.addEventListener('click', exportSavedJson);
+  if(impBtn && impFile){
+    impBtn.addEventListener('click', ()=> impFile.click());
+    impFile.addEventListener('change', ()=> importSavedJson(impFile));
+  }
+})();
 
 function renderSaved(){
   const wrap = document.getElementById('savedList');
@@ -2272,7 +2425,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.6.3';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.7.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
