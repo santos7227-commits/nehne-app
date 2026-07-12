@@ -1488,14 +1488,16 @@ document.getElementById('calcModeChips').querySelectorAll('.chip').forEach(chip=
   });
 });
 
-/* ── 純香料換算(neat)を軸にした計算 ────────────────────────────
-   処方の正体 = neatRatio_i ∝ parts_i (配合比はすでに純香料ベースの比率)
-   希釈率は「量るときの液の濃さ」であり、香りの組成には影響しない。
-   ul モード: 純香料量 = 総量×fragranceLoad×neatRatio、量る量 = 純香料量/希釈率
-   g  モード: 同じ計算を重量で行う */
+/* ── 計算モデル ────────────────────────────────────────────
+   ‰(処方の正体) = parts_i / Σparts × 1000
+       → 純香料どうしの比率。希釈率を変えても絶対に動かない不変量。
+   量り取る量 = (parts_i / 希釈率_i) を正規化して「出来上がり総量」に一致させる
+       → 量るのは希釈済みの液なので、その合計が出来上がり総量になる。
+         希釈率を変えると量る体積は変わるが、‰(＝香り)は変わらない。
+   体積モード・重量モードとも同じ正規化を使う(旧版は両モードで解釈が食い違っていた)。 */
 const MIN_PIPETTE_UL = 0.5;          /* 最小計量体積 */
-const DILUTION_LADDER = [100, 10, 1]; /* 原液 / 10%希釈 / 1%希釈 */
 
+/* 純香料換算比(‰の元)。処方の不変量 */
 function neatRatios(){
   const sum = builderIngredients.reduce((a,b)=>a+(b.parts>0?b.parts:0),0);
   return builderIngredients.map(ing => sum>0 ? (ing.parts>0?ing.parts:0)/sum : 0);
@@ -1505,13 +1507,22 @@ function computeMixItems(){
   const targetWeight = parseFloat(document.getElementById('targetWeight').value) || 0;
   const ratios = neatRatios();
   const isUl = calcMode==='ul';
+
+  /* 量り取る液の重み = parts / 希釈率。これを正規化して総量に合わせる */
+  const dilOf = (ing) => (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+  const weights = builderIngredients.map(ing => {
+    const p = ing.parts>0 ? ing.parts : 0;
+    return p / (dilOf(ing)/100);
+  });
+  const wSum = weights.reduce((a,b)=>a+b,0);
+
   return builderIngredients.map((ing,i)=>{
     const mat = findMaterial(ing.name) || {sg:0.9};
-    const dil = (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
-    /* 純香料としての量。希釈率を変えてもここは動かない = 香りが変わらない */
-    const neat = ratios[i] * targetWeight;
-    /* 実際に量り取る液の量 */
-    const measured = neat / (dil/100);
+    const dil = dilOf(ing);
+    /* 実際に量り取る希釈液の量。合計は必ず出来上がり総量になる */
+    const measured = wSum>0 ? (weights[i]/wSum) * targetWeight : 0;
+    /* そのうち純香料の量 */
+    const neat = measured * (dil/100);
     const sg = mat.sg>0 ? mat.sg : 0.9;
     const ulEquiv = isUl ? measured : (measured/sg*1000);
     return {
@@ -1522,6 +1533,14 @@ function computeMixItems(){
       belowPipette: isUl && measured>0 && measured < MIN_PIPETTE_UL
     };
   });
+}
+
+/* コンパウンドの純度(%) = 量った液のうち純香料が占める割合 */
+function compoundPurity(){
+  const items = computeMixItems();
+  const tot = items.reduce((a,b)=>a+b.amount,0);
+  if(!(tot>0)) return null;
+  return items.reduce((a,b)=>a+b.neat,0) / tot * 100;
 }
 
 /* この処方を原液だけで組める最小バッチ体積(ml)。賦香率と最小計量から逆算 */
@@ -2198,7 +2217,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.6.1';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.6.2';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
