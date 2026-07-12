@@ -845,7 +845,7 @@ const STR = {
     help_g:'各素材は個別の希釈率とSG（比重）を用いて、実際に量り取る希釈液の重量（g）を算出しています。SGは素材詳細で確認できます（希釈率は上の欄で個別に設定）。',
     open_mix_btn:'調香専用ページを開く',
     target_conc_label:'目標賦香率（%）', final_vol_label:'仕上げ総量（ml）',
-    dil_compound:'コンパウンド（原液）', dil_alcohol:'エタノール（希釈剤）', dil_final:'仕上げ総量',
+    dil_compound:'コンパウンド（原液）', dil_alcohol:'無水エタノール', dil_final:'合計', dil_weight:'重量', dil_volume:'容量', dil_density:'香水の比重',
     clear_btn:'クリア', save_btn:'保存する',
     library_desc:'既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。（レシピ内の説明文は日本語のみです）',
     saved_empty_title:'保存されたフォーミュラはまだありません。', saved_empty_body:'「処方」タブで配合を作り、保存してみましょう。',
@@ -910,7 +910,7 @@ const STR = {
     help_g:'Each material\'s weigh-out (g) is calculated from its individual dilution rate and specific gravity (SG). SG can be checked in the material detail view (dilution rate is set in the field above).',
     open_mix_btn:'Open Compounding Mode',
     target_conc_label:'Target concentration (%)', final_vol_label:'Finished total volume (ml)',
-    dil_compound:'Compound (concentrate)', dil_alcohol:'Ethanol (diluent)', dil_final:'Finished total',
+    dil_compound:'Compound (concentrate)', dil_alcohol:'Ethanol (anhydrous)', dil_final:'Total', dil_weight:'Weight', dil_volume:'Volume', dil_density:'Perfume density',
     clear_btn:'Clear', save_btn:'Save',
     library_desc:'Reference formulas. Tap to see details, or "Use in editor" to load into the formula builder. (Recipe notes remain in Japanese.)',
     saved_empty_title:'No saved formulas yet.', saved_empty_body:'Build a blend in the "Formula" tab and save it here.',
@@ -1485,6 +1485,7 @@ document.getElementById('calcModeChips').querySelectorAll('.chip').forEach(chip=
       help.textContent = t('help_g');
     }
     updateCalcTable();
+    updateDilution();   /* 単位トグルに合わせて希釈表の強調列も切り替える */
   });
 });
 
@@ -1496,6 +1497,21 @@ document.getElementById('calcModeChips').querySelectorAll('.chip').forEach(chip=
          希釈率を変えると量る体積は変わるが、‰(＝香り)は変わらない。
    体積モード・重量モードとも同じ正規化を使う(旧版は両モードで解釈が食い違っていた)。 */
 const MIN_PIPETTE_UL = 0.5;          /* 最小計量体積 */
+const RHO_ETHANOL = 0.789;           /* 無水エタノールの比重 (g/ml, 20℃) */
+const RHO_DEFAULT = 0.90;            /* 比重が未登録の素材の既定値 */
+
+/* この処方のコンパウンド原液の比重。素材の比重を純香料比で加重平均する */
+function compoundDensity(){
+  const ratios = neatRatios();
+  let rho = 0, w = 0;
+  builderIngredients.forEach((ing,i)=>{
+    if(!(ratios[i]>0)) return;
+    const mat = findMaterial(ing.name);
+    const sg = (mat && mat.sg>0) ? mat.sg : RHO_DEFAULT;
+    rho += ratios[i]*sg; w += ratios[i];
+  });
+  return w>0 ? rho/w : RHO_DEFAULT;
+}
 
 /* 純香料換算比(‰の元)。処方の不変量 */
 function neatRatios(){
@@ -1606,9 +1622,19 @@ document.getElementById('targetWeight').addEventListener('input', updateCalcTabl
 function updateDilution(){
   const conc = parseFloat(document.getElementById('concPct').value) || 0;
   const finalVol = parseFloat(document.getElementById('finalVol').value) || 0;
-  const compoundG = finalVol * (conc/100);
-  const alcoholVol = finalVol - compoundG;
   const box = document.getElementById('dilResult');
+
+  /* 賦香率は重量比(w/w)。仕上げ総量は容量(ml)。
+     香水の比重 ρf は、コンパウンドとエタノールの比容積から求める:
+       1/ρf = wc/ρc + we/ρe     (wc, we は重量分率) */
+  const rhoC = compoundDensity();
+  const wc = conc/100, we = 1 - wc;
+  const rhoF = 1 / (wc/rhoC + we/RHO_ETHANOL);
+  const totalG   = finalVol * rhoF;          /* 仕上がりの総重量 */
+  const compoundG = totalG * wc;             /* コンパウンド原液の重量 */
+  const alcoholG  = totalG * we;             /* エタノールの重量 */
+  const compoundMl = compoundG / rhoC;
+  const alcoholMl  = alcoholG / RHO_ETHANOL;
 
   /* この処方を原液だけで組める最小バッチ体積 */
   let advice = '';
@@ -1661,10 +1687,39 @@ function updateDilution(){
             : 'Above 10%, this cannot be built from 10% dilutions alone. Use neat or higher-concentration materials.')}</div>`;
   }
 
+  /* 単位トグル(µl / g)に合わせて、対応する列を強調する */
+  const gMode = (calcMode !== 'ul');
+  const hi = 'color:var(--amber-soft); font-weight:700;';
+  const dim = 'color:var(--paper-dim);';
+  const wSty = gMode ? hi : dim;
+  const vSty = gMode ? dim : hi;
+  const num = "font-family:'JetBrains Mono',monospace; font-size:13px; text-align:right; padding:6px 4px; white-space:nowrap;";
+  const lbl = "font-size:12px; text-align:left; padding:6px 4px;";
+
   box.innerHTML = `
-    <div class="line"><span class="lbl">${esc(t('dil_compound'))}</span><span>${compoundG.toFixed(2)} g / ml</span></div>
-    <div class="line"><span class="lbl">${esc(t('dil_alcohol'))}</span><span>${alcoholVol.toFixed(2)} ml</span></div>
-    <div class="line"><span class="lbl">${esc(t('dil_final'))}</span><span>${finalVol.toFixed(2)} ml</span></div>
+    <table style="width:100%; border-collapse:collapse;">
+      <thead><tr style="border-bottom:1px solid var(--line-strong);">
+        <th style="${lbl} color:var(--paper-dim); font-weight:500;"></th>
+        <th style="${num} ${wSty} font-size:11px;">${esc(t('dil_weight'))} (g)</th>
+        <th style="${num} ${vSty} font-size:11px;">${esc(t('dil_volume'))} (ml)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="${lbl}">${esc(t('dil_compound'))}</td>
+            <td style="${num} ${wSty}">${compoundG.toFixed(2)}</td>
+            <td style="${num} ${vSty}">${compoundMl.toFixed(2)}</td></tr>
+        <tr><td style="${lbl}">${esc(t('dil_alcohol'))}</td>
+            <td style="${num} ${wSty}">${alcoholG.toFixed(2)}</td>
+            <td style="${num} ${vSty}">${alcoholMl.toFixed(2)}</td></tr>
+        <tr style="border-top:1px solid var(--line-strong);">
+            <td style="${lbl} color:var(--amber-soft); font-weight:700;">${esc(t('dil_final'))}</td>
+            <td style="${num} ${wSty}">${totalG.toFixed(2)}</td>
+            <td style="${num} ${vSty}">${finalVol.toFixed(2)}</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:11px; color:var(--paper-dim); margin-top:6px; line-height:1.6;">
+      ${esc(t('dil_density'))} ${rhoF.toFixed(3)} g/ml
+      <span style="opacity:.75;">（${currentLang==='ja'?'コンパウンド':'compound'} ${rhoC.toFixed(3)} / ${currentLang==='ja'?'無水エタノール':'ethanol'} ${RHO_ETHANOL}）</span>
+    </div>
     ${advice}${ceiling}
   `;
 }
@@ -2217,7 +2272,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.6.2';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.6.3';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
