@@ -872,7 +872,7 @@ const STR = {
     cm_name_required:'香料名を入力してください',
     cm_sg_invalid:'比重は0より大きい数値を入力してください',
     cm_default_family:'未分類', cm_default_ifra:'未確認',
-    tbl_material:'素材', tbl_permille:'‰', tbl_dilution:'希釈率', tbl_amount:'使用量', tbl_drops:'滴数目安', tbl_total:'合計',
+    tbl_material:'素材', tbl_permille:'‰（パーミル）', tbl_dilution:'希釈率', tbl_amount:'使用量', tbl_drops:'滴数目安', tbl_total:'合計',
     tbl_empty:'素材を追加すると計算されます',
     print_btn:'印刷', print_created:'作成日', print_target:'総量設定',
     print_mode_ul:'体積モード（μl・希釈済み香料）', print_mode_g:'重量モード（g・比重換算）',
@@ -937,7 +937,7 @@ const STR = {
     cm_name_required:'Please enter a material name',
     cm_sg_invalid:'Specific gravity must be a number greater than 0',
     cm_default_family:'Uncategorized', cm_default_ifra:'Not verified',
-    tbl_material:'Material', tbl_permille:'‰', tbl_dilution:'Dilution', tbl_amount:'Amount', tbl_drops:'Est. drops', tbl_total:'Total',
+    tbl_material:'Material', tbl_permille:'‰ (permille)', tbl_dilution:'Dilution', tbl_amount:'Amount', tbl_drops:'Est. drops', tbl_total:'Total',
     tbl_empty:'Amounts appear once you add materials',
     print_btn:'Print', print_created:'Created', print_target:'Target',
     print_mode_ul:'Volume mode (μl, pre-diluted)', print_mode_g:'Weight mode (g, SG-converted)',
@@ -1561,7 +1561,7 @@ function updateCalcTable(){
     const warn = it.belowPipette ? ' <span style="color:var(--danger);font-weight:700;" title="最小計量0.5μlを下回ります">⚠</span>' : '';
     rows += `<tr>
       <td>${esc(it.name)}</td>
-      <td style="font-family:'JetBrains Mono',monospace;">${it.permille.toFixed(1)}‰</td>
+      <td style="font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--amber-soft); white-space:nowrap;">${it.permille.toFixed(1)}‰</td>
       <td>${dilPrefix}${it.dilution}${dilSuffix}</td>
       <td>${it.amount.toFixed(isUl?1:3)}${it.unit}${warn}</td>
       <td>${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
@@ -1596,22 +1596,31 @@ function updateDilution(){
   const minMl = minNeatBatchMl(conc);
   if(minMl != null && isFinite(minMl)){
     const ja = currentLang==='ja';
+    /* 表示用に丸める。1ml未満は「どの体積でも可」とする */
+    const minTxt = minMl >= 10 ? minMl.toFixed(1)
+                 : minMl >= 1  ? minMl.toFixed(1)
+                 : minMl.toFixed(2);
+    const trivial = minMl < 1;
     if(finalVol >= minMl){
       advice = `<div class="line" style="border-top:1px solid var(--line-strong); margin-top:6px; padding-top:8px;">
         <span class="lbl">${ja?'調合の方法':'Compounding'}</span>
         <span style="color:var(--sage); font-weight:700;">${ja?'原液で調合できます':'Neat compounding OK'}</span></div>
         <div style="font-size:11px; color:var(--paper-dim); line-height:1.6; margin-top:4px;">
         ${ja
-          ? `この処方は約${minMl.toFixed(1)}ml以上のバッチなら、希釈液を使わず原液から調合できます。希釈液の在庫を消費せず、賦香率の上限もなくなります。`
-          : `At ${minMl.toFixed(1)}ml or above, this formula can be built from neat materials.`}</div>`;
+          ? (trivial
+              ? `この処方は微量成分がないため、どの体積でも原液から調合できます（原液での下限は約${minTxt}ml）。希釈液の在庫を消費せず、賦香率の上限もなくなります。`
+              : `この処方は約${minTxt}ml以上のバッチなら、希釈液を使わず原液から調合できます。希釈液の在庫を消費せず、賦香率の上限もなくなります。`)
+          : (trivial
+              ? `No trace materials — this formula can be built neat at any volume (neat floor ≈ ${minTxt}ml).`
+              : `At ${minTxt}ml or above, this formula can be built from neat materials.`)}</div>`;
     } else {
       advice = `<div class="line" style="border-top:1px solid var(--line-strong); margin-top:6px; padding-top:8px;">
         <span class="lbl">${ja?'調合の方法':'Compounding'}</span>
         <span style="color:var(--amber-soft); font-weight:700;">${ja?'希釈液が必要です':'Dilutions required'}</span></div>
         <div style="font-size:11px; color:var(--paper-dim); line-height:1.6; margin-top:4px;">
         ${ja
-          ? `${finalVol}mlでは微量成分が最小計量(${MIN_PIPETTE_UL}μl)を下回るため、希釈液での調合が必要です。原液で組むなら約${minMl.toFixed(1)}ml以上のバッチにしてください。`
-          : `At ${finalVol}ml, trace materials fall below the ${MIN_PIPETTE_UL}μl minimum. Use dilutions, or scale up to about ${minMl.toFixed(1)}ml.`}</div>`;
+          ? `${finalVol}mlでは微量成分が最小計量(${MIN_PIPETTE_UL}μl)を下回るため、希釈液での調合が必要です。原液で組むなら約${minTxt}ml以上のバッチにしてください。`
+          : `At ${finalVol}ml, trace materials fall below the ${MIN_PIPETTE_UL}μl minimum. Use dilutions, or scale up to about ${minTxt}ml.`}</div>`;
     }
   }
 
@@ -1619,10 +1628,18 @@ function updateDilution(){
   let ceiling = '';
   if(conc > 10){
     const ja = currentLang==='ja';
-    ceiling = `<div style="font-size:11px; color:var(--danger); line-height:1.6; margin-top:6px; font-weight:700;">
-      ⚠ ${ja
-        ? '賦香率10%超は、10%希釈液だけでは物理的に作れません（希釈液の量がバッチ体積を超えます）。原液または高濃度の希釈液で調合してください。'
-        : 'Above 10%, this cannot be built from 10% dilutions alone. Use neat or higher-concentration materials.'}</div>`;
+    const neatOk = (minMl != null && isFinite(minMl) && finalVol >= minMl);
+    /* 原液で組めるなら問題は起きない → 情報として控えめに出す */
+    const col = neatOk ? 'var(--paper-dim)' : 'var(--danger)';
+    const mark = neatOk ? 'ℹ' : '⚠';
+    ceiling = `<div style="font-size:11px; color:${col}; line-height:1.6; margin-top:8px; font-weight:${neatOk?'500':'700'};">
+      ${mark} ${ja
+        ? (neatOk
+            ? '賦香率10%超のため、10%希釈液だけでは作れません（希釈液の量がバッチ体積を超えます）。上のとおり原液で調合すれば問題ありません。'
+            : '賦香率10%超は、10%希釈液だけでは物理的に作れません（希釈液の量がバッチ体積を超えます）。原液または高濃度の希釈液で調合してください。')
+        : (neatOk
+            ? 'Above 10%, this cannot be built from 10% dilutions alone — but neat compounding (above) works fine.'
+            : 'Above 10%, this cannot be built from 10% dilutions alone. Use neat or higher-concentration materials.')}</div>`;
   }
 
   box.innerHTML = `
@@ -2181,7 +2198,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.6.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.6.1';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
