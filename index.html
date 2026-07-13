@@ -682,16 +682,19 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
     <!-- ===== TAB: SAVED ===== -->
     <section id="tab-saved" class="hidden">
       <div class="section-title"><span id="stSaved">マイフォーミュラ</span><small id="savedCount">SAVED</small></div>
-      <div id="savedTools" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
-        <button class="chip" id="btnExportCsv" style="flex:1 1 auto; min-width:132px; padding:10px 12px; font-size:13px;">
+      <div id="savedTools" style="margin-bottom:16px;">
+        <button class="btn btn-primary btn-block" id="btnExportCsv">
           <span id="lblExportCsv">Excelに書き出す</span>
         </button>
-        <button class="chip" id="btnExportJson" style="flex:1 1 auto; min-width:120px; padding:10px 12px; font-size:13px;">
-          <span id="lblExportJson">バックアップ</span>
-        </button>
-        <button class="chip" id="btnImportJson" style="flex:1 1 auto; min-width:120px; padding:10px 12px; font-size:13px;">
-          <span id="lblImportJson">復元</span>
-        </button>
+        <div style="display:flex; gap:10px; justify-content:center; align-items:center; margin-top:10px;">
+          <button id="btnExportJson" style="background:none; border:none; color:var(--paper-dim); font-size:12px; text-decoration:underline; text-underline-offset:3px; padding:6px 8px; cursor:pointer; font-family:inherit;">
+            <span id="lblExportJson">バックアップ</span>
+          </button>
+          <span style="color:var(--line-strong); font-size:11px;">|</span>
+          <button id="btnImportJson" style="background:none; border:none; color:var(--paper-dim); font-size:12px; text-decoration:underline; text-underline-offset:3px; padding:6px 8px; cursor:pointer; font-family:inherit;">
+            <span id="lblImportJson">復元</span>
+          </button>
+        </div>
         <input type="file" id="importFile" accept="application/json,.json" style="display:none;">
       </div>
       <div id="savedList"></div>
@@ -2425,7 +2428,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.7.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.7.1';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
