@@ -1152,6 +1152,8 @@ function renderMaterials(){
     }
     return true;
   });
+  /* カスタム香料を先頭に表示（v1.7.2: 追加した香料が見つからない問題の修正） */
+  list.sort((a,b)=> (b.custom?1:0)-(a.custom?1:0));
   const wrap = document.getElementById('matList');
   if(list.length===0){
     const hasFilter = matFilterNote!=='all' || matFilterFam!=='all' || q;
@@ -1357,6 +1359,12 @@ function saveCustomMatForm(){
   if(!persistCustomMaterials()) return;
   refreshMaterialsData();
   document.getElementById('cmOverlay').classList.add('hidden');
+  /* 追加した香料が見えるよう絞り込みを解除して先頭へ (v1.7.2) */
+  const matSearchEl = document.getElementById('matSearch');
+  if(matSearchEl){ matSearchEl.value=''; }
+  matFilterNote='all'; matFilterFam='all';
+  renderMaterials();
+  window.scrollTo({top:0, behavior:'smooth'});
   toast(t('toast_cm_saved'));
 }
 
@@ -2428,7 +2436,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.7.1';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.7.2';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
