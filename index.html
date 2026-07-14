@@ -628,7 +628,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
             <input type="number" id="targetWeight" value="100" min="0" step="1">
           </div>
           <div class="calc-field">
-            <label>単位</label>
+            <label id="targetUnitLabel">単位</label>
             <input value="μl" id="targetUnitDisplay" disabled style="opacity:.6">
           </div>
         </div>
@@ -854,7 +854,7 @@ const STR = {
     builder_name_ph:'フォーミュラ名を入力…', untitled_formula:'Untitled Formula',
     add_ingredient_btn:'＋ 素材を追加',
     mode_volume:'体積（μl・希釈済み香料）', mode_weight:'重量（g・比重から換算）',
-    target_volume_label:'出来上がり総量', target_weight_label:'原液（コンパウンド）総量',
+    target_volume_label:'出来上がり総量', target_weight_label:'原液（コンパウンド）総量', unit_label:'単位',
     parts_label:'配合比', dilution_pct_label:'希釈率(%)', amount_estimate_label:'使用量目安',
     help_ul:'希釈済みの香料をマイクロピペット等で量り取り、出来上がり総量になるように配合する想定の計算です。各素材の希釈率は上の「配合の設計」欄で個別に設定できます（デフォルト10%）。滴数はドロッパー1滴≈0.05mlとして目安表示しています。',
     help_g:'各素材は個別の希釈率とSG（比重）を用いて、実際に量り取る希釈液の重量（g）を算出しています。SGは素材詳細で確認できます（希釈率は上の欄で個別に設定）。',
@@ -920,7 +920,7 @@ const STR = {
     builder_name_ph:'Enter a name for your formula…', untitled_formula:'Untitled Formula',
     add_ingredient_btn:'+ Add material',
     mode_volume:'Volume (μl · pre-diluted)', mode_weight:'Weight (g · via specific gravity)',
-    target_volume_label:'Total finished amount', target_weight_label:'Total compound weight',
+    target_volume_label:'Total finished amount', target_weight_label:'Total compound weight', unit_label:'Unit',
     parts_label:'Parts', dilution_pct_label:'Dilution (%)', amount_estimate_label:'Est. amount',
     help_ul:'Assumes you measure pre-diluted fragrance with a micropipette to reach the total finished amount. Each material\'s dilution rate can be set individually above in "Formula Design" (default 10%). Drop counts assume 1 drop ≈ 0.05ml.',
     help_g:'Each material\'s weigh-out (g) is calculated from its individual dilution rate and specific gravity (SG). SG can be checked in the material detail view (dilution rate is set in the field above).',
@@ -1036,6 +1036,8 @@ function applyStaticLang(){
   const modeChip = document.querySelector('#calcModeChips .chip.active');
   const mode = modeChip ? modeChip.dataset.mode : 'ul';
   document.getElementById('targetLabel').textContent = mode==='ul' ? t('target_volume_label') : t('target_weight_label');
+  const tuLabel = document.getElementById('targetUnitLabel');
+  if(tuLabel) tuLabel.textContent = t('unit_label');
   document.getElementById('calcHelpText').textContent = mode==='ul' ? t('help_ul') : t('help_g');
 }
 document.getElementById('langToggleBtn').addEventListener('click', ()=>{
@@ -1147,7 +1149,7 @@ function renderMaterials(){
     }
     if(matFilterFam!=='all' && m.family!==matFilterFam) return false;
     if(q){
-      const hay = [m.name,m.family,m.desc,m.desc_en,m.vocab_ja,m.vocab_en,m.vocab_fr,m.components].join(' ').toLowerCase();
+      const hay = [m.name,m.family,m.desc,m.desc_en,m.vocab_ja,m.vocab_en,m.vocab_fr,m.components,m.components_en].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
@@ -1210,7 +1212,7 @@ function openMaterialDetail(name){
     <div class="row"><div class="k">${esc(t('ifra_label'))}</div><div class="v">${esc(ifra)}</div></div>
     <div class="row"><div class="k">${esc(t('vocab_ja_label'))}</div><div class="v">${esc(vocab)}</div></div>
     <div class="row"><div class="k">${esc(t('vocab_fr_label'))}</div><div class="v">${esc(m.vocab_fr)}</div></div>
-    <div class="row"><div class="k">${esc(t('components_label'))}</div><div class="v">${esc(m.components)}</div></div>
+    <div class="row"><div class="k">${esc(t('components_label'))}</div><div class="v">${esc(isEn ? (m.components_en||m.components) : m.components)}</div></div>
     <div class="row"><div class="k">${esc(t('default_dilution_label'))}</div><div class="v">${esc(m.defaultDilution)}%</div></div>
     <div class="row"><div class="k">${esc(t('sg_label'))}</div><div class="v">${esc(m.sg)}</div></div>
     <button class="btn btn-primary btn-block" style="margin-top:18px;" id="addFromDetailBtn">${esc(t('add_to_formula_btn'))}</button>
@@ -2436,7 +2438,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.7.2';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.7.3';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
