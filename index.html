@@ -368,6 +368,7 @@ main{
   width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
   color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:14px;
 }
+.cm-flash{outline:2px solid var(--amber); box-shadow:0 0 0 4px rgba(212,164,76,.25); transition:box-shadow .4s;}
 .custom-badge{
   display:inline-block; font-size:10px; padding:1px 8px; border-radius:9px;
   background:var(--amber); color:var(--ink-900); font-weight:700; margin-left:6px; vertical-align:1px;
@@ -1149,13 +1150,13 @@ function renderMaterials(){
     }
     if(matFilterFam!=='all' && m.family!==matFilterFam) return false;
     if(q){
-      const hay = [m.name,m.family,m.desc,m.desc_en,m.vocab_ja,m.vocab_en,m.vocab_fr,m.components,m.components_en].join(' ').toLowerCase();
+      const hay = [m.name,m.name_ja,m.family,m.desc,m.desc_en,m.vocab_ja,m.vocab_en,m.vocab_fr,m.components,m.components_en].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
   });
-  /* カスタム香料を先頭に表示（v1.7.2: 追加した香料が見つからない問題の修正） */
-  list.sort((a,b)=> (b.custom?1:0)-(a.custom?1:0));
+  /* v1.8: カスタム香料もアルファベット順で統合表示（保存直後はハイライトで案内） */
+  list.sort((a,b)=> a.name.localeCompare(b.name, 'en', {sensitivity:'base'}));
   const wrap = document.getElementById('matList');
   if(list.length===0){
     const hasFilter = matFilterNote!=='all' || matFilterFam!=='all' || q;
@@ -1184,7 +1185,7 @@ function renderMaterials(){
       <div class="mat-head">
         <div>
           <div class="mat-name">${esc(m.name)}</div>
-          <div class="mat-family">${esc(famLabel(m.family))}${m.custom ? ` <span class="custom-badge">${esc(t('custom_badge'))}</span>` : ''}</div>
+          <div class="mat-family">${m.name_ja ? esc(m.name_ja)+' ・ ' : ''}${esc(famLabel(m.family))}${m.custom ? ` <span class="custom-badge">${esc(t('custom_badge'))}</span>` : ''}</div>
         </div>
         <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
       </div>
@@ -1279,7 +1280,9 @@ function openCustomMatForm(editName){
     <p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:4px 0 14px;">${esc(t('cm_simple_hint'))}</p>
     <div class="calc-field" style="margin-bottom:12px;">
       <label>${esc(t('cm_name_label'))} *</label>
-      <input id="cmName" value="${esc(m?m.name:'')}" ${m?'disabled style="opacity:.6"':''} placeholder="${esc(t('cm_name_ph'))}">
+      <input id="cmName" list="cmNameList" value="${esc(m?m.name:'')}" ${m?'disabled style="opacity:.6"':''} placeholder="${esc(t('cm_name_ph'))}">
+      <datalist id="cmNameList">${MATERIALS.map(x=>`<option value="${esc(x.name)}">${esc(x.name_ja||'')}</option>`).join('')}</datalist>
+      <div id="cmNameHint" style="font-size:12px; color:var(--paper-dim); margin-top:4px;"></div>
     </div>
     <div class="calc-field" style="margin-bottom:12px;">
       <label>${esc(t('sg_label'))} *</label>
@@ -1331,6 +1334,25 @@ function openCustomMatForm(editName){
     document.getElementById('cmNote').addEventListener('change', e=>{ e.target.dataset.touched='1'; });
   }
   document.getElementById('cmSaveBtn').addEventListener('click', saveCustomMatForm);
+  /* v1.8: 入力サポート — 既存素材と一致したら比重を自動入力してお知らせ */
+  const cmNameEl2 = document.getElementById('cmName');
+  if(cmNameEl2 && !cmNameEl2.disabled){
+    cmNameEl2.addEventListener('input', ()=>{
+      const v = cmNameEl2.value.trim().toLowerCase();
+      const hintEl = document.getElementById('cmNameHint');
+      if(!v){ if(hintEl) hintEl.textContent=''; return; }
+      const hit = MATERIALS.find(x=> x.name.toLowerCase()===v || (x.name_ja||'').toLowerCase()===v);
+      if(hit){
+        const sgEl = document.getElementById('cmSg');
+        if(sgEl && !sgEl.dataset.touched){ sgEl.value = hit.sg; }
+        if(hintEl) hintEl.textContent = currentLang==='en'
+          ? `Matches library item "${hit.name}" — SG ${hit.sg} filled in. (Saving the same name is blocked)`
+          : `ライブラリの「${hit.name}${hit.name_ja?'／'+hit.name_ja:''}」と一致 — 比重 ${hit.sg} を自動入力しました(同名では保存できません)`;
+      } else if(hintEl){ hintEl.textContent=''; }
+    });
+    const sgEl2 = document.getElementById('cmSg');
+    if(sgEl2) sgEl2.addEventListener('input', e=>{ e.target.dataset.touched='1'; });
+  }
   document.getElementById('cmOverlay').classList.remove('hidden');
 }
 
@@ -1361,12 +1383,21 @@ function saveCustomMatForm(){
   if(!persistCustomMaterials()) return;
   refreshMaterialsData();
   document.getElementById('cmOverlay').classList.add('hidden');
-  /* 追加した香料が見えるよう絞り込みを解除して先頭へ (v1.7.2) */
+  /* v1.8: 絞り込みを解除し、追加した香料の位置までスクロールしてハイライト */
   const matSearchEl = document.getElementById('matSearch');
   if(matSearchEl){ matSearchEl.value=''; }
   matFilterNote='all'; matFilterFam='all';
   renderMaterials();
-  window.scrollTo({top:0, behavior:'smooth'});
+  requestAnimationFrame(()=>{
+    const card = document.querySelector(`.mat-card[data-name="${CSS.escape(obj.name)}"]`);
+    if(card){
+      card.scrollIntoView({behavior:'smooth', block:'center'});
+      card.classList.add('cm-flash');
+      setTimeout(()=>card.classList.remove('cm-flash'), 2600);
+    } else {
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  });
   toast(t('toast_cm_saved'));
 }
 
@@ -2438,7 +2469,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.7.3';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.8.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
