@@ -368,6 +368,8 @@ main{
   width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
   color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:14px;
 }
+.quick-add-btn{width:34px; height:34px; border-radius:50%; border:1.5px solid var(--amber); background:transparent; color:var(--amber); font-size:20px; line-height:1; cursor:pointer; flex-shrink:0;}
+.quick-add-btn:active{background:var(--amber); color:var(--bg);}
 .cm-flash{outline:2px solid var(--amber); box-shadow:0 0 0 4px rgba(212,164,76,.25); transition:box-shadow .4s;}
 .custom-badge{
   display:inline-block; font-size:10px; padding:1px 8px; border-radius:9px;
@@ -633,6 +635,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
             <input value="μl" id="targetUnitDisplay" disabled style="opacity:.6">
           </div>
         </div>
+        <button class="btn btn-secondary btn-sm" id="useSumBtn" style="margin-top:8px;">Σ 配合比の合計を総量にセット</button>
         <div class="error-banner hidden" id="calcErrorBanner"></div>
         <div style="overflow-x:auto;">
         <table class="calc-table" id="calcTable"></table>
@@ -651,7 +654,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <div class="calc-inputs">
           <div class="calc-field">
             <label id="concPctLabel">目標賦香率（%）</label>
-            <input type="number" id="concPct" value="20" min="0.1" step="0.5">
+            <input type="number" id="concPct" value="10" min="0.1" step="0.5">
           </div>
           <div class="calc-field">
             <label id="finalVolLabel">仕上げ総量（ml）</label>
@@ -1187,7 +1190,10 @@ function renderMaterials(){
           <div class="mat-name">${esc(m.name)}</div>
           <div class="mat-family">${m.name_ja ? esc(m.name_ja)+' ・ ' : ''}${esc(famLabel(m.family))}${m.custom ? ` <span class="custom-badge">${esc(t('custom_badge'))}</span>` : ''}</div>
         </div>
-        <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
+          <button class="quick-add-btn" data-qadd="${esc(m.name)}" title="配合に追加">＋</button>
+        </div>
       </div>
       <div class="mat-desc">${esc(desc)}</div>
       <div class="mat-vocab">${(vocab||'').split(/[、,]/).filter(Boolean).map(v=>`<span class="vocab-pill">${esc(v.trim())}</span>`).join('')}</div>
@@ -1195,8 +1201,26 @@ function renderMaterials(){
     </div>
   `;}).join('');
   wrap.querySelectorAll('.mat-card').forEach(c=>c.addEventListener('click', ()=>openMaterialDetail(c.dataset.name)));
+  /* v1.8.1: ＋ボタンで詳細を開かず連続追加 */
+  wrap.querySelectorAll('.quick-add-btn').forEach(b=>b.addEventListener('click', (ev)=>{
+    ev.stopPropagation();
+    addIngredient(b.dataset.qadd);
+    toast(b.dataset.qadd + t('toast_added_suffix'));
+  }));
 }
 document.getElementById('matSearch').addEventListener('input', renderMaterials);
+/* v1.8.1: 配合比の合計値をそのまま総量として使う */
+(function(){
+  const btn = document.getElementById('useSumBtn');
+  if(btn) btn.addEventListener('click', ()=>{
+    const sum = builderIngredients.reduce((a,b)=>a+(parseFloat(b.parts)||0),0);
+    if(!(sum>0)){ toast(currentLang==='ja'?'先に配合比を入力してください':'Enter ratios first'); return; }
+    const tw = document.getElementById('targetWeight');
+    tw.value = sum;
+    tw.dispatchEvent(new Event('input'));
+    toast(currentLang==='ja'?`総量を合計値 ${sum} にセットしました`:`Total set to ${sum}`);
+  });
+})();
 
 function openMaterialDetail(name){
   const m = findMaterial(name);
@@ -1941,8 +1965,8 @@ function renderLibrary(){
       <h3>${esc(fmlName(f))}</h3>
       <div class="formula-meta">${f.items.length} ${esc(t('materials_unit'))} ・ ${esc(fmlUnit(f.unit))} ・ ${esc(t('tbl_total'))} ${f.total}</div>
       <div class="formula-ing-list">
-        ${f.items.slice(0,4).map(it=>`<div><b>${esc(fmlMat(it))}</b> — ${it.amount}</div>`).join('')}
-        ${f.items.length>4 ? `<div style="opacity:.6;">${esc(t('and_more_prefix'))}${f.items.length-4}${esc(t('and_more_suffix'))}</div>` : ''}
+        ${(f.items||[]).slice(0,4).map(it=>`<div><b>${esc(fmlMat(it))}</b> — ${it.amount}</div>`).join('')}
+        ${(f.items||[]).length>4 ? `<div style="opacity:.6;">${esc(t('and_more_prefix'))}${f.items.length-4}${esc(t('and_more_suffix'))}</div>` : ''}
       </div>
       <div class="formula-actions">
         <button class="btn btn-secondary btn-sm" style="flex:1;" data-detail="${i}">${esc(t('detail_btn'))}</button>
@@ -2184,6 +2208,7 @@ function importSavedJson(fileInput){
         nStorage.set(key, JSON.stringify(f.data));
         n++;
       }
+      backupSaved();
       toast(currentLang==='ja'?`${n}件を読み込みました`:`Imported ${n} formula(s)`);
       renderSaved();
     }catch(e){
@@ -2252,6 +2277,37 @@ function printSavedFormula(key){
 }
 
 /* エクスポート／インポートのボタン配線 */
+/* v1.8.1: 保存データの消失対策 */
+(function protectSavedData(){
+  /* ブラウザにストレージの永続化を要求(容量逼迫時の自動削除を防ぐ) */
+  try{ if(navigator.storage && navigator.storage.persist){ navigator.storage.persist(); } }catch(e){}
+  /* 起動時: マイフォーミュラが空でバックアップが残っていれば復元を提案 */
+  try{
+    const keys = nStorage.list('myformula:');
+    const bak = localStorage.getItem('myformula_backup');
+    if(keys.length===0 && bak){
+      const arr = JSON.parse(bak);
+      if(Array.isArray(arr) && arr.length>0){
+        const msg = currentLang==='ja'
+          ? `保存済みフォーミュラのバックアップが${arr.length}件見つかりました。復元しますか？`
+          : `Found a backup of ${arr.length} saved formula(s). Restore?`;
+        if(confirm(msg)){
+          arr.forEach((f,i)=>{ try{ nStorage.set('myformula:'+(Date.now()+i), JSON.stringify(f)); }catch(e){} });
+          renderSaved();
+          toast(currentLang==='ja'?'復元しました':'Restored');
+        }
+      }
+    }
+  }catch(e){}
+})();
+function backupSaved(){
+  try{
+    const keys = nStorage.list('myformula:');
+    const arr = [];
+    keys.forEach(k=>{ try{ const v=JSON.parse(nStorage.get(k)); if(v) arr.push(v); }catch(e){} });
+    localStorage.setItem('myformula_backup', JSON.stringify(arr));
+  }catch(e){}
+}
 (function wireExportButtons(){
   const csvBtn = document.getElementById('btnExportCsv');
   const jsonBtn = document.getElementById('btnExportJson');
@@ -2301,8 +2357,8 @@ function renderSaved(){
         <h3>${esc(fmlName(f))}</h3>
         <div class="formula-meta">${(f.items||[]).length} ${t('materials_unit')} ・ ${new Date(f.savedAt).toLocaleDateString(currentLang==='ja'?'ja-JP':'en-US')}</div>
         <div class="formula-ing-list">
-          ${f.items.slice(0,4).map(it=>`<div><b>${esc(matEnName(it.name, it.name_en))}</b> — ${sum>0 ? ((it.parts/sum)*100).toFixed(1) : '0.0'}%</div>`).join('')}
-          ${f.items.length>4 ? `<div style="opacity:.6;">${t('and_more_prefix')}${f.items.length-4}${t('and_more_suffix')}</div>` : ''}
+          ${(f.items||[]).slice(0,4).map(it=>`<div><b>${esc(matEnName(it.name, it.name_en))}</b> — ${sum>0 ? ((it.parts/sum)*100).toFixed(1) : '0.0'}%</div>`).join('')}
+          ${(f.items||[]).length>4 ? `<div style="opacity:.6;">${t('and_more_prefix')}${f.items.length-4}${t('and_more_suffix')}</div>` : ''}
         </div>
         <div class="formula-actions">
           <button class="btn btn-secondary btn-sm" style="flex:1;" data-edit="${e.key}">${esc(t('edit_btn'))}</button>
@@ -2330,7 +2386,7 @@ function renderSaved(){
     wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', ()=>{
       if(!confirm(t('confirm_delete'))) return;
       try{
-        nStorage.delete(b.dataset.del);
+        nStorage.delete(b.dataset.del); backupSaved();
         renderSaved();
         toast(t('toast_deleted'));
       }catch(err){
@@ -2359,6 +2415,7 @@ document.getElementById('saveFormulaBtn').addEventListener('click', ()=>{
   };
   try{
     nStorage.set(key, JSON.stringify(data));
+    backupSaved();
     toast(t('toast_saved'));
   }catch(e){
     toast(t('toast_save_failed') + (e && e.message ? e.message : String(e)));
@@ -2469,7 +2526,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.8.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.8.1';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。

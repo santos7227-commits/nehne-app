@@ -1,4 +1,4 @@
-/* nehne調香ノート 素材データ (v1.8: マンデイムーン統合・全342種)
+/* nehne調香ノート 素材データ (v1.8.1: 全372種・全素材に和名検索対応)
    素材の追加・修正はこのファイルを差し替えるだけでOK */
 const BASE_MATERIALS = [
  {
@@ -37,7 +37,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Animalic, Balsamic",
   "family_detail": "Woody",
-  "components_en": "Agarospirol, Jinkoh-eremol"
+  "components_en": "Agarospirol, Jinkoh-eremol",
+  "name_ja": "アガーウッド(沈香)"
  },
  {
   "name": "Aglaia Absolute",
@@ -96,7 +97,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Alcohol, Neutral, Solvent",
   "family_detail": "Solvent (溶剤)",
-  "components_en": "Ethanol"
+  "components_en": "Ethanol",
+  "name_ja": "無水エタノール"
  },
  {
   "name": "Allspice (Pimento)",
@@ -197,7 +199,27 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Musky, Powdery, Floral",
   "family_detail": "Musky",
-  "components_en": "Ambrettolide, Farnesol"
+  "components_en": "Ambrettolide, Farnesol",
+  "name_ja": "アンブレットシード"
+ },
+ {
+  "name": "Amyris",
+  "name_ja": "アミリス",
+  "note": "Base",
+  "family": "ウッディ",
+  "desc": "アミリス。ウッディ系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "ウッディ",
+  "vocab_fr": "",
+  "components": "バレリアノール, エレモール, アミリスアルコール",
+  "sg": 0.95,
+  "defaultDilution": 10.0,
+  "desc_en": "Woody material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Woody",
+  "family_detail": "ウッディ（Amyris balsamifera・ミカン科）",
+  "components_en": "バレリアノール, エレモール, アミリスアルコール",
+  "source": "master"
  },
  {
   "name": "Angelica root",
@@ -214,7 +236,27 @@ const BASE_MATERIALS = [
   "ifra_en": "0.8% Phototoxicity",
   "vocab_en": "Earthy, Musky, Spicy",
   "family_detail": "Musky / Woody",
-  "components_en": "Cyclopentadecanolide, alpha-Pinene"
+  "components_en": "Cyclopentadecanolide, alpha-Pinene",
+  "name_ja": "アンジェリカルート"
+ },
+ {
+  "name": "Anise Seed",
+  "name_ja": "アニスシード",
+  "note": "Top",
+  "family": "スパイシー",
+  "desc": "アニスシード。スパイス系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "スパイス",
+  "vocab_fr": "",
+  "components": "trans-アネトール, エストラゴール",
+  "sg": 0.98,
+  "defaultDilution": 10.0,
+  "desc_en": "Spicy material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Spicy",
+  "family_detail": "スパイス（Pimpinella anisum・セリ科）",
+  "components_en": "trans-アネトール, エストラゴール",
+  "source": "master"
  },
  {
   "name": "Antiviral Blend",
@@ -257,6 +299,25 @@ const BASE_MATERIALS = [
   "source": "mmoon",
   "sg_estimated": true,
   "confidence": "△"
+ },
+ {
+  "name": "Asafoetida",
+  "name_ja": "アサフェティダ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "アサフェティダ。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.98,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Balm Mint Bush",
@@ -343,25 +404,23 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
-  "name": "Basil (Linalool CT)",
-  "name_ja": "バジル",
-  "note": "Top",
-  "family": "ハーバル",
-  "desc": "バジル。ハーバル・ハーブ系の精油（水蒸気蒸留）。",
+  "name": "Basil ct. Linalool",
+  "name_ja": "バジル（リナロール）",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "バジル（リナロール）。香料。",
   "ifra": "未確認",
-  "vocab_ja": "ハーバル・ハーブ",
+  "vocab_ja": "",
   "vocab_fr": "",
-  "components": "リナロール, エストラゴール, 1,8-シネオール, オイゲノール",
-  "sg": 0.89,
+  "components": "",
+  "sg": 0.88,
   "defaultDilution": 10.0,
-  "desc_en": "Herbal essential oil, steam-distilled.",
+  "desc_en": "Other material.",
   "ifra_en": "Not verified",
-  "vocab_en": "Herbal",
-  "family_detail": "ハーバル・ハーブ（Ocimum basilicum・シソ科）",
-  "components_en": "Linalool, Estragole, 1,8-Cineole, Eugenol",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "◎"
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Basillic",
@@ -378,7 +437,8 @@ const BASE_MATERIALS = [
   "ifra_en": "3.4% Estragole restriction",
   "vocab_en": "Herbal, Spicy, Anise",
   "family_detail": "Aromatic",
-  "components_en": "Estragole, Linalool, Eugenol"
+  "components_en": "Estragole, Linalool, Eugenol",
+  "name_ja": "バジル"
  },
  {
   "name": "Bay Laurel",
@@ -465,6 +525,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Benzoin",
+  "name_ja": "ベンゾイン",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ベンゾイン。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 1.13,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Benzoin Abs",
   "note": "Base",
   "family": "バルサム・レジン",
@@ -479,28 +558,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Balsamic, Sweet, Vanilla",
   "family_detail": "Balsamic",
-  "components_en": "Benzoic acid, Cinnamic acid, Vanillin"
- },
- {
-  "name": "Benzoin Absolute",
-  "name_ja": "ベンゾイン・アブソリュート",
-  "note": "Base",
-  "family": "バルサム・レジン",
-  "desc": "ベンゾイン・アブソリュート。バルサム系の精油（溶剤抽出）。",
-  "ifra": "未確認",
-  "vocab_ja": "バルサム",
-  "vocab_fr": "",
-  "components": "安息香酸ベンジル, 安息香酸, バニリン",
-  "sg": 1.0,
-  "defaultDilution": 10.0,
-  "desc_en": "Balsamic/Resinous essential oil, solvent-extracted (absolute).",
-  "ifra_en": "Not verified",
-  "vocab_en": "Balsamic/Resinous",
-  "family_detail": "バルサム（Styrax benzoin・エゴノキ科）",
-  "components_en": "Benzyl benzoate, Benzoic acid, Vanillin",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "○"
+  "components_en": "Benzoic acid, Cinnamic acid, Vanillin",
+  "name_ja": "ベンゾイン・アブソリュート"
  },
  {
   "name": "Bergamot",
@@ -517,7 +576,27 @@ const BASE_MATERIALS = [
   "ifra_en": "0.4% Phototoxicity (expressed oil)",
   "vocab_en": "Citrus, Zesty, Floral",
   "family_detail": "Citrus",
-  "components_en": "Linalyl acetate, Limonene, Linalool"
+  "components_en": "Linalyl acetate, Limonene, Linalool",
+  "name_ja": "ベルガモット"
+ },
+ {
+  "name": "Bergamot FCF",
+  "name_ja": "ベルガモット（FCF）",
+  "note": "Top",
+  "family": "シトラス",
+  "desc": "ベルガモット（FCF）。シトラス系の精油（圧搾）。",
+  "ifra": "未確認",
+  "vocab_ja": "シトラス",
+  "vocab_fr": "",
+  "components": "リモネン, 酢酸リナリル, リナロール, γ-テルピネン",
+  "sg": 0.87,
+  "defaultDilution": 10.0,
+  "desc_en": "Citrus material, 圧搾.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Citrus",
+  "family_detail": "シトラス（Citrus bergamia・ミカン科）",
+  "components_en": "リモネン, 酢酸リナリル, リナロール, γ-テルピネン",
+  "source": "master"
  },
  {
   "name": "Bergamot Mint",
@@ -576,7 +655,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.16% Skin sensitization",
   "vocab_en": "Leather, Smoky, Tar",
   "family_detail": "Leather",
-  "components_en": "Cresol, Phenols"
+  "components_en": "Cresol, Phenols",
+  "name_ja": "バーチタール"
  },
  {
   "name": "Bitter orange",
@@ -593,7 +673,8 @@ const BASE_MATERIALS = [
   "ifra_en": "1.25% Phototoxicity",
   "vocab_en": "Citrus, Bitter, Peel",
   "family_detail": "Citrus",
-  "components_en": "Limonene, Linalool, Myrcene"
+  "components_en": "Limonene, Linalool, Myrcene",
+  "name_ja": "ビターオレンジ"
  },
  {
   "name": "Black carrant",
@@ -610,7 +691,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Fruity, Green, Sulfurous",
   "family_detail": "Fruity / Green",
-  "components_en": "Thiomenthanes, p-Menthane-8-thiol-3-one"
+  "components_en": "Thiomenthanes, p-Menthane-8-thiol-3-one",
+  "name_ja": "ブラックカラント(カシス)"
  },
  {
   "name": "Black pepper",
@@ -627,7 +709,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Spicy, Piquant, Woody",
   "family_detail": "Spicy",
-  "components_en": "Piperine, Caryophyllene, Limonene"
+  "components_en": "Piperine, Caryophyllene, Limonene",
+  "name_ja": "ブラックペッパー"
  },
  {
   "name": "Black Smoke Cardamom",
@@ -903,6 +986,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Buchu Leaf",
+  "name_ja": "ブチュリーフ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ブチュリーフ。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.93,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Buddha Wood",
   "name_ja": "ブッダウッド",
   "note": "Base",
@@ -1029,6 +1131,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Cajeput",
+  "name_ja": "カユプテ",
+  "note": "Top",
+  "family": "ハーバル",
+  "desc": "カユプテ。ハーバル・ハーブ系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "ハーバル・ハーブ",
+  "vocab_fr": "",
+  "components": "1,8-シネオール, α-テルピネオール, リモネン",
+  "sg": 0.92,
+  "defaultDilution": 10.0,
+  "desc_en": "Herbal material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Herbal",
+  "family_detail": "ハーバル・ハーブ（Melaleuca cajuputi・フトモモ科）",
+  "components_en": "1,8-シネオール, α-テルピネオール, リモネン",
+  "source": "master"
+ },
+ {
   "name": "Calamus Root",
   "name_ja": "カラマスルート(菖蒲)",
   "note": "Base",
@@ -1064,7 +1185,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Spicy, Camphor, Fresh",
   "family_detail": "Spicy",
-  "components_en": "Terpinyl acetate, 1,8-Cineole, alpha-Terpineol"
+  "components_en": "Terpinyl acetate, 1,8-Cineole, alpha-Terpineol",
+  "name_ja": "カルダモン"
  },
  {
   "name": "Camellia Blossom Absolute",
@@ -1102,7 +1224,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Herbal, Fruity, Chamomile",
   "family_detail": "Floral / Herbal",
-  "components_en": "Chamazulene, Bisabolol"
+  "components_en": "Chamazulene, Bisabolol",
+  "name_ja": "カモミール・ジャーマン"
  },
  {
   "name": "Camomille Roman",
@@ -1119,7 +1242,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Herbal, Apple, Sweet",
   "family_detail": "Floral / Herbal",
-  "components_en": "Angelate esters, Tiglate esters"
+  "components_en": "Angelate esters, Tiglate esters",
+  "name_ja": "カモミール・ローマン"
  },
  {
   "name": "Cananga",
@@ -1220,7 +1344,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Earthy, Powdery, Woody",
   "family_detail": "Powdery / Earthy",
-  "components_en": "Carotol, Daucol"
+  "components_en": "Carotol, Daucol",
+  "name_ja": "キャロットシード"
  },
  {
   "name": "Cassie Absolute",
@@ -1258,7 +1383,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Green, Fruity, Animalic",
   "family_detail": "Green / Fruity",
-  "components_en": "Thiomenthanes"
+  "components_en": "Thiomenthanes",
+  "name_ja": "カシスバッド・アブソリュート"
  },
  {
   "name": "Cat's Claw",
@@ -1324,25 +1450,23 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
-  "name": "Cedarwood Texas",
-  "name_ja": "シダーウッドテキサス",
-  "note": "Base",
-  "family": "ウッディ",
-  "desc": "シダーウッドテキサス。ウッディ系の精油（水蒸気蒸留）。",
+  "name": "Cedarwood",
+  "name_ja": "シダーウッド",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "シダーウッド。香料。",
   "ifra": "未確認",
-  "vocab_ja": "ウッディ",
+  "vocab_ja": "",
   "vocab_fr": "",
-  "components": "セドロール, ツヨプセン, α-セドレン",
-  "sg": 0.89,
+  "components": "",
+  "sg": 0.95,
   "defaultDilution": 10.0,
-  "desc_en": "Woody essential oil, steam-distilled.",
+  "desc_en": "Other material.",
   "ifra_en": "Not verified",
-  "vocab_en": "Woody",
-  "family_detail": "ウッディ（Juniperus mexicana・ヒノキ科）",
-  "components_en": "Cedrol, Thujopsene, alpha-Cedrene",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "○"
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Cederwood atras",
@@ -1359,7 +1483,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Camphor, Sweet",
   "family_detail": "Woody",
-  "components_en": "alpha-Atlantone, Cedrol"
+  "components_en": "alpha-Atlantone, Cedrol",
+  "name_ja": "シダーウッド・アトラス"
  },
  {
   "name": "Cederwood texas",
@@ -1376,7 +1501,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Dry, Smoky",
   "family_detail": "Woody",
-  "components_en": "Cedrol, Thujopsene"
+  "components_en": "Cedrol, Thujopsene",
+  "name_ja": "シダーウッド・テキサス"
  },
  {
   "name": "Cederwood virginia",
@@ -1393,7 +1519,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Dry, Pencil",
   "family_detail": "Woody",
-  "components_en": "Cedrol, Cedrene"
+  "components_en": "Cedrol, Cedrene",
+  "name_ja": "シダーウッド・バージニア"
  },
  {
   "name": "Celery seed",
@@ -1410,7 +1537,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Spicy, Earthy, Vegetal",
   "family_detail": "Spicy",
-  "components_en": "Sedanolide, Limonene"
+  "components_en": "Sedanolide, Limonene",
+  "name_ja": "セロリシード"
  },
  {
   "name": "Champaca Absolute",
@@ -1474,6 +1602,25 @@ const BASE_MATERIALS = [
   "source": "mmoon",
   "sg_estimated": true,
   "confidence": "◎"
+ },
+ {
+  "name": "Cinnamon Bark",
+  "name_ja": "シナモンバーク",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "シナモンバーク。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 1.04,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Cinnamon Leaf",
@@ -1574,7 +1721,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Herbal, Tea, Ambery",
   "family_detail": "Aromatic",
-  "components_en": "Linalyl acetate, Linalool, Sclareol"
+  "components_en": "Linalyl acetate, Linalool, Sclareol",
+  "name_ja": "クラリセージ"
  },
  {
   "name": "Clementine",
@@ -1612,7 +1760,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.5% Eugenol restriction",
   "vocab_en": "Spicy, Sweet, Medicinal",
   "family_detail": "Spicy",
-  "components_en": "Eugenol, Eugenyl acetate, Caryophyllene"
+  "components_en": "Eugenol, Eugenyl acetate, Caryophyllene",
+  "name_ja": "クローブバッド"
  },
  {
   "name": "Coffee",
@@ -1776,7 +1925,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Spicy, Floral, Woody",
   "family_detail": "Spicy",
-  "components_en": "Linalool (coriandrol), Pinene"
+  "components_en": "Linalool (coriandrol), Pinene",
+  "name_ja": "コリアンダーシード"
  },
  {
   "name": "Costmary",
@@ -1835,7 +1985,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.4% Phototoxicity",
   "vocab_en": "Spicy, Animalic, Warm",
   "family_detail": "Spicy",
-  "components_en": "Cuminaldehyde, Pinene"
+  "components_en": "Cuminaldehyde, Pinene",
+  "name_ja": "クミン"
  },
  {
   "name": "Cumin Seed",
@@ -1915,7 +2066,27 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Resinous, Pine",
   "family_detail": "Woody",
-  "components_en": "alpha-Pinene, delta-3-Carene"
+  "components_en": "alpha-Pinene, delta-3-Carene",
+  "name_ja": "サイプレス"
+ },
+ {
+  "name": "Cypress",
+  "name_ja": "サイプレス",
+  "note": "Middle",
+  "family": "ウッディ",
+  "desc": "サイプレス。ウッディ系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "ウッディ",
+  "vocab_fr": "",
+  "components": "α-ピネン, δ-3-カレン, セドロール",
+  "sg": 0.83,
+  "defaultDilution": 10.0,
+  "desc_en": "Woody material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Woody",
+  "family_detail": "ウッディ（Cupressus sempervirens・ヒノキ科）",
+  "components_en": "α-ピネン, δ-3-カレン, セドロール",
+  "source": "master"
  },
  {
   "name": "Cypriol (Nagarmotha)",
@@ -1953,7 +2124,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Fruity, Liqueur, Balsamic",
   "family_detail": "Fruity / Balsamic",
-  "components_en": "Davanone"
+  "components_en": "Davanone",
+  "name_ja": "ダバナ"
  },
  {
   "name": "Daidai Blossom (Bitter Orange Flower)",
@@ -2103,6 +2275,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Elemi",
+  "name_ja": "エレミ",
+  "note": "Middle",
+  "family": "バルサム・レジン",
+  "desc": "エレミ。バルサム系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "バルサム",
+  "vocab_fr": "",
+  "components": "リモネン, エレモール, エレミシン, α-フェランドレン",
+  "sg": 0.87,
+  "defaultDilution": 10.0,
+  "desc_en": "Balsamic/Resinous material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Balsamic/Resinous",
+  "family_detail": "バルサム（Canarium luzonicum・カンラン科）",
+  "components_en": "リモネン, エレモール, エレミシン, α-フェランドレン",
+  "source": "master"
+ },
+ {
   "name": "Engelmann Spruce",
   "name_ja": "エンゲルマンスプルース",
   "note": "Middle",
@@ -2124,67 +2315,23 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
-  "name": "Eucalyptus Blue Mallee",
-  "name_ja": "ユーカリブルーマリー",
-  "note": "Top",
-  "family": "ハーバル",
-  "desc": "ユーカリブルーマリー。ハーバル・ハーブ系の精油（水蒸気蒸留）。",
+  "name": "Eucalyptus Radiata",
+  "name_ja": "ユーカリ・ラディアータ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ユーカリ・ラディアータ。香料。",
   "ifra": "未確認",
-  "vocab_ja": "ハーバル・ハーブ",
+  "vocab_ja": "",
   "vocab_fr": "",
-  "components": "1,8-シネオール, α-ピネン, p-シメン",
-  "sg": 0.89,
+  "components": "",
+  "sg": 0.91,
   "defaultDilution": 10.0,
-  "desc_en": "Herbal essential oil, steam-distilled.",
+  "desc_en": "Other material.",
   "ifra_en": "Not verified",
-  "vocab_en": "Herbal",
-  "family_detail": "ハーバル・ハーブ（Eucalyptus polybractea・フトモモ科）",
-  "components_en": "1,8-Cineole, alpha-Pinene, p-Cymene",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "○"
- },
- {
-  "name": "Eucalyptus Dives",
-  "name_ja": "ユーカリディベス",
-  "note": "Top",
-  "family": "ハーバル",
-  "desc": "ユーカリディベス。ハーバル・ハーブ系の精油（水蒸気蒸留）。",
-  "ifra": "未確認",
-  "vocab_ja": "ハーバル・ハーブ",
-  "vocab_fr": "",
-  "components": "ピペリトン, α-フェランドレン, テルピネン-4-オール",
-  "sg": 0.89,
-  "defaultDilution": 10.0,
-  "desc_en": "Herbal essential oil, steam-distilled.",
-  "ifra_en": "Not verified",
-  "vocab_en": "Herbal",
-  "family_detail": "ハーバル・ハーブ（Eucalyptus dives・フトモモ科）",
-  "components_en": "Piperitone, alpha-Phellandrene, Terpinen-4-ol",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "△"
- },
- {
-  "name": "Eucalyptus Lemon",
-  "name_ja": "ユーカリレモン",
-  "note": "Top",
-  "family": "シトラス",
-  "desc": "ユーカリレモン。シトラス系の精油（水蒸気蒸留）。",
-  "ifra": "未確認",
-  "vocab_ja": "シトラス",
-  "vocab_fr": "",
-  "components": "シトロネラール, シトロネロール, イソプレゴール",
-  "sg": 0.89,
-  "defaultDilution": 10.0,
-  "desc_en": "Citrus essential oil, steam-distilled.",
-  "ifra_en": "Not verified",
-  "vocab_en": "Citrus",
-  "family_detail": "シトラス（Corymbia citriodora・フトモモ科）",
-  "components_en": "Citronellal, Citronellol, Isopulegol",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "◎"
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Euclyptus blue mallee",
@@ -2201,7 +2348,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Camphor, Fresh, Medicinal",
   "family_detail": "Aromatic",
-  "components_en": "1,8-Cineole, alpha-Pinene, Limonene"
+  "components_en": "1,8-Cineole, alpha-Pinene, Limonene",
+  "name_ja": "ユーカリ・ブルーマリー"
  },
  {
   "name": "Euclyptus dives",
@@ -2218,7 +2366,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Minty, Camphor, Fresh",
   "family_detail": "Aromatic",
-  "components_en": "Piperitone, Phellandrene"
+  "components_en": "Piperitone, Phellandrene",
+  "name_ja": "ユーカリ・ダイブス"
  },
  {
   "name": "Euclyptus globuls",
@@ -2235,7 +2384,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Camphor, Fresh, Clear",
   "family_detail": "Aromatic",
-  "components_en": "1,8-Cineole, alpha-Pinene, Limonene"
+  "components_en": "1,8-Cineole, alpha-Pinene, Limonene",
+  "name_ja": "ユーカリ・グロブルス"
  },
  {
   "name": "Euclyptus lemon",
@@ -2252,7 +2402,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.57% Citral (and related) restriction",
   "vocab_en": "Citrus, Lemon, Fresh",
   "family_detail": "Citrus / Aromatic",
-  "components_en": "Citronellal, Citronellol"
+  "components_en": "Citronellal, Citronellol",
+  "name_ja": "ユーカリ・レモン"
  },
  {
   "name": "Fennel Sweet",
@@ -2402,6 +2553,25 @@ const BASE_MATERIALS = [
   "confidence": "○"
  },
  {
+  "name": "Frankincense Resin",
+  "name_ja": "フランキンセンス（レジン）",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "フランキンセンス（レジン）。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 1.05,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Frankincense Sacra",
   "name_ja": "フランキンセンス・サクラ",
   "note": "Base",
@@ -2437,7 +2607,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Balsamic, Incense, Zesty",
   "family_detail": "Balsamic / Woody",
-  "components_en": "alpha-Pinene, Olibanol"
+  "components_en": "alpha-Pinene, Olibanol",
+  "name_ja": "フランキンセンス(乳香)"
  },
  {
   "name": "Galangal",
@@ -2454,7 +2625,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Spicy, Ginger, Warm",
   "family_detail": "Spicy",
-  "components_en": "Cineole, Pinene"
+  "components_en": "Cineole, Pinene",
+  "name_ja": "ガランガル"
  },
  {
   "name": "Galbanum",
@@ -2471,7 +2643,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Green, Earthy, Penetrating",
   "family_detail": "Green",
-  "components_en": "Undecatriene, Pinene"
+  "components_en": "Undecatriene, Pinene",
+  "name_ja": "ガルバナム"
  },
  {
   "name": "Gandhi Root (Sugandhmantri)",
@@ -2516,6 +2689,44 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Geranium",
+  "name_ja": "ゼラニウム",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ゼラニウム。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.89,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
+  "name": "Geranium Bourbon",
+  "name_ja": "ゼラニウム・ブルボン",
+  "note": "Middle",
+  "family": "フローラル",
+  "desc": "ゼラニウム・ブルボン。フローラル系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "フローラル",
+  "vocab_fr": "",
+  "components": "シトロネロール, ゲラニオール, ギ酸シトロネリル, リナロール, イソメントン",
+  "sg": 0.89,
+  "defaultDilution": 10.0,
+  "desc_en": "Floral material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Floral",
+  "family_detail": "フローラル（Pelargonium graveolens・フウロソウ科）",
+  "components_en": "シトロネロール, ゲラニオール, ギ酸シトロネリル, リナロール, イソメントン",
+  "source": "master"
+ },
+ {
   "name": "Gettou (Shell Ginger)",
   "name_ja": "沖縄月桃",
   "note": "Middle",
@@ -2537,6 +2748,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Ginger",
+  "name_ja": "ジンジャー",
+  "note": "Middle",
+  "family": "スパイシー",
+  "desc": "ジンジャー。スパイス系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "スパイス",
+  "vocab_fr": "",
+  "components": "ジンギベレン, β-セスキフェランドレン, カンフェン",
+  "sg": 0.9,
+  "defaultDilution": 10.0,
+  "desc_en": "Spicy material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Spicy",
+  "family_detail": "スパイス（Zingiber officinale・ショウガ科）",
+  "components_en": "ジンギベレン, β-セスキフェランドレン, カンフェン",
+  "source": "master"
+ },
+ {
   "name": "Ginger abs",
   "note": "Top",
   "family": "スパイシー",
@@ -2551,7 +2781,27 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Spicy, Warm, Woody",
   "family_detail": "Spicy",
-  "components_en": "Zingiberene, Gingerol, Shogaol"
+  "components_en": "Zingiberene, Gingerol, Shogaol",
+  "name_ja": "ジンジャー・アブソリュート"
+ },
+ {
+  "name": "Ginger CO2",
+  "name_ja": "ジンジャー（CO2）",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ジンジャー（CO2）。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.92,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Ginger CO2 Top Note",
@@ -2652,7 +2902,8 @@ const BASE_MATERIALS = [
   "ifra_en": "4% Phototoxicity",
   "vocab_en": "Citrus, Bitter, Juicy",
   "family_detail": "Citrus",
-  "components_en": "Limonene, Nootkatone, Grapefruit mercaptan"
+  "components_en": "Limonene, Nootkatone, Grapefruit mercaptan",
+  "name_ja": "グレープフルーツ"
  },
  {
   "name": "Grapefruit (Low Furocoumarin)",
@@ -2816,7 +3067,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Sweet, Smoky",
   "family_detail": "Woody",
-  "components_en": "Guaiol, Brunesol"
+  "components_en": "Guaiol, Brunesol",
+  "name_ja": "ガイアックウッド"
  },
  {
   "name": "Guava Leaf",
@@ -2896,7 +3148,8 @@ const BASE_MATERIALS = [
   "ifra_en": "Coumarin cumulative-total caution",
   "vocab_en": "Sweet, Hay, Coumarin",
   "family_detail": "Fougère / Sweet",
-  "components_en": "Coumarin"
+  "components_en": "Coumarin",
+  "name_ja": "ヘイ・アブソリュート90%"
  },
  {
   "name": "Hay Absolute",
@@ -2983,6 +3236,25 @@ const BASE_MATERIALS = [
   "confidence": "○"
  },
  {
+  "name": "Ho Leaf",
+  "name_ja": "ホーリーフ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ホーリーフ。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.87,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Ho wood",
   "note": "Middle",
   "family": "ウッディ",
@@ -2997,7 +3269,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Floral, Sweet",
   "family_detail": "Woody / Floral",
-  "components_en": "Linalool, Camphor"
+  "components_en": "Linalool, Camphor",
+  "name_ja": "ホーウッド"
  },
  {
   "name": "Holy Basil (Tulsi)",
@@ -3182,7 +3455,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0% IFRA prohibited / extremely restricted",
   "vocab_en": "Herbal, Camphor, Strong",
   "family_detail": "Herbal",
-  "components_en": "Borneol, Camphor"
+  "components_en": "Borneol, Camphor",
+  "name_ja": "イヌラ"
  },
  {
   "name": "Jade Wood",
@@ -3241,7 +3515,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.6% Skin sensitization",
   "vocab_en": "Floral, Animalic, Jasmine",
   "family_detail": "Floral",
-  "components_en": "Benzyl acetate, Linalool, Indole, Jasmone"
+  "components_en": "Benzyl acetate, Linalool, Indole, Jasmone",
+  "name_ja": "ジャスミン・グランディフロラム・アブソリュート"
  },
  {
   "name": "Jasmine Auriculatum Absolute",
@@ -3342,7 +3617,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Fresh, Pine, Gin-like",
   "family_detail": "Aromatic",
-  "components_en": "alpha-Pinene, Myrcene, Sabinene"
+  "components_en": "alpha-Pinene, Myrcene, Sabinene",
+  "name_ja": "ジュニパーベリー"
  },
  {
   "name": "Juniper Leaf",
@@ -3485,7 +3761,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Citrus, Juicy, Fresh",
   "family_detail": "Citrus",
-  "components_en": "Limonene, Terpineol"
+  "components_en": "Limonene, Terpineol",
+  "name_ja": "コウチコナツ(高知小夏)"
  },
  {
   "name": "Kumquat",
@@ -3551,6 +3828,25 @@ const BASE_MATERIALS = [
   "confidence": "○"
  },
  {
+  "name": "Labdanum",
+  "name_ja": "ラブダナム",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ラブダナム。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.91,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Labdanum Abs 85%",
   "note": "Base",
   "family": "バルサム・レジン",
@@ -3565,7 +3861,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Balsamic, Ambery, Leather",
   "family_detail": "Balsamic",
-  "components_en": "Pinene, Camphene, Labdanoids"
+  "components_en": "Pinene, Camphene, Labdanoids",
+  "name_ja": "ラブダナム・アブソリュート85%"
  },
  {
   "name": "Labdanum Absolute",
@@ -3587,6 +3884,25 @@ const BASE_MATERIALS = [
   "source": "mmoon",
   "sg_estimated": true,
   "confidence": "○"
+ },
+ {
+  "name": "Labdanum Resinoid",
+  "name_ja": "ラブダナム・レジノイド",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ラブダナム・レジノイド。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 1.0,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Lantana Camara",
@@ -3666,7 +3982,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Floral, Herbal, Fresh",
   "family_detail": "Floral / Aromatic",
-  "components_en": "Linalyl acetate, Linalool"
+  "components_en": "Linalyl acetate, Linalool",
+  "name_ja": "ラベンダー"
  },
  {
   "name": "Lavender 40/42",
@@ -3683,7 +4000,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Floral, Herbal, Sweet",
   "family_detail": "Floral / Aromatic",
-  "components_en": "Linalyl acetate (40-42%), Linalool"
+  "components_en": "Linalyl acetate (40-42%), Linalool",
+  "name_ja": "ラベンダー40/42"
  },
  {
   "name": "Lavender True",
@@ -3707,6 +4025,25 @@ const BASE_MATERIALS = [
   "confidence": "◎"
  },
  {
+  "name": "Leaf Alcohol (cis-3-Hexenol)",
+  "name_ja": "リーフアルコール（(Z)-3-ヘキセノール）",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "リーフアルコール（(Z)-3-ヘキセノール）。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.85,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Lemon",
   "note": "Top",
   "family": "シトラス",
@@ -3721,7 +4058,8 @@ const BASE_MATERIALS = [
   "ifra_en": "2% Phototoxicity",
   "vocab_en": "Citrus, Zesty, Fresh",
   "family_detail": "Citrus",
-  "components_en": "Limonene, Citral, Pinene"
+  "components_en": "Limonene, Citral, Pinene",
+  "name_ja": "レモン"
  },
  {
   "name": "Lemon (Low Furocoumarin)",
@@ -3759,28 +4097,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.6% Citral restriction",
   "vocab_en": "Citrus, Green, Herbal",
   "family_detail": "Citrus / Green",
-  "components_en": "Citral (geranial, neral)"
- },
- {
-  "name": "Lemon Myrtle",
-  "name_ja": "レモンマートル",
-  "note": "Top",
-  "family": "シトラス",
-  "desc": "レモンマートル。シトラス系の精油（水蒸気蒸留）。",
-  "ifra": "未確認",
-  "vocab_ja": "シトラス",
-  "vocab_fr": "",
-  "components": "ゲラニアール, ネラール(=シトラール)",
-  "sg": 0.89,
-  "defaultDilution": 10.0,
-  "desc_en": "Citrus essential oil, steam-distilled.",
-  "ifra_en": "Not verified",
-  "vocab_en": "Citrus",
-  "family_detail": "シトラス（Backhousia citriodora・フトモモ科）",
-  "components_en": "Geranial, Neral (citral)",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "◎"
+  "components_en": "Citral (geranial, neral)",
+  "name_ja": "レモングラス"
  },
  {
   "name": "Lemon myrtre",
@@ -3797,7 +4115,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.6% Citral restriction",
   "vocab_en": "Citrus, Sweet, Intense",
   "family_detail": "Citrus",
-  "components_en": "Citral"
+  "components_en": "Citral",
+  "name_ja": "レモンマートル"
  },
  {
   "name": "Lemon Petitgrain",
@@ -3919,7 +4238,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Citrus, Sharp, Dry",
   "family_detail": "Citrus",
-  "components_en": "Limonene, gamma-Terpinene, Citral"
+  "components_en": "Limonene, gamma-Terpinene, Citral",
+  "name_ja": "ライム"
  },
  {
   "name": "Lime (Low Furocoumarin)",
@@ -3978,7 +4298,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Floral, Honey, Sweet",
   "family_detail": "Floral",
-  "components_en": "Farnesol, Linalool"
+  "components_en": "Farnesol, Linalool",
+  "name_ja": "リンデンブロッサム(菩提樹)"
  },
  {
   "name": "Linden Blossom Absolute",
@@ -4044,6 +4365,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Lovage Root",
+  "name_ja": "ラベージルート",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ラベージルート。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 1.03,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Mace",
   "name_ja": "メイス(メース)",
   "note": "Middle",
@@ -4065,6 +4405,44 @@ const BASE_MATERIALS = [
   "confidence": "○"
  },
  {
+  "name": "Magnolia",
+  "name_ja": "マグノリア（リーフ/フラワー）",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "マグノリア（リーフ/フラワー）。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.9,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
+  "name": "Mandarin Green",
+  "name_ja": "マンダリン・グリーン",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "マンダリン・グリーン。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.84,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Mandarin Orange",
   "note": "Top",
   "family": "シトラス",
@@ -4079,7 +4457,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Citrus, Sweet, Fruity",
   "family_detail": "Citrus",
-  "components_en": "Limonene, gamma-Terpinene, Dimethyl anthranilate"
+  "components_en": "Limonene, gamma-Terpinene, Dimethyl anthranilate",
+  "name_ja": "マンダリンオレンジ"
  },
  {
   "name": "Mandarin Petitgrain",
@@ -4159,7 +4538,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.01% Phototoxicity",
   "vocab_en": "Green, Fruity, Apple",
   "family_detail": "Green / Floral",
-  "components_en": "Tagetone, Ocimene"
+  "components_en": "Tagetone, Ocimene",
+  "name_ja": "マリーゴールド(タジェテス)"
  },
  {
   "name": "Marjoram Sweet",
@@ -4267,6 +4647,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "May Chang",
+  "name_ja": "メイチャン",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "メイチャン。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.88,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Melissa (Lemon Balm)",
   "name_ja": "メリッサ",
   "note": "Middle",
@@ -4323,7 +4722,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.86% Phototoxicity",
   "vocab_en": "Marine, Melon, Ozonic",
   "family_detail": "Marine / Melon",
-  "components_en": "Melonal (2"
+  "components_en": "Melonal (2",
+  "name_ja": "メロナール"
  },
  {
   "name": "Mimosa Absolute",
@@ -4424,7 +4824,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Balsamic, Earthy, Mushroom",
   "family_detail": "Balsamic",
-  "components_en": "Furanoeudesma-1"
+  "components_en": "Furanoeudesma-1",
+  "name_ja": "ミルラ(没薬)"
  },
  {
   "name": "Myrtle",
@@ -4483,7 +4884,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Floral, Green, Bitter",
   "family_detail": "Floral",
-  "components_en": "Linalool, Limonene, Nerolidol"
+  "components_en": "Linalool, Limonene, Nerolidol",
+  "name_ja": "ネロリ"
  },
  {
   "name": "Neroli Petitgrain",
@@ -4633,6 +5035,25 @@ const BASE_MATERIALS = [
   "confidence": "○"
  },
  {
+  "name": "Nutmeg",
+  "name_ja": "ナツメグ",
+  "note": "Middle",
+  "family": "スパイシー",
+  "desc": "ナツメグ。スパイス系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "スパイス",
+  "vocab_fr": "",
+  "components": "サビネン, α-ピネン, β-ピネン, ミリスチシン, テルピネン-4-オール",
+  "sg": 0.89,
+  "defaultDilution": 10.0,
+  "desc_en": "Spicy material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Spicy",
+  "family_detail": "スパイス（Myristica fragrans・ニクズク科）",
+  "components_en": "サビネン, α-ピネン, β-ピネン, ミリスチシン, テルピネン-4-オール",
+  "source": "master"
+ },
+ {
   "name": "Oak moss",
   "note": "Base",
   "family": "ムスク・アニマリック",
@@ -4647,7 +5068,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.1% Skin sensitization",
   "vocab_en": "Mossy, Earthy, Woody",
   "family_detail": "Mossy / Chypre",
-  "components_en": "Evernic acid, Atranol"
+  "components_en": "Evernic acid, Atranol",
+  "name_ja": "オークモス"
  },
  {
   "name": "Oakmoss Absolute",
@@ -4692,6 +5114,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Ocotea",
+  "name_ja": "オコテア",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "オコテア。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.95,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Okinawa gettou",
   "note": "Middle",
   "family": "ハーバル",
@@ -4706,7 +5147,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Herbal, Spicy, Fresh",
   "family_detail": "Aromatic",
-  "components_en": "1,8-Cineole, Terpinen-4-ol, Camphor"
+  "components_en": "1,8-Cineole, Terpinen-4-ol, Camphor",
+  "name_ja": "オキナワゲットウ(月桃)"
  },
  {
   "name": "Opopanax",
@@ -4723,7 +5165,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.43% Skin sensitization",
   "vocab_en": "Balsamic, Sweet, Spicy",
   "family_detail": "Balsamic",
-  "components_en": "Bisabolene"
+  "components_en": "Bisabolene",
+  "name_ja": "オポパナックス"
  },
  {
   "name": "Orange flower abs",
@@ -4740,7 +5183,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Floral, Animalic, Sweet",
   "family_detail": "Floral",
-  "components_en": "Linalool, Methyl anthranilate, Indole"
+  "components_en": "Linalool, Methyl anthranilate, Indole",
+  "name_ja": "オレンジフラワー・アブソリュート"
  },
  {
   "name": "Orange Sweet",
@@ -4757,7 +5201,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Citrus, Sweet, Juicy",
   "family_detail": "Citrus",
-  "components_en": "Limonene, Decanal"
+  "components_en": "Limonene, Decanal",
+  "name_ja": "スイートオレンジ"
  },
  {
   "name": "Orchid Absolute",
@@ -4802,6 +5247,25 @@ const BASE_MATERIALS = [
   "confidence": "◎"
  },
  {
+  "name": "Orris Butter",
+  "name_ja": "オリスバター",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "オリスバター。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.93,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Orris root",
   "note": "Middle",
   "family": "バルサム・レジン",
@@ -4816,7 +5280,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Powdery, Violet, Woody",
   "family_detail": "Powdery",
-  "components_en": "Irone"
+  "components_en": "Irone",
+  "name_ja": "オリスルート"
  },
  {
   "name": "Orris Root Absolute",
@@ -4854,28 +5319,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Floral, Fruity, Peach",
   "family_detail": "Floral / Fruity",
-  "components_en": "beta-Ionone, gamma-Decalactone, Linalool"
- },
- {
-  "name": "Osmanthus Absolute",
-  "name_ja": "オスマンサス・アブソリュート(キンモクセイ)",
-  "note": "Middle",
-  "family": "フローラル",
-  "desc": "オスマンサス・アブソリュート(キンモクセイ)。フローラル系の精油（溶剤抽出）。",
-  "ifra": "未確認",
-  "vocab_ja": "フローラル",
-  "vocab_fr": "",
-  "components": "β-イオノン, ジヒドロβ-イオノン, リナロール",
-  "sg": 0.96,
-  "defaultDilution": 10.0,
-  "desc_en": "Floral essential oil, solvent-extracted (absolute).",
-  "ifra_en": "Not verified",
-  "vocab_en": "Floral",
-  "family_detail": "フローラル（Osmanthus fragrans・モクセイ科）",
-  "components_en": "beta-Ionone, Dihydro-beta-ionone, Linalool",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "○"
+  "components_en": "beta-Ionone, gamma-Decalactone, Linalool",
+  "name_ja": "オスマンサス(金木犀)・アブソリュート"
  },
  {
   "name": "Oud Premium",
@@ -4934,7 +5379,8 @@ const BASE_MATERIALS = [
   "ifra_en": "Geraniol cumulative-total caution",
   "vocab_en": "Floral, Herbal, Rose",
   "family_detail": "Floral",
-  "components_en": "Geraniol, Geranyl acetate"
+  "components_en": "Geraniol, Geranyl acetate",
+  "name_ja": "パルマローザ"
  },
  {
   "name": "Parsley",
@@ -4972,7 +5418,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Earthy, Camphor",
   "family_detail": "Woody",
-  "components_en": "Patchoulol, Norpatchoulenol"
+  "components_en": "Patchoulol, Norpatchoulenol",
+  "name_ja": "パチュリ"
  },
  {
   "name": "Patchouli Organic",
@@ -5038,6 +5485,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Peppermint",
+  "name_ja": "ペパーミント",
+  "note": "Top",
+  "family": "ハーバル",
+  "desc": "ペパーミント。ハーバル・ハーブ系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "ハーバル・ハーブ",
+  "vocab_fr": "",
+  "components": "メントール, メントン, 酢酸メンチル, 1,8-シネオール",
+  "sg": 0.9,
+  "defaultDilution": 10.0,
+  "desc_en": "Herbal material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Herbal",
+  "family_detail": "ハーバル・ハーブ（Mentha × piperita・シソ科）",
+  "components_en": "メントール, メントン, 酢酸メンチル, 1,8-シネオール",
+  "source": "master"
+ },
+ {
   "name": "Persian Lime",
   "name_ja": "ペルシャライム",
   "note": "Top",
@@ -5073,7 +5539,27 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Citrus, Green, Dry",
   "family_detail": "Citrus / Green",
-  "components_en": "Linalyl acetate, Linalool, Terpineol"
+  "components_en": "Linalyl acetate, Linalool, Terpineol",
+  "name_ja": "プチグレン"
+ },
+ {
+  "name": "Pink Grapefruit",
+  "name_ja": "ピンクグレープフルーツ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ピンクグレープフルーツ。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.85,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Pink Lotus Absolute",
@@ -5097,6 +5583,25 @@ const BASE_MATERIALS = [
   "confidence": "△"
  },
  {
+  "name": "Pink Pepper",
+  "name_ja": "ピンクペッパー",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ピンクペッパー。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.86,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
   "name": "Pink Pepper corn",
   "note": "Top",
   "family": "スパイシー",
@@ -5111,7 +5616,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Spicy, Fresh, Fruity",
   "family_detail": "Spicy",
-  "components_en": "alpha-Phellandrene, Limonene"
+  "components_en": "alpha-Phellandrene, Limonene",
+  "name_ja": "ピンクペッパー"
  },
  {
   "name": "Pinyon Pine",
@@ -5317,28 +5823,8 @@ const BASE_MATERIALS = [
   "ifra_en": "2% Methyleugenol (and related) restriction",
   "vocab_en": "Floral, Sweet, Spicy",
   "family_detail": "Floral",
-  "components_en": "Citronellol, Geraniol, Phenylethyl alcohol"
- },
- {
-  "name": "Rose Absolute",
-  "name_ja": "ローズ・アブソリュート",
-  "note": "Middle",
-  "family": "フローラル",
-  "desc": "ローズ・アブソリュート。フローラル系の精油（溶剤抽出）。",
-  "ifra": "未確認",
-  "vocab_ja": "フローラル",
-  "vocab_fr": "",
-  "components": "フェニルエチルアルコール, シトロネロール, ゲラニオール, ネロール",
-  "sg": 0.96,
-  "defaultDilution": 10.0,
-  "desc_en": "Floral essential oil, solvent-extracted (absolute).",
-  "ifra_en": "Not verified",
-  "vocab_en": "Floral",
-  "family_detail": "フローラル（Rosa × centifolia・バラ科）",
-  "components_en": "Phenylethyl alcohol, Citronellol, Geraniol, Nerol",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "◎"
+  "components_en": "Citronellol, Geraniol, Phenylethyl alcohol",
+  "name_ja": "ローズ・アブソリュート"
  },
  {
   "name": "Rose de Mai Absolute",
@@ -5397,7 +5883,27 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Herbal, Camphor, Fresh",
   "family_detail": "Aromatic",
-  "components_en": "1,8-Cineole, Camphor, alpha-Pinene"
+  "components_en": "1,8-Cineole, Camphor, alpha-Pinene",
+  "name_ja": "ローズマリー"
+ },
+ {
+  "name": "Rose Otto",
+  "name_ja": "ローズ・オットー",
+  "note": "Middle",
+  "family": "フローラル",
+  "desc": "ローズ・オットー。フローラル系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "フローラル",
+  "vocab_fr": "",
+  "components": "シトロネロール, ゲラニオール, ネロール, ステアロプテン, フェニルエチルアルコール",
+  "sg": 0.86,
+  "defaultDilution": 10.0,
+  "desc_en": "Floral material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Floral",
+  "family_detail": "フローラル（Rosa × damascena・バラ科）",
+  "components_en": "シトロネロール, ゲラニオール, ネロール, ステアロプテン, フェニルエチルアルコール",
+  "source": "master"
  },
  {
   "name": "Rose wood",
@@ -5414,7 +5920,27 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Floral, Sweet",
   "family_detail": "Woody / Floral",
-  "components_en": "Linalool, alpha-Terpineol"
+  "components_en": "Linalool, alpha-Terpineol",
+  "name_ja": "ローズウッド"
+ },
+ {
+  "name": "Rosemary ct. Camphor",
+  "name_ja": "ローズマリー・カンファー",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ローズマリー・カンファー。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.9,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Ruh Khus (Green Vetiver)",
@@ -5452,7 +5978,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Creamy, Milky",
   "family_detail": "Woody",
-  "components_en": "alpha-Santalol, beta-Santalol"
+  "components_en": "alpha-Santalol, beta-Santalol",
+  "name_ja": "サンダルウッド"
  },
  {
   "name": "Sansho (Japanese Pepper)",
@@ -5553,28 +6080,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Marine, Ozonic, Salty",
   "family_detail": "Marine",
-  "components_en": "Dimethyl sulfide, Dictyopterenes"
- },
- {
-  "name": "Seaweed Absolute",
-  "name_ja": "シーウィード・アブソリュート(ヒバマタ)",
-  "note": "Base",
-  "family": "グリーン・フルーティー",
-  "desc": "シーウィード・アブソリュート(ヒバマタ)。マリン/ウッディ系の精油（溶剤抽出）。",
-  "ifra": "未確認",
-  "vocab_ja": "マリン/ウッディ",
-  "vocab_fr": "",
-  "components": "(データ限定)",
-  "sg": 0.96,
-  "defaultDilution": 10.0,
-  "desc_en": "Green/Fruity essential oil, solvent-extracted (absolute).",
-  "ifra_en": "Not verified",
-  "vocab_en": "Green/Fruity",
-  "family_detail": "マリン/ウッディ（Fucus vesiculosus・ヒバマタ科）",
-  "components_en": "(limited data)",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "△"
+  "components_en": "Dimethyl sulfide, Dictyopterenes",
+  "name_ja": "シーウィード(海藻)・アブソリュート"
  },
  {
   "name": "Shikuwasa (Okinawa)",
@@ -5596,6 +6103,25 @@ const BASE_MATERIALS = [
   "source": "mmoon",
   "sg_estimated": true,
   "confidence": "△"
+ },
+ {
+  "name": "Shiso",
+  "name_ja": "シソ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "シソ。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.9,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Siam Wood",
@@ -5675,7 +6201,8 @@ const BASE_MATERIALS = [
   "ifra_en": "2.5% Methyl salicylate restriction",
   "vocab_en": "Woody, Leather, Sweet",
   "family_detail": "Leather / Woody",
-  "components_en": "Methyl salicylate, Betulenol"
+  "components_en": "Methyl salicylate, Betulenol",
+  "name_ja": "シルバーバーチ"
  },
  {
   "name": "Silver Fir",
@@ -5776,7 +6303,27 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Herbal, Camphor, Spicy",
   "family_detail": "Aromatic",
-  "components_en": "Camphor, 1"
+  "components_en": "Camphor, 1",
+  "name_ja": "スパニッシュセージ"
+ },
+ {
+  "name": "Spearmint",
+  "name_ja": "スペアミント",
+  "note": "Top",
+  "family": "ハーバル",
+  "desc": "スペアミント。ハーバル・ハーブ系の精油（水蒸気蒸留）。",
+  "ifra": "未確認",
+  "vocab_ja": "ハーバル・ハーブ",
+  "vocab_fr": "",
+  "components": "カルボン, リモネン, 1,8-シネオール",
+  "sg": 0.93,
+  "defaultDilution": 10.0,
+  "desc_en": "Herbal material, 水蒸気蒸留.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Herbal",
+  "family_detail": "ハーバル・ハーブ（Mentha spicata・シソ科）",
+  "components_en": "カルボン, リモネン, 1,8-シネオール",
+  "source": "master"
  },
  {
   "name": "Spike Lavender",
@@ -5840,6 +6387,25 @@ const BASE_MATERIALS = [
   "source": "mmoon",
   "sg_estimated": true,
   "confidence": "△"
+ },
+ {
+  "name": "Styrax",
+  "name_ja": "スチラックス",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "スチラックス。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 1.1,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Sudachi (Tokushima)",
@@ -5919,7 +6485,8 @@ const BASE_MATERIALS = [
   "ifra_en": "2.5% Methyl salicylate restriction",
   "vocab_en": "Minty, Medicinal, Sweet",
   "family_detail": "Spicy / Minty",
-  "components_en": "Methyl salicylate"
+  "components_en": "Methyl salicylate",
+  "name_ja": "スイートバーチ"
  },
  {
   "name": "Tagetes (Marigold)",
@@ -6020,7 +6587,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Camphor, Medicinal, Fresh",
   "family_detail": "Aromatic",
-  "components_en": "Terpinen-4-ol, gamma-Terpinene, 1"
+  "components_en": "Terpinen-4-ol, gamma-Terpinene, 1",
+  "name_ja": "ティーツリー"
  },
  {
   "name": "Thyme",
@@ -6037,7 +6605,8 @@ const BASE_MATERIALS = [
   "ifra_en": "0.7% Phototoxicity",
   "vocab_en": "Herbal, Spicy, Medicinal",
   "family_detail": "Aromatic / Spicy",
-  "components_en": "Thymol, Carvacrol, Linalool"
+  "components_en": "Thymol, Carvacrol, Linalool",
+  "name_ja": "タイム"
  },
  {
   "name": "Tiare Absolute",
@@ -6059,6 +6628,25 @@ const BASE_MATERIALS = [
   "source": "mmoon",
   "sg_estimated": true,
   "confidence": "△"
+ },
+ {
+  "name": "Timut Pepper",
+  "name_ja": "ティムットペッパー",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ティムットペッパー。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.87,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Tobacco Absolute",
@@ -6117,28 +6705,8 @@ const BASE_MATERIALS = [
   "ifra_en": "1.5% Coumarin restriction",
   "vocab_en": "Balsamic, Sweet, Almond",
   "family_detail": "Balsamic / Sweet",
-  "components_en": "Coumarin"
- },
- {
-  "name": "Tonka Bean Absolute",
-  "name_ja": "トンカビーン・アブソリュート",
-  "note": "Base",
-  "family": "バルサム・レジン",
-  "desc": "トンカビーン・アブソリュート。バルサム系の精油（溶剤抽出）。",
-  "ifra": "未確認",
-  "vocab_ja": "バルサム",
-  "vocab_fr": "",
-  "components": "クマリン, ジヒドロクマリン",
-  "sg": 1.0,
-  "defaultDilution": 10.0,
-  "desc_en": "Balsamic/Resinous essential oil, solvent-extracted (absolute).",
-  "ifra_en": "Not verified",
-  "vocab_en": "Balsamic/Resinous",
-  "family_detail": "バルサム（Dipteryx odorata・マメ科）",
-  "components_en": "Coumarin, Dihydrocoumarin",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "○"
+  "components_en": "Coumarin",
+  "name_ja": "トンカビーン・アブソリュート"
  },
  {
   "name": "Tuberose Abs",
@@ -6155,28 +6723,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Floral, Intense, Lactonic",
   "family_detail": "Floral",
-  "components_en": "Lactones, Methyl anthranilate, Indole"
- },
- {
-  "name": "Tuberose Absolute",
-  "name_ja": "チュベローズ・アブソリュート",
-  "note": "Base",
-  "family": "フローラル",
-  "desc": "チュベローズ・アブソリュート。フローラル系の精油（溶剤抽出）。",
-  "ifra": "未確認",
-  "vocab_ja": "フローラル",
-  "vocab_fr": "",
-  "components": "安息香酸メチル, 安息香酸ベンジル, ゲラニオール, インドール",
-  "sg": 0.96,
-  "defaultDilution": 10.0,
-  "desc_en": "Floral essential oil, solvent-extracted (absolute).",
-  "ifra_en": "Not verified",
-  "vocab_en": "Floral",
-  "family_detail": "フローラル（Polianthes tuberosa・キジカクシ科）",
-  "components_en": "Methyl benzoate, Benzyl benzoate, Geraniol, Indole",
-  "source": "mmoon",
-  "sg_estimated": true,
-  "confidence": "○"
+  "components_en": "Lactones, Methyl anthranilate, Indole",
+  "name_ja": "チュベローズ・アブソリュート"
  },
  {
   "name": "Turmeric",
@@ -6256,7 +6804,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Balsamic, Sweet, Gourmand",
   "family_detail": "Balsamic",
-  "components_en": "Vanillin, Ethylvanillin"
+  "components_en": "Vanillin, Ethylvanillin",
+  "name_ja": "バニラ・オレオレジン"
  },
  {
   "name": "Vanilla Oleoresin 10x",
@@ -6315,7 +6864,27 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Woody, Earthy, Smoky",
   "family_detail": "Woody / Earthy",
-  "components_en": "Vetiverol, Vetivone"
+  "components_en": "Vetiverol, Vetivone",
+  "name_ja": "ベチバー"
+ },
+ {
+  "name": "Vetiver Haiti",
+  "name_ja": "ベチバー・ハイチ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ベチバー・ハイチ。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 1.0,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Violet leaf",
@@ -6332,7 +6901,8 @@ const BASE_MATERIALS = [
   "ifra_en": "No restriction",
   "vocab_en": "Green, Cucumber, Watery",
   "family_detail": "Green",
-  "components_en": "Nonadienal"
+  "components_en": "Nonadienal",
+  "name_ja": "バイオレットリーフ"
  },
  {
   "name": "Violet Leaf Absolute",
@@ -6438,6 +7008,25 @@ const BASE_MATERIALS = [
   "source": "mmoon",
   "sg_estimated": true,
   "confidence": "△"
+ },
+ {
+  "name": "White Grapefruit",
+  "name_ja": "ホワイトグレープフルーツ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "ホワイトグレープフルーツ。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.85,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "White Lotus Absolute",
@@ -6706,7 +7295,8 @@ const BASE_MATERIALS = [
   "ifra_en": "2.5% Methyl salicylate restriction",
   "vocab_en": "Minty, Medicinal, Sharp",
   "family_detail": "Spicy / Minty",
-  "components_en": "Methyl salicylate"
+  "components_en": "Methyl salicylate",
+  "name_ja": "ウィンターグリーン"
  },
  {
   "name": "Winter Savory",
@@ -6807,7 +7397,46 @@ const BASE_MATERIALS = [
   "ifra_en": "0.73% Skin sensitization",
   "vocab_en": "Floral, Sweet, Spicy",
   "family_detail": "Floral",
-  "components_en": "Benzyl acetate, Linalool, Germacrene D"
+  "components_en": "Benzyl acetate, Linalool, Germacrene D",
+  "name_ja": "イランイラン"
+ },
+ {
+  "name": "Ylang Ylang Complete",
+  "name_ja": "イランイラン・コンプリート",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "イランイラン・コンプリート。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.94,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
+ },
+ {
+  "name": "Ylang Ylang Extra",
+  "name_ja": "イランイラン・エクストラ",
+  "note": "Middle",
+  "family": "その他",
+  "desc": "イランイラン・エクストラ。香料。",
+  "ifra": "未確認",
+  "vocab_ja": "",
+  "vocab_fr": "",
+  "components": "",
+  "sg": 0.98,
+  "defaultDilution": 10.0,
+  "desc_en": "Other material.",
+  "ifra_en": "Not verified",
+  "vocab_en": "Other",
+  "family_detail": "",
+  "components_en": "",
+  "source": "master"
  },
  {
   "name": "Yuzu (Kochi)",
