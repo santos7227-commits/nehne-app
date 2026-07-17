@@ -368,6 +368,9 @@ main{
   width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
   color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:14px;
 }
+.search-wrap{position:relative;}
+.search-clear{position:absolute; right:8px; top:50%; transform:translateY(-50%); width:30px; height:30px; border-radius:50%; border:none; background:rgba(255,255,255,.10); color:var(--paper-dim); font-size:15px; line-height:1; cursor:pointer; display:none; align-items:center; justify-content:center;}
+.search-clear.show{display:flex;}
 .quick-add-btn{width:34px; height:34px; border-radius:50%; border:1.5px solid var(--amber); background:transparent; color:var(--amber); font-size:20px; line-height:1; cursor:pointer; flex-shrink:0;}
 .quick-add-btn:active{background:var(--amber); color:var(--bg);}
 .cm-flash{outline:2px solid var(--amber); box-shadow:0 0 0 4px rgba(212,164,76,.25); transition:box-shadow .4s;}
@@ -589,7 +592,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
     <!-- ===== TAB: MATERIALS ===== -->
     <section id="tab-materials">
       <div class="search-row">
-        <input class="search-box" id="matSearch" placeholder="素材名・成分・語彙で検索…">
+        <div class="search-wrap"><input class="search-box" id="matSearch" placeholder="素材名・成分・語彙で検索…"><button class="search-clear" id="matSearchClear" aria-label="クリア">✕</button></div>
       </div>
       <button class="add-ing-btn" id="addCustomMatBtn" style="margin:2px 0 10px;"><span id="addCustomMatBtnLabel">＋ 香料を追加（名前と比重だけでOK）</span></button>
       <div class="chip-row" id="noteChips"></div>
@@ -727,7 +730,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <button class="close-btn" id="pickerCloseBtn">✕</button>
       <div class="sheet-handle"></div>
       <h2 style="margin-bottom:12px;" id="pickerTitle">素材を選ぶ</h2>
-      <input class="search-box" id="pickerSearch" placeholder="検索…" style="margin-bottom:10px;">
+      <div class="search-wrap" style="margin-bottom:10px;"><input class="search-box" id="pickerSearch" placeholder="検索…"><button class="search-clear" id="pickerSearchClear" aria-label="クリア">✕</button></div>
       <div class="chips" id="pickerNoteChips" style="margin-bottom:12px; display:flex; gap:6px; flex-wrap:wrap;"></div>
       <div id="pickerList"></div>
     </div>
@@ -1409,7 +1412,7 @@ function saveCustomMatForm(){
   document.getElementById('cmOverlay').classList.add('hidden');
   /* v1.8: 絞り込みを解除し、追加した香料の位置までスクロールしてハイライト */
   const matSearchEl = document.getElementById('matSearch');
-  if(matSearchEl){ matSearchEl.value=''; }
+  if(matSearchEl){ matSearchEl.value=''; const msc=document.getElementById('matSearchClear'); if(msc) msc.classList.remove('show'); }
   matFilterNote='all'; matFilterFam='all';
   renderMaterials();
   requestAnimationFrame(()=>{
@@ -1910,6 +1913,7 @@ function renderMixList(){
 /* ---------------- Picker (add ingredient modal) ---------------- */
 document.getElementById('addIngBtn').addEventListener('click', ()=>{
   document.getElementById('pickerSearch').value = '';
+  const psc = document.getElementById('pickerSearchClear'); if(psc) psc.classList.remove('show');
   renderPicker();
   document.getElementById('pickerOverlay').classList.remove('hidden');
   pickerFilterNote='all'; buildPickerChips();
@@ -1917,6 +1921,22 @@ document.getElementById('addIngBtn').addEventListener('click', ()=>{
 document.getElementById('pickerCloseBtn').addEventListener('click', ()=>document.getElementById('pickerOverlay').classList.add('hidden'));
 document.getElementById('pickerOverlay').addEventListener('click', (e)=>{ if(e.target.id==='pickerOverlay') e.currentTarget.classList.add('hidden'); });
 document.getElementById('pickerSearch').addEventListener('input', renderPicker);
+
+/* v1.8.4: 検索欄の✕クリアボタン+フォーカス時全選択 */
+function wireSearchClear(inputId, btnId, onChange){
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if(!inp || !btn) return;
+  const sync = ()=> btn.classList.toggle('show', inp.value.length>0);
+  inp.addEventListener('input', sync);
+  inp.addEventListener('focus', ()=>{ if(inp.value) inp.select(); });
+  btn.addEventListener('click', ()=>{
+    inp.value=''; sync(); onChange(); inp.focus();
+  });
+  sync();
+}
+wireSearchClear('matSearch','matSearchClear', renderMaterials);
+wireSearchClear('pickerSearch','pickerSearchClear', renderPicker);
 
 let pickerFilterNote = 'all';
 function buildPickerChips(){
@@ -2526,7 +2546,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.8.3';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.8.4';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
