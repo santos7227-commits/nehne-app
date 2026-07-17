@@ -1935,7 +1935,7 @@ function renderPicker(){
     list = list.filter(m=>noteGroup(m.note)===pickerFilterNote);
   }
   if(q){
-    list = list.filter(m=>[m.name,m.family,m.desc,m.desc_en].join(' ').toLowerCase().includes(q));
+    list = list.filter(m=>[m.name,m.name_ja,m.family,m.desc,m.desc_en,m.vocab_ja,m.vocab_en,m.components,m.components_en].join(' ').toLowerCase().includes(q));
   }
   const wrap = document.getElementById('pickerList');
   wrap.innerHTML = list.map(m=>`
@@ -1943,7 +1943,7 @@ function renderPicker(){
       <div class="mat-head">
         <div>
           <div class="mat-name" style="font-size:13.5px;">${esc(m.name)}</div>
-          <div class="mat-family" style="font-size:11px;">${esc(famLabel(m.family))}</div>
+          <div class="mat-family" style="font-size:11px;">${m.name_ja ? esc(m.name_ja)+' ・ ' : ''}${esc(famLabel(m.family))}</div>
         </div>
         <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
       </div>
@@ -2526,7 +2526,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.8.2';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.8.3';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
