@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nehne調香ノート — インストール方法</title>
+<meta name="description" content="nehne調香ノートをスマートフォンのホーム画面に追加する方法。iPhone（Safari）とAndroid（Chrome）の手順をご案内します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --aqua-mist:#ECF5F3;
+    --teal-ink:#123D3A;
+    --turquoise:#2E9E96;
+    --turquoise-deep:#19726C;
+    --gold:#C2A14D;
+    --gold-deep:#A8863A;
+    --card:#FFFFFF;
+    --line:#CDE2DE;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Zen Kaku Gothic New',-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN',sans-serif;
+    background:var(--aqua-mist);
+    color:var(--teal-ink);
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px}
+
+  /* ---------- header ---------- */
+  header{padding:56px 0 40px;text-align:center}
+  .brand{
+    font-family:'Shippori Mincho',serif;
+    font-size:14px;letter-spacing:.35em;
+    color:var(--turquoise-deep);
+    text-transform:lowercase;
+  }
+  h1{
+    font-family:'Shippori Mincho',serif;
+    font-weight:600;
+    font-size:clamp(26px,7vw,34px);
+    letter-spacing:.06em;
+    margin-top:10px;
+  }
+  .lede{
+    margin-top:16px;font-size:15px;color:#3E615D;
+  }
+  .lede strong{color:var(--teal-ink)}
+
+  /* ---------- OS switch ---------- */
+  .switch{
+    display:flex;gap:8px;justify-content:center;margin-top:28px;
+  }
+  .switch a{
+    text-decoration:none;
+    font-size:14px;font-weight:700;
+    padding:10px 22px;border-radius:999px;
+    border:1.5px solid var(--turquoise-deep);
+    color:var(--turquoise-deep);
+    background:transparent;
+    transition:background .2s,color .2s;
+  }
+  .switch a:hover,.switch a:focus-visible{background:var(--turquoise-deep);color:#fff}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+  /* ---------- section ---------- */
+  section{padding:36px 0 8px}
+  .os-label{
+    display:flex;align-items:baseline;gap:12px;
+    margin-bottom:6px;
+  }
+  .os-label h2{
+    font-family:'Shippori Mincho',serif;
+    font-weight:600;font-size:24px;letter-spacing:.08em;
+  }
+  .os-label span{font-size:13px;color:#557B76}
+  .browser-note{
+    font-size:13.5px;
+    background:#DDEDEA;
+    border-left:3px solid var(--turquoise);
+    padding:10px 14px;border-radius:0 8px 8px 0;
+    margin:14px 0 26px;
+  }
+
+  /* ---------- steps: dilution-scale rail ---------- */
+  .steps{position:relative;padding-left:44px}
+  .steps::before{
+    content:"";position:absolute;left:15px;top:8px;bottom:8px;
+    width:2px;background:var(--line);
+  }
+  .step{position:relative;margin-bottom:22px}
+  .step:last-child{margin-bottom:8px}
+  .tube{
+    position:absolute;left:-44px;top:2px;
+    width:32px;height:32px;border-radius:10px 10px 14px 14px;
+    background:linear-gradient(180deg,#fff 0%,#E4F2EF 100%);
+    border:1.5px solid var(--turquoise);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Shippori Mincho',serif;font-weight:600;
+    font-size:15px;color:var(--turquoise-deep);
+  }
+  .step-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+    box-shadow:0 1px 4px rgba(18,61,58,.05);
+  }
+  .step-card h3{font-size:15.5px;font-weight:700;margin-bottom:4px}
+  .step-card p{font-size:14px;color:#3E615D}
+  .icon-inline{
+    display:inline-flex;align-items:center;justify-content:center;
+    vertical-align:-6px;
+    width:24px;height:24px;border-radius:6px;
+    background:#EAF4F2;border:1px solid var(--line);
+    margin:0 3px;
+  }
+  .icon-inline svg{width:15px;height:15px;stroke:var(--turquoise-deep)}
+  kbd{
+    font-family:inherit;font-size:13px;font-weight:700;
+    background:#F2F8F6;border:1px solid var(--line);
+    border-radius:6px;padding:1px 8px;white-space:nowrap;
+  }
+
+  /* ---------- done card ---------- */
+  .done{
+    margin-top:26px;
+    background:linear-gradient(135deg,#144642 0%,#19726C 100%);
+    color:#EAF6F4;
+    border-radius:16px;
+    padding:22px 22px 24px;
+  }
+  .done h3{
+    font-family:'Shippori Mincho',serif;font-weight:600;
+    font-size:17px;letter-spacing:.06em;margin-bottom:8px;color:#fff;
+  }
+  .done p{font-size:13.5px;line-height:1.9}
+  .done p + p{margin-top:6px}
+
+  /* ---------- CTA ---------- */
+  .cta{padding:44px 0 12px;text-align:center}
+  .btn-gold{
+    display:block;width:100%;
+    text-align:center;text-decoration:none;
+    font-size:16px;font-weight:700;letter-spacing:.04em;
+    color:#fff;
+    background:linear-gradient(180deg,var(--gold) 0%,var(--gold-deep) 100%);
+    border-radius:12px;
+    padding:16px 0;
+    box-shadow:0 2px 8px rgba(168,134,58,.35);
+    transition:transform .15s,box-shadow .15s;
+  }
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(168,134,58,.4)}
+  .cta small{display:block;margin-top:12px;font-size:12.5px;color:#557B76}
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:40px;padding:26px 0 40px;
+    border-top:1px solid var(--line);
+    text-align:center;
+  }
+  footer p{font-size:12.5px;color:#557B76;letter-spacing:.05em}
+  footer .brand{margin-bottom:6px}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .btn-gold{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <p class="brand">nehne</p>
+  <h1>調香ノートを、<br>ホーム画面へ。</h1>
+  <p class="lede">nehne調香ノートは<strong>アプリストア不要</strong>で使えるWebアプリです。<br>お使いのスマートフォンに合わせて、下の手順で追加してください。</p>
+  <nav class="switch" aria-label="機種を選ぶ">
+    <a href="#iphone">iPhone</a>
+    <a href="#android">Android</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ iPhone ============ -->
+  <section id="iphone" aria-labelledby="iphone-h">
+    <div class="os-label">
+      <h2 id="iphone-h">iPhone</h2><span>Safariを使います</span>
+    </div>
+    <p class="browser-note">ChromeやLINE内ブラウザからは追加できません。必ず<strong>Safari</strong>でこのページ（またはアプリのURL）を開いてください。</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="tube" aria-hidden="true">1</div>
+        <div class="step-card">
+          <h3>Safariでアプリを開く</h3>
+          <p>このページ下部の「アプリを開く」ボタンをタップします。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="tube" aria-hidden="true">2</div>
+        <div class="step-card">
+          <h3>共有ボタンをタップ</h3>
+          <p>画面下中央の
+            <span class="icon-inline" aria-label="共有アイコン"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><rect x="4" y="11" width="16" height="10" rx="2"/></svg></span>
+            （四角から矢印が出たマーク）をタップします。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="tube" aria-hidden="true">3</div>
+        <div class="step-card">
+          <h3>「ホーム画面に追加」を選ぶ</h3>
+          <p>メニューを下にスクロールして <kbd>ホーム画面に追加</kbd> → 右上の <kbd>追加</kbd> をタップ。これで完了です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Android ============ -->
+  <section id="android" aria-labelledby="android-h">
+    <div class="os-label">
+      <h2 id="android-h">Android</h2><span>Chromeを使います</span>
+    </div>
+    <p class="browser-note">Google Playでの配信も準備中です。それまでは下の手順ですぐにお使いいただけます。</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="tube" aria-hidden="true">1</div>
+        <div class="step-card">
+          <h3>Chromeでアプリを開く</h3>
+          <p>このページ下部の「アプリを開く」ボタンをタップします。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="tube" aria-hidden="true">2</div>
+        <div class="step-card">
+          <h3>メニュー（⋮）をタップ</h3>
+          <p>画面右上の縦3点メニューを開きます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="tube" aria-hidden="true">3</div>
+        <div class="step-card">
+          <h3>「アプリをインストール」を選ぶ</h3>
+          <p><kbd>アプリをインストール</kbd>（機種により <kbd>ホーム画面に追加</kbd>）→ <kbd>インストール</kbd> をタップ。これで完了です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ after install ============ -->
+  <div class="done">
+    <h3>追加が終わったら</h3>
+    <p>ホーム画面のアイコンから、いつでもアプリとして起動できます。オフラインでも動作し、処方データはお使いの端末内に保存されます。</p>
+    <p>機種変更の際は、アプリ内「マイフォーミュラ」のバックアップ機能をご利用ください。</p>
+  </div>
+
+  <!-- ============ CTA ============ -->
+  <div class="cta">
+    <a class="btn-gold" href="https://santos7227-commits.github.io/nehne-app/">アプリを開く</a>
+    <small>無料・登録不要でお使いいただけます</small>
+  </div>
+
+</main>
+
+<footer class="wrap">
+  <p class="brand">nehne</p>
+  <p>0.1mLからはじめる、あなたの調香ノート。</p>
+</footer>
+
+</body>
+</html>
