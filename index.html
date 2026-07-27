@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>nehne調香ノート</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -176,7 +176,12 @@ main{
   font-weight:700; box-shadow:0 0 0 2px var(--amber) inset; font-weight:700;}
 
 /* ---------- Material card ---------- */
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}
+.mat-card-wrap{position:relative;}
 .mat-card{
+  display:block; width:100%; text-align:left;
+  font:inherit; color:inherit; -webkit-appearance:none; appearance:none;
+
   background:var(--ink-800);
   border:1px solid var(--line);
   border-radius:var(--radius);
@@ -186,7 +191,7 @@ main{
   transition:border-color .15s;
 }
 .mat-card:active{border-color:var(--amber);}
-.mat-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+.mat-head{ padding-right:40px;display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
 .mat-name{font-weight:700; font-size:15px; color:var(--paper);}
 .mat-family{font-size:11.5px; color:var(--amber-soft); margin-top:2px;}
 .note-tag{
@@ -371,7 +376,14 @@ main{
 .search-wrap{position:relative;}
 .search-clear{position:absolute; right:8px; top:50%; transform:translateY(-50%); width:30px; height:30px; border-radius:50%; border:none; background:rgba(255,255,255,.10); color:var(--paper-dim); font-size:15px; line-height:1; cursor:pointer; display:none; align-items:center; justify-content:center;}
 .search-clear.show{display:flex;}
-.quick-add-btn{width:34px; height:34px; border-radius:50%; border:1.5px solid var(--amber); background:transparent; color:var(--amber); font-size:20px; line-height:1; cursor:pointer; flex-shrink:0;}
+.quick-add-btn{position:absolute; top:13px; right:12px; z-index:2; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--amber); background:transparent; color:var(--amber); font-size:20px; line-height:1; cursor:pointer; flex-shrink:0;}
+.quick-add-btn::after{content:""; position:absolute; top:-6px; left:-6px; right:-6px; bottom:-6px;}
+.search-clear::after{content:""; position:absolute; top:-8px; left:-8px; right:-8px; bottom:-8px;}
+.ing-remove::after{content:""; position:absolute; top:-9px; left:-9px; right:-9px; bottom:-9px;}
+.ing-remove{position:relative;}
+.mat-card:focus-visible, .quick-add-btn:focus-visible, .chip:focus-visible, .nav-btn:focus-visible, .search-clear:focus-visible{
+  outline:3px solid var(--amber); outline-offset:2px;
+}
 .quick-add-btn:active{background:var(--amber); color:var(--bg);}
 .cm-flash{outline:2px solid var(--amber); box-shadow:0 0 0 4px rgba(212,164,76,.25); transition:box-shadow .4s;}
 .custom-badge{
@@ -592,7 +604,8 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
     <!-- ===== TAB: MATERIALS ===== -->
     <section id="tab-materials">
       <div class="search-row">
-        <div class="search-wrap"><input class="search-box" id="matSearch" placeholder="素材名・成分・語彙で検索…"><button class="search-clear" id="matSearchClear" aria-label="クリア">✕</button></div>
+        <div class="search-wrap"><input class="search-box" id="matSearch" placeholder="素材名・成分・語彙で検索…"><button type="button" class="search-clear" id="matSearchClear" aria-label="検索をクリア">✕</button></div>
+        <div id="matCount" role="status" aria-live="polite" class="sr-only"></div>
       </div>
       <button class="add-ing-btn" id="addCustomMatBtn" style="margin:2px 0 10px;"><span id="addCustomMatBtnLabel">＋ 香料を追加（名前と比重だけでOK）</span></button>
       <div class="chip-row" id="noteChips"></div>
@@ -630,11 +643,11 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         </div>
         <div class="calc-inputs">
           <div class="calc-field" id="calcModeFieldWrap">
-            <label id="targetLabel">出来上がり総量</label>
+            <label id="targetLabel" for="targetWeight">出来上がり総量</label>
             <input type="number" id="targetWeight" value="100" min="0" step="1">
           </div>
           <div class="calc-field">
-            <label id="targetUnitLabel">単位</label>
+            <label id="targetUnitLabel" for="targetUnitDisplay">単位</label>
             <input value="μl" id="targetUnitDisplay" disabled style="opacity:.6">
           </div>
         </div>
@@ -656,11 +669,11 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <div class="builder-card">
         <div class="calc-inputs">
           <div class="calc-field">
-            <label id="concPctLabel">目標賦香率（%）</label>
+            <label id="concPctLabel" for="concPct">目標賦香率（%）</label>
             <input type="number" id="concPct" value="10" min="0.1" step="0.5">
           </div>
           <div class="calc-field">
-            <label id="finalVolLabel">仕上げ総量（ml）</label>
+            <label id="finalVolLabel" for="finalVol">仕上げ総量（ml）</label>
             <input type="number" id="finalVol" value="50" min="1" step="1">
           </div>
         </div>
@@ -709,15 +722,15 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 
   </main>
 
-  <div class="overlay hidden" id="matOverlay">
+  <div class="overlay hidden" id="matOverlay" role="dialog" aria-modal="true" aria-label="素材の詳細">
     <div class="sheet" style="position:relative;">
-      <button class="close-btn" id="matCloseBtn">✕</button>
+      <button type="button" class="close-btn" id="matCloseBtn" aria-label="閉じる">✕</button>
       <div class="sheet-handle"></div>
       <div id="matDetail"></div>
     </div>
   </div>
 
-  <div class="overlay hidden" id="cmOverlay">
+  <div class="overlay hidden" id="cmOverlay" role="dialog" aria-modal="true" aria-label="香料を追加">
     <div class="sheet" style="position:relative;">
       <button class="close-btn" id="cmCloseBtn">✕</button>
       <div class="sheet-handle"></div>
@@ -725,7 +738,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
     </div>
   </div>
 
-  <div class="overlay hidden" id="pickerOverlay">
+  <div class="overlay hidden" id="pickerOverlay" role="dialog" aria-modal="true" aria-label="素材を選ぶ">
     <div class="sheet" style="position:relative; max-height:calc(80vh / var(--appzoom, 1));">
       <button class="close-btn" id="pickerCloseBtn">✕</button>
       <div class="sheet-handle"></div>
@@ -761,7 +774,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- ===== DISPLAY SETTINGS SHEET ===== -->
   <div class="overlay hidden" id="settingsOverlay">
@@ -878,7 +891,7 @@ const STR = {
     mat_desc_label:'香りの特徴', ifra_label:'安全基準・IFRA', vocab_ja_label:'日本語語彙', vocab_fr_label:'仏語/英語語彙',
     components_label:'代表成分', default_dilution_label:'デフォルト希釈率', sg_label:'比重（SG）',
     add_custom_btn:'＋ 香料を追加（名前と比重だけでOK）',
-    custom_badge:'カスタム',
+    custom_badge:'カスタム', aria_add_suffix:'を配合に追加', aria_remove_suffix:'を配合から削除', aria_ifra_restricted:'IFRA制限あり', aria_ifra_ok:'IFRA制限なし',
     cm_title_add:'香料を追加', cm_title_edit:'香料を編集',
     cm_name_label:'香料名', cm_name_ph:'例：Yuzu Kochi',
     cm_simple_hint:'名前と比重だけで登録できます。残りはアプリが自動で補完します（あとから編集OK）。細かく設定したいときは「詳細をカスタマイズ」を開いてください。',
@@ -944,7 +957,7 @@ const STR = {
     mat_desc_label:'Scent character', ifra_label:'Safety / IFRA', vocab_ja_label:'Descriptors (JP)', vocab_fr_label:'Descriptors (FR/EN)',
     components_label:'Representative components', default_dilution_label:'Default dilution rate', sg_label:'Specific gravity (SG)',
     add_custom_btn:'+ Add material (name & SG only)',
-    custom_badge:'CUSTOM',
+    custom_badge:'CUSTOM', aria_add_suffix:', add to formula', aria_remove_suffix:', remove from formula', aria_ifra_restricted:'IFRA restricted', aria_ifra_ok:'IFRA no restriction',
     cm_title_add:'Add material', cm_title_edit:'Edit material',
     cm_name_label:'Material name', cm_name_ph:'e.g. Yuzu Kochi',
     cm_simple_hint:'Just enter a name and specific gravity — the app fills in the rest (editable anytime). Open "Customize details" for full control.',
@@ -1090,6 +1103,30 @@ function noteGroup(note){
   if(n.startsWith('Base')||n.startsWith('ベース')) return 'base';
   return 'other';
 }
+
+/* v1.8.5: モーダルのフォーカス管理（スクリーンリーダー・キーボード対応） */
+let __lastFocus = null;
+function openOverlay(id){
+  __lastFocus = document.activeElement;
+  const ov = document.getElementById(id);
+  ov.classList.remove('hidden');
+  document.getElementById('main').setAttribute('aria-hidden','true');
+  requestAnimationFrame(()=>{
+    const target = ov.querySelector('h2, h3, input, button');
+    if(target){ if(!target.hasAttribute('tabindex') && /^H[23]$/.test(target.tagName)) target.setAttribute('tabindex','-1'); target.focus(); }
+  });
+}
+function closeOverlay(id){
+  document.getElementById(id).classList.add('hidden');
+  document.getElementById('main').removeAttribute('aria-hidden');
+  if(__lastFocus && document.body.contains(__lastFocus)){ __lastFocus.focus(); }
+  __lastFocus = null;
+}
+function cardAria(m, ifra){
+  const ja = m.name_ja ? '、'+m.name_ja : '';
+  const risk = isRestricted(m.ifra) ? t('aria_ifra_restricted') : t('aria_ifra_ok');
+  return `${m.name}${ja}、${famLabel(m.family)}、${m.note}、${risk}: ${ifra}`;
+}
 function isRestricted(ifra){
   if(!ifra) return false;
   const s = String(ifra);
@@ -1110,8 +1147,9 @@ function esc(s){ return (s===undefined||s===null) ? '' : String(s); }
 /* ---------------- Tabs ---------------- */
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-current','false'); });
     btn.classList.add('active');
+    btn.setAttribute('aria-current','page');
     const tab = btn.dataset.tab;
     ['materials','builder','library','saved'].forEach(tabName=>{
       document.getElementById('tab-'+tabName).classList.toggle('hidden', tabName!==tab);
@@ -1182,12 +1220,16 @@ function renderMaterials(){
     return;
   }
   const isEn = currentLang==='en';
+  wrap.setAttribute('role','list');
+  const cnt = document.getElementById('matCount');
+  if(cnt) cnt.textContent = currentLang==='ja' ? `${list.length}件の素材` : `${list.length} materials`;
   wrap.innerHTML = list.map(m=>{
     const desc = isEn ? (m.desc_en||m.desc) : m.desc;
     const vocab = isEn ? (m.vocab_en||m.vocab_ja) : m.vocab_ja;
     const ifra = isEn ? (m.ifra_en||m.ifra) : m.ifra;
     return `
-    <div class="mat-card" data-name="${esc(m.name)}">
+    <div class="mat-card-wrap" role="listitem">
+    <button type="button" class="mat-card" data-name="${esc(m.name)}" aria-label="${esc(cardAria(m, ifra))}">
       <div class="mat-head">
         <div>
           <div class="mat-name">${esc(m.name)}</div>
@@ -1195,12 +1237,13 @@ function renderMaterials(){
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
           <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
-          <button class="quick-add-btn" data-qadd="${esc(m.name)}" title="配合に追加">＋</button>
         </div>
       </div>
       <div class="mat-desc">${esc(desc)}</div>
       <div class="mat-vocab">${(vocab||'').split(/[、,]/).filter(Boolean).map(v=>`<span class="vocab-pill">${esc(v.trim())}</span>`).join('')}</div>
       ${isRestricted(m.ifra) ? `<div class="ifra-warn">⚠ IFRA: ${esc(ifra)}</div>` : `<div class="ifra-ok">✓ IFRA: ${esc(ifra)}</div>`}
+    </button>
+    <button type="button" class="quick-add-btn" data-qadd="${esc(m.name)}" aria-label="${esc(m.name)}${esc(t('aria_add_suffix'))}">＋</button>
     </div>
   `;}).join('');
   wrap.querySelectorAll('.mat-card').forEach(c=>c.addEventListener('click', ()=>openMaterialDetail(c.dataset.name)));
@@ -1251,12 +1294,12 @@ function openMaterialDetail(name){
   `;
   document.getElementById('addFromDetailBtn').addEventListener('click', ()=>{
     addIngredient(m.name);
-    document.getElementById('matOverlay').classList.add('hidden');
+    closeOverlay('matOverlay');
     toast(m.name + t('toast_added_suffix'));
   });
   if(m.custom){
     document.getElementById('editCustomBtn').addEventListener('click', ()=>{
-      document.getElementById('matOverlay').classList.add('hidden');
+      closeOverlay('matOverlay');
       openCustomMatForm(m.name);
     });
     document.getElementById('deleteCustomBtn').addEventListener('click', ()=>{
@@ -1264,12 +1307,12 @@ function openMaterialDetail(name){
       CUSTOM_MATERIALS = CUSTOM_MATERIALS.filter(x=>x.name!==m.name);
       if(persistCustomMaterials()){
         refreshMaterialsData();
-        document.getElementById('matOverlay').classList.add('hidden');
+        closeOverlay('matOverlay');
         toast(t('toast_cm_deleted'));
       }
     });
   }
-  document.getElementById('matOverlay').classList.remove('hidden');
+  openOverlay('matOverlay');
 }
 /* ---------------- Custom material add / edit ---------------- */
 const FAMILY_GUESS = [
@@ -1306,44 +1349,44 @@ function openCustomMatForm(editName){
     <h2>${esc(m ? t('cm_title_edit') : t('cm_title_add'))}</h2>
     <p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:4px 0 14px;">${esc(t('cm_simple_hint'))}</p>
     <div class="calc-field" style="margin-bottom:12px;">
-      <label>${esc(t('cm_name_label'))} *</label>
+      <label for="cmName">${esc(t('cm_name_label'))} *</label>
       <input id="cmName" list="cmNameList" value="${esc(m?m.name:'')}" ${m?'disabled style="opacity:.6"':''} placeholder="${esc(t('cm_name_ph'))}">
       <datalist id="cmNameList">${MATERIALS.map(x=>`<option value="${esc(x.name)}">${esc(x.name_ja||'')}</option>`).join('')}</datalist>
       <div id="cmNameHint" style="font-size:12px; color:var(--paper-dim); margin-top:4px;"></div>
     </div>
     <div class="calc-field" style="margin-bottom:12px;">
-      <label>${esc(t('sg_label'))} *</label>
+      <label for="cmSg">${esc(t('sg_label'))} *</label>
       <input id="cmSg" type="number" step="0.001" min="0.1" max="2" value="${esc(m?m.sg:'1.00')}">
     </div>
     <details class="help-details" ${m?'open':''} style="margin-top:4px;">
       <summary>${esc(t('cm_details_summary'))}</summary>
       <div class="calc-field" style="margin:12px 0;">
-        <label>${esc(t('cm_note_label'))}</label>
+        <label for="cmNote">${esc(t('cm_note_label'))}</label>
         <select id="cmNote">${['Top','Middle','Base','-'].map(n=>`<option ${m&&m.note===n?'selected':''}>${n}</option>`).join('')}</select>
       </div>
       <div class="calc-field" style="margin-bottom:12px;">
-        <label>${esc(t('cm_family_label'))}</label>
+        <label for="cmFamily">${esc(t('cm_family_label'))}</label>
         <input id="cmFamily" list="cmFamList" value="${esc(m?m.family:'')}" placeholder="${esc(t('cm_family_ph'))}">
         <datalist id="cmFamList">${famList.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
       </div>
       <div class="calc-field" style="margin-bottom:12px;">
-        <label>${esc(t('default_dilution_label'))} (%)</label>
+        <label for="cmDil">${esc(t('default_dilution_label'))} (%)</label>
         <input id="cmDil" type="number" step="0.5" min="0.1" max="100" value="${esc(m?m.defaultDilution:10)}">
       </div>
       <div class="calc-field" style="margin-bottom:12px;">
-        <label>${esc(t('mat_desc_label'))}</label>
+        <label for="cmDesc">${esc(t('mat_desc_label'))}</label>
         <input id="cmDesc" value="${esc(m?m.desc:'')}" placeholder="${esc(t('cm_desc_ph'))}">
       </div>
       <div class="calc-field" style="margin-bottom:12px;">
-        <label>${esc(t('vocab_ja_label'))}</label>
+        <label for="cmVocab">${esc(t('vocab_ja_label'))}</label>
         <input id="cmVocab" value="${esc(m?m.vocab_ja:'')}" placeholder="${esc(t('cm_vocab_ph'))}">
       </div>
       <div class="calc-field" style="margin-bottom:12px;">
-        <label>${esc(t('ifra_label'))}</label>
+        <label for="cmIfra">${esc(t('ifra_label'))}</label>
         <input id="cmIfra" value="${esc(m?m.ifra:'')}" placeholder="${esc(t('cm_ifra_ph'))}">
       </div>
       <div class="calc-field" style="margin-bottom:12px;">
-        <label>${esc(t('components_label'))}</label>
+        <label for="cmComp">${esc(t('components_label'))}</label>
         <input id="cmComp" value="${esc(m?m.components:'')}">
       </div>
     </details>
@@ -1380,7 +1423,7 @@ function openCustomMatForm(editName){
     const sgEl2 = document.getElementById('cmSg');
     if(sgEl2) sgEl2.addEventListener('input', e=>{ e.target.dataset.touched='1'; });
   }
-  document.getElementById('cmOverlay').classList.remove('hidden');
+  openOverlay('cmOverlay');
 }
 
 function saveCustomMatForm(){
@@ -1409,7 +1452,7 @@ function saveCustomMatForm(){
   }
   if(!persistCustomMaterials()) return;
   refreshMaterialsData();
-  document.getElementById('cmOverlay').classList.add('hidden');
+  closeOverlay('cmOverlay');
   /* v1.8: 絞り込みを解除し、追加した香料の位置までスクロールしてハイライト */
   const matSearchEl = document.getElementById('matSearch');
   if(matSearchEl){ matSearchEl.value=''; const msc=document.getElementById('matSearchClear'); if(msc) msc.classList.remove('show'); }
@@ -1437,11 +1480,11 @@ function refreshMaterialsData(){
 }
 
 document.getElementById('addCustomMatBtn').addEventListener('click', ()=>openCustomMatForm());
-document.getElementById('cmCloseBtn').addEventListener('click', ()=>document.getElementById('cmOverlay').classList.add('hidden'));
-document.getElementById('cmOverlay').addEventListener('click', (e)=>{ if(e.target.id==='cmOverlay') e.currentTarget.classList.add('hidden'); });
+document.getElementById('cmCloseBtn').addEventListener('click', ()=>closeOverlay('cmOverlay'));
+document.getElementById('cmOverlay').addEventListener('click', (e)=>{ if(e.target.id==='cmOverlay') closeOverlay(e.currentTarget.id); });
 
-document.getElementById('matCloseBtn').addEventListener('click', ()=>document.getElementById('matOverlay').classList.add('hidden'));
-document.getElementById('matOverlay').addEventListener('click', (e)=>{ if(e.target.id==='matOverlay') e.currentTarget.classList.add('hidden'); });
+document.getElementById('matCloseBtn').addEventListener('click', ()=>closeOverlay('matOverlay'));
+document.getElementById('matOverlay').addEventListener('click', (e)=>{ if(e.target.id==='matOverlay') closeOverlay(e.currentTarget.id); });
 
 /* ---------------- Builder tab ---------------- */
 let builderIngredients = []; // {name, parts, note, dilution}
@@ -1469,20 +1512,20 @@ function renderBuilder(){
             <div class="ing-name">${esc(ingName(ing))}</div>
             <div class="ing-note"><span class="note-tag ${noteClass(ing.note)}">${esc(fmlNote(ing.note))}</span></div>
           </div>
-          <button class="ing-remove" data-i="${i}">✕</button>
+          <button type="button" class="ing-remove" data-i="${i}" aria-label="${esc(ing.name)}${esc(t('aria_remove_suffix'))}">✕</button>
         </div>
         <div class="ing-controls">
           <div class="ing-field">
-            <label>${esc(t('parts_label'))}</label>
-            <input class="ing-parts" type="number" min="0" step="0.1" value="${ing.parts}" data-i="${i}">
+            <label for="ingParts${i}">${esc(t('parts_label'))}</label>
+            <input id="ingParts${i}" aria-label="${esc(ing.name)} ${esc(t('parts_label'))}" class="ing-parts" type="number" min="0" step="0.1" value="${ing.parts}" data-i="${i}">
           </div>
           <div class="ing-field">
-            <label>${esc(t('dilution_pct_label'))}</label>
-            <input class="ing-dilution" type="number" min="1" max="100" step="1" value="${ing.dilution}" data-i="${i}">
+            <label for="ingDil${i}">${esc(t('dilution_pct_label'))}</label>
+            <input id="ingDil${i}" aria-label="${esc(ing.name)} ${esc(t('dilution_pct_label'))}" class="ing-dilution" type="number" min="1" max="100" step="1" value="${ing.dilution}" data-i="${i}">
           </div>
           <div class="ing-field ing-amount-display">
-            <label>${esc(t('amount_estimate_label'))}</label>
-            <div class="ing-amount" data-amount-i="${i}">—</div>
+            <label id="ingAmtL${i}">${esc(t('amount_estimate_label'))}</label>
+            <div class="ing-amount" role="status" aria-labelledby="ingAmtL${i}" data-amount-i="${i}">—</div>
           </div>
         </div>
       </div>
@@ -1915,11 +1958,11 @@ document.getElementById('addIngBtn').addEventListener('click', ()=>{
   document.getElementById('pickerSearch').value = '';
   const psc = document.getElementById('pickerSearchClear'); if(psc) psc.classList.remove('show');
   renderPicker();
-  document.getElementById('pickerOverlay').classList.remove('hidden');
+  openOverlay('pickerOverlay');
   pickerFilterNote='all'; buildPickerChips();
 });
-document.getElementById('pickerCloseBtn').addEventListener('click', ()=>document.getElementById('pickerOverlay').classList.add('hidden'));
-document.getElementById('pickerOverlay').addEventListener('click', (e)=>{ if(e.target.id==='pickerOverlay') e.currentTarget.classList.add('hidden'); });
+document.getElementById('pickerCloseBtn').addEventListener('click', ()=>closeOverlay('pickerOverlay'));
+document.getElementById('pickerOverlay').addEventListener('click', (e)=>{ if(e.target.id==='pickerOverlay') closeOverlay(e.currentTarget.id); });
 document.getElementById('pickerSearch').addEventListener('input', renderPicker);
 
 /* v1.8.4: 検索欄の✕クリアボタン+フォーカス時全選択 */
@@ -1959,7 +2002,7 @@ function renderPicker(){
   }
   const wrap = document.getElementById('pickerList');
   wrap.innerHTML = list.map(m=>`
-    <div class="mat-card" style="padding:11px 12px; margin-bottom:8px;" data-name="${esc(m.name)}">
+    <button type="button" class="mat-card" style="padding:11px 12px; margin-bottom:8px;" data-name="${esc(m.name)}">
       <div class="mat-head">
         <div>
           <div class="mat-name" style="font-size:13.5px;">${esc(m.name)}</div>
@@ -1971,7 +2014,7 @@ function renderPicker(){
   `).join('') || `<div class="empty-state"><p>${esc(t('not_found'))}</p></div>`;
   wrap.querySelectorAll('.mat-card').forEach(c=>c.addEventListener('click', ()=>{
     addIngredient(c.dataset.name);
-    document.getElementById('pickerOverlay').classList.add('hidden');
+    closeOverlay('pickerOverlay');
   }));
 }
 
@@ -1992,7 +2035,7 @@ function renderLibrary(){
         <button class="btn btn-secondary btn-sm" style="flex:1;" data-detail="${i}">${esc(t('detail_btn'))}</button>
         <button class="btn btn-primary btn-sm" style="flex:1;" data-load="${i}">${esc(t('load_btn'))}</button>
       </div>
-    </div>
+    </button>
   `).join('');
   wrap.querySelectorAll('[data-detail]').forEach(b=>b.addEventListener('click', ()=>openLibDetail(parseInt(b.dataset.detail))));
   wrap.querySelectorAll('[data-load]').forEach(b=>b.addEventListener('click', ()=>loadLibIntoBuilder(parseInt(b.dataset.load))));
@@ -2025,7 +2068,7 @@ function openLibDetail(i){
   document.getElementById('libOverlay').classList.remove('hidden');
 }
 document.getElementById('libCloseBtn').addEventListener('click', ()=>document.getElementById('libOverlay').classList.add('hidden'));
-document.getElementById('libOverlay').addEventListener('click', (e)=>{ if(e.target.id==='libOverlay') e.currentTarget.classList.add('hidden'); });
+document.getElementById('libOverlay').addEventListener('click', (e)=>{ if(e.target.id==='libOverlay') closeOverlay(e.currentTarget.id); });
 
 function loadLibIntoBuilder(i){
   const f = FORMULA_LIB[i];
@@ -2546,7 +2589,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.8.4';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.8.5';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
