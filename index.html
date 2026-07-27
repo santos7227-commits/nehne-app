@@ -1104,6 +1104,23 @@ function noteGroup(note){
   return 'other';
 }
 
+
+/* v1.8.6: Escapeで閉じる／モーダル内でフォーカスを循環させる（キーボード操作の確保） */
+document.addEventListener('keydown', (e)=>{
+  const open = ['pickerOverlay','cmOverlay','matOverlay'].map(id=>document.getElementById(id))
+                 .filter(el=>el && !el.classList.contains('hidden'));
+  if(!open.length) return;
+  const top = open[0];
+  if(e.key === 'Escape'){ e.preventDefault(); closeOverlay(top.id); return; }
+  if(e.key === 'Tab'){
+    const f = [...top.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+              .filter(el=>!el.disabled && el.offsetParent !== null);
+    if(!f.length) return;
+    const first = f[0], last = f[f.length-1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+});
 /* v1.8.5: モーダルのフォーカス管理（スクリーンリーダー・キーボード対応） */
 let __lastFocus = null;
 function openOverlay(id){
@@ -2589,7 +2606,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.8.5';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.8.6';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
