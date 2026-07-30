@@ -35,6 +35,12 @@
   --base-color:#93b598;
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+/* v1.8.7: 文字サイズの基準。スライダーはこの値を変える（旧: body zoom）*/
+html{
+  font-size:16px;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
 html,body{margin:0;padding:0;}
 body{
   background:
@@ -76,14 +82,14 @@ header.top{
 .lang-toggle{
   margin-left:auto; flex:0 0 auto;
   background:var(--ink-700); border:1px solid var(--line-strong); color:var(--amber-soft);
-  font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:0.04em;
+  font-family:"JetBrains Mono",monospace; font-size:0.6875rem; font-weight:700; letter-spacing:0.04em;
   padding:6px 11px; border-radius:100px;
 }
 .brand svg{flex:0 0 auto;}
 .brand-text{display:flex; flex-direction:column; line-height:1.1; flex:1 1 auto; min-width:0; overflow:hidden;}
 .brand-text .en{
   font-family:"Shippori Mincho",serif;
-  font-size:11px;
+  font-size:0.6875rem;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   letter-spacing:0.32em;
   color:var(--amber-soft);
@@ -92,7 +98,7 @@ header.top{
 .brand-text h1{
   font-family:"Shippori Mincho",serif;
   font-weight:700;
-  font-size:22px;
+  font-size:1.375rem;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   margin:2px 0 0;
   letter-spacing:0.04em;
@@ -101,7 +107,7 @@ header.top{
 .page-label{
   margin-top:14px;
   font-family:"JetBrains Mono",monospace;
-  font-size:11px;
+  font-size:0.6875rem;
   letter-spacing:0.18em;
   color:var(--paper-dim);
   display:flex;
@@ -121,7 +127,7 @@ main{
 /* ---------- Section heading ---------- */
 .section-title{
   font-family:"Shippori Mincho",serif;
-  font-size:17px;
+  font-size:1.0625rem;
   color:var(--amber-soft);
   margin:26px 0 10px;
   display:flex;
@@ -131,7 +137,7 @@ main{
 .section-title:first-child{margin-top:4px;}
 .section-title small{
   font-family:"JetBrains Mono",monospace;
-  font-size:10px;
+  font-size:0.625rem;
   color:var(--paper-dim);
   letter-spacing:0.1em;
 }
@@ -149,7 +155,7 @@ main{
   color:var(--paper);
   font-family:"Noto Sans JP",sans-serif;
   font-weight:500;
-  font-size:14px;
+  font-size:0.875rem;
 }
 .search-box::placeholder{color:var(--paper-dim);}
 .chip-row{
@@ -162,7 +168,7 @@ main{
   padding:6px 12px;
   border-radius:100px;
   border:1px solid var(--line-strong);
-  font-size:12px;
+  font-size:0.75rem;
   color:var(--paper-dim);
   background:transparent;
   white-space:nowrap;
@@ -192,11 +198,11 @@ main{
 }
 .mat-card:active{border-color:var(--amber);}
 .mat-head{ padding-right:40px;display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
-.mat-name{font-weight:700; font-size:15px; color:var(--paper);}
-.mat-family{font-size:11.5px; color:var(--amber-soft); margin-top:2px;}
+.mat-name{font-weight:700; font-size:0.9375rem; color:var(--paper);}
+.mat-family{font-size:0.71875rem; color:var(--amber-soft); margin-top:2px;}
 .note-tag{
   font-family:"JetBrains Mono",monospace;
-  font-size:10px;
+  font-size:0.625rem;
   letter-spacing:0.06em;
   padding:3px 8px;
   border-radius:100px;
@@ -207,11 +213,11 @@ main{
 .note-Middle,.note-Mid,.note-Heart{background:rgba(185,131,111,0.32); color:var(--mid-color); font-weight:700; border:1px solid rgba(223,163,140,0.45);}
 .note-Base{background:rgba(95,122,99,0.36); color:var(--base-color); font-weight:700; border:1px solid rgba(147,181,152,0.45);}
 .note-Other{background:rgba(242,234,217,0.1); color:var(--paper-dim);}
-.mat-desc{font-size:12.5px; color:var(--paper-dim); margin-top:8px; line-height:1.6;}
+.mat-desc{font-size:0.78125rem; color:var(--paper-dim); margin-top:8px; line-height:1.6;}
 .mat-vocab{margin-top:8px; display:flex; flex-wrap:wrap; gap:5px;}
-.vocab-pill{font-size:10.5px; padding:2px 8px; border-radius:100px; border:1px solid var(--line-strong); color:var(--paper-dim);}
-.ifra-warn{margin-top:8px; font-size:12.5px; font-weight:700; color:var(--danger); display:flex; gap:5px; align-items:center;}
-.ifra-ok{margin-top:8px; font-size:12.5px; font-weight:600; color:var(--sage); display:flex; gap:5px; align-items:center;}
+.vocab-pill{font-size:0.65625rem; padding:2px 8px; border-radius:100px; border:1px solid var(--line-strong); color:var(--paper-dim);}
+.ifra-warn{margin-top:8px; font-size:0.78125rem; font-weight:700; color:var(--danger); display:flex; gap:5px; align-items:center;}
+.ifra-ok{margin-top:8px; font-size:0.78125rem; font-weight:600; color:var(--sage); display:flex; gap:5px; align-items:center;}
 
 /* ---------- Modal ---------- */
 .overlay{
@@ -232,8 +238,8 @@ main{
 }
 @keyframes slideup{from{transform:translateY(24px); opacity:0.4;} to{transform:translateY(0); opacity:1;}}
 .sheet-handle{width:36px; height:4px; background:var(--line-strong); border-radius:4px; margin:0 auto 16px;}
-.sheet h2{font-family:"Shippori Mincho",serif; font-size:19px; margin:0 0 4px;}
-.sheet .row{display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--line); font-size:13px; gap:12px;}
+.sheet h2{font-family:"Shippori Mincho",serif; font-size:1.1875rem; margin:0 0 4px;}
+.sheet .row{display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--line); font-size:0.8125rem; gap:12px;}
 .sheet .row .k{color:var(--paper-dim); flex:0 0 34%;}
 .sheet .row .v{color:var(--paper); text-align:right; flex:1;}
 .close-btn{
@@ -241,19 +247,19 @@ main{
   width:40px; height:40px; border-radius:50%;
   z-index:5;
   background:var(--ink-700); border:1px solid var(--line);
-  color:var(--paper-dim); font-size:16px; display:flex; align-items:center; justify-content:center;
+  color:var(--paper-dim); font-size:1rem; display:flex; align-items:center; justify-content:center;
 }
 
 /* ---------- Buttons ---------- */
 .btn{
-  border:none; border-radius:10px; padding:12px 16px; font-size:14px; font-weight:700;
+  border:none; border-radius:10px; padding:12px 16px; font-size:0.875rem; font-weight:700;
   font-family:"Noto Sans JP",sans-serif; cursor:pointer; text-align:center;
 }
 .btn-primary{background:var(--amber); color:var(--ink-900);}
 .btn-secondary{background:var(--ink-700); color:var(--paper); border:1px solid var(--line-strong);}
 .btn-danger{background:transparent; color:var(--danger); border:1px solid rgba(196,106,90,0.4);}
 .btn-block{width:100%;}
-.btn-sm{padding:7px 12px; font-size:12px; border-radius:8px;}
+.btn-sm{padding:7px 12px; font-size:0.75rem; border-radius:8px;}
 
 /* ---------- Pyramid bar ---------- */
 .pyramid{
@@ -262,7 +268,7 @@ main{
   background:var(--ink-700);
 }
 .pyramid div{height:100%;}
-.pyramid-legend{display:flex; gap:14px; font-size:11px; color:var(--paper-dim); flex-wrap:wrap;}
+.pyramid-legend{display:flex; gap:14px; font-size:0.6875rem; color:var(--paper-dim); flex-wrap:wrap;}
 .pyramid-legend span{display:flex; align-items:center; gap:5px;}
 .dot{width:8px; height:8px; border-radius:50%; display:inline-block;}
 
@@ -273,7 +279,7 @@ main{
 }
 .builder-name-input{
   width:100%; background:transparent; border:none; border-bottom:1px dashed var(--line-strong);
-  font-family:"Shippori Mincho",serif; font-size:19px; color:var(--paper); padding:4px 0 8px;
+  font-family:"Shippori Mincho",serif; font-size:1.1875rem; color:var(--paper); padding:4px 0 8px;
   margin-bottom:14px;
 }
 .ingredient-row{
@@ -282,58 +288,58 @@ main{
 .ingredient-row:last-child{border-bottom:none;}
 .ing-top{display:flex; align-items:center; gap:10px;}
 .ing-main{flex:1; min-width:0;}
-.ing-name{font-size:13.5px; font-weight:500; color:var(--paper); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.ing-note{font-size:10.5px; color:var(--paper-dim); margin-top:2px;}
+.ing-name{font-size:0.84375rem; font-weight:500; color:var(--paper); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.ing-note{font-size:0.65625rem; color:var(--paper-dim); margin-top:2px;}
 .ing-remove{
   width:26px; height:26px; border-radius:50%; background:transparent; color:var(--paper-dim);
-  border:1px solid var(--line-strong); font-size:14px; flex:0 0 auto;
+  border:1px solid var(--line-strong); font-size:0.875rem; flex:0 0 auto;
 }
 .ing-controls{display:flex; align-items:flex-end; gap:8px; margin-top:9px;}
 .ing-field{flex:1; min-width:0;}
-.ing-field label{display:block; font-size:9.5px; color:var(--paper-dim); margin-bottom:4px; letter-spacing:0.03em;}
+.ing-field label{display:block; font-size:0.59375rem; color:var(--paper-dim); margin-bottom:4px; letter-spacing:0.03em;}
 .ing-parts, .ing-dilution{
   width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
-  color:var(--paper); text-align:center; padding:8px 4px; font-family:"JetBrains Mono",monospace; font-size:13px;
+  color:var(--paper); text-align:center; padding:8px 4px; font-family:"JetBrains Mono",monospace; font-size:0.8125rem;
 }
 .ing-dilution.invalid{border-color:var(--danger); color:var(--danger);}
 .ing-amount-display{flex:1.3;}
 .ing-amount{
   background:rgba(200,150,63,0.1); border:1px solid rgba(200,150,63,0.3); border-radius:8px;
-  color:var(--amber-soft); text-align:center; padding:8px 4px; font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700;
+  color:var(--amber-soft); text-align:center; padding:8px 4px; font-family:"JetBrains Mono",monospace; font-size:0.8125rem; font-weight:700;
 }
 .add-ing-btn{
   width:100%; margin-top:10px; padding:12px; border-radius:10px; border:1px dashed var(--line-strong);
-  background:transparent; color:var(--amber-soft); font-size:13px; font-family:"Noto Sans JP",sans-serif;
+  background:transparent; color:var(--amber-soft); font-size:0.8125rem; font-family:"Noto Sans JP",sans-serif;
 }
 
 /* ---------- Error banner ---------- */
 .error-banner{
   background:rgba(196,106,90,0.12); border:1px solid rgba(196,106,90,0.4); color:#e39c8e;
-  font-size:12px; padding:10px 12px; border-radius:10px; margin-bottom:12px; line-height:1.6;
+  font-size:0.75rem; padding:10px 12px; border-radius:10px; margin-bottom:12px; line-height:1.6;
 }
 
 /* ---------- Help details ---------- */
 .help-details{margin-top:14px; border-top:1px dashed var(--line-strong); padding-top:12px;}
 .help-details summary{
-  font-size:12px; color:var(--amber-soft); cursor:pointer; list-style:none; font-weight:500;
+  font-size:0.75rem; color:var(--amber-soft); cursor:pointer; list-style:none; font-weight:500;
 }
 .help-details summary::-webkit-details-marker{display:none;}
-.help-details p{font-size:11.5px; color:var(--paper-dim); line-height:1.7; margin:8px 0 0;}
+.help-details p{font-size:0.71875rem; color:var(--paper-dim); line-height:1.7; margin:8px 0 0;}
 
 /* ---------- Mixing page ---------- */
 .mix-open-btn{
   width:100%; margin-top:14px; padding:15px; border-radius:12px; border:none;
   background:linear-gradient(135deg, var(--amber), var(--amber-soft)); color:var(--ink-900);
-  font-size:14.5px; font-weight:700; font-family:"Noto Sans JP",sans-serif;
+  font-size:0.90625rem; font-weight:700; font-family:"Noto Sans JP",sans-serif;
   display:flex; align-items:center; justify-content:center; gap:8px;
 }
 .mix-sheet{padding-top:16px;}
 .mix-header{margin:6px 0 16px;}
-.mix-title{font-family:"Shippori Mincho",serif; font-size:20px; color:var(--paper);}
-.mix-sub{font-size:11.5px; color:var(--paper-dim); margin-top:3px; font-family:"JetBrains Mono",monospace;}
+.mix-title{font-family:"Shippori Mincho",serif; font-size:1.25rem; color:var(--paper);}
+.mix-sub{font-size:0.71875rem; color:var(--paper-dim); margin-top:3px; font-family:"JetBrains Mono",monospace;}
 .mix-progress-bar{height:6px; background:var(--ink-700); border-radius:100px; overflow:hidden; margin-top:14px;}
 .mix-progress-fill{height:100%; background:var(--amber); width:0%; transition:width .25s;}
-.mix-progress-text{font-size:11px; color:var(--paper-dim); margin-top:7px; font-family:"JetBrains Mono",monospace;}
+.mix-progress-text{font-size:0.6875rem; color:var(--paper-dim); margin-top:7px; font-family:"JetBrains Mono",monospace;}
 .mix-item{
   display:flex; align-items:center; gap:12px;
   padding:15px 14px; margin-bottom:9px; border-radius:14px;
@@ -350,33 +356,33 @@ main{
 }
 .mix-item-order{
   width:28px; height:28px; border-radius:50%; background:var(--amber); color:var(--ink-900);
-  display:flex; align-items:center; justify-content:center; font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; flex:0 0 auto;
+  display:flex; align-items:center; justify-content:center; font-family:"JetBrains Mono",monospace; font-size:0.75rem; font-weight:700; flex:0 0 auto;
 }
 .mix-item.done .mix-item-order{background:var(--ink-600); color:var(--paper-dim);}
 .mix-item-main{flex:1; min-width:0;}
-.mix-item-name{font-size:15px; font-weight:700; color:var(--paper);}
-.mix-item-note{font-size:10.5px; color:var(--paper-dim); margin-top:3px;}
+.mix-item-name{font-size:0.9375rem; font-weight:700; color:var(--paper);}
+.mix-item-note{font-size:0.65625rem; color:var(--paper-dim); margin-top:3px;}
 .mix-item-amount{font-family:"JetBrains Mono",monospace; text-align:right; flex:0 0 auto;}
-.mix-item-amount .num{font-size:19px; font-weight:700; color:var(--amber-soft);}
+.mix-item-amount .num{font-size:1.1875rem; font-weight:700; color:var(--amber-soft);}
 .mix-item.done .mix-item-amount .num{color:var(--paper-dim);}
-.mix-item-amount .drops{font-size:10.5px; color:var(--paper-dim); margin-top:1px;}
+.mix-item-amount .drops{font-size:0.65625rem; color:var(--paper-dim); margin-top:1px;}
 .mix-item-check{width:22px; height:22px; flex:0 0 auto; color:var(--sage);}
 .mix-footer{display:flex; gap:10px; margin-top:6px; padding-bottom:6px;}
 .calc-inputs{display:flex; gap:10px; margin:16px 0;}
 .calc-field{flex:1;}
-.calc-field label{display:block; font-size:11px; color:var(--paper-dim); margin-bottom:5px;}
+.calc-field label{display:block; font-size:0.6875rem; color:var(--paper-dim); margin-bottom:5px;}
 .calc-field input{
   width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
-  color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:14px;
+  color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:1rem;
 }
 .calc-field select{
   width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
-  color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:14px;
+  color:var(--paper); padding:9px 10px; font-family:"JetBrains Mono",monospace; font-size:1rem;
 }
 .search-wrap{position:relative;}
-.search-clear{position:absolute; right:8px; top:50%; transform:translateY(-50%); width:30px; height:30px; border-radius:50%; border:none; background:rgba(255,255,255,.10); color:var(--paper-dim); font-size:15px; line-height:1; cursor:pointer; display:none; align-items:center; justify-content:center;}
+.search-clear{position:absolute; right:8px; top:50%; transform:translateY(-50%); width:30px; height:30px; border-radius:50%; border:none; background:rgba(255,255,255,.10); color:var(--paper-dim); font-size:0.9375rem; line-height:1; cursor:pointer; display:none; align-items:center; justify-content:center;}
 .search-clear.show{display:flex;}
-.quick-add-btn{position:absolute; top:13px; right:12px; z-index:2; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--amber); background:transparent; color:var(--amber); font-size:20px; line-height:1; cursor:pointer; flex-shrink:0;}
+.quick-add-btn{position:absolute; top:13px; right:12px; z-index:2; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--amber); background:transparent; color:var(--amber); font-size:1.25rem; line-height:1; cursor:pointer; flex-shrink:0;}
 .quick-add-btn::after{content:""; position:absolute; top:-6px; left:-6px; right:-6px; bottom:-6px;}
 .search-clear::after{content:""; position:absolute; top:-8px; left:-8px; right:-8px; bottom:-8px;}
 .ing-remove::after{content:""; position:absolute; top:-9px; left:-9px; right:-9px; bottom:-9px;}
@@ -387,13 +393,13 @@ main{
 .quick-add-btn:active{background:var(--amber); color:var(--bg);}
 .cm-flash{outline:2px solid var(--amber); box-shadow:0 0 0 4px rgba(212,164,76,.25); transition:box-shadow .4s;}
 .custom-badge{
-  display:inline-block; font-size:10px; padding:1px 8px; border-radius:9px;
+  display:inline-block; font-size:0.625rem; padding:1px 8px; border-radius:9px;
   background:var(--amber); color:var(--ink-900); font-weight:700; margin-left:6px; vertical-align:1px;
 }
-table.calc-table{width:100%; border-collapse:collapse; margin-top:6px; font-size:12px;}
+table.calc-table{width:100%; border-collapse:collapse; margin-top:6px; font-size:0.75rem;}
 table.calc-table th{
   text-align:right; font-weight:500; color:var(--paper-dim); padding:6px 4px; border-bottom:1px solid var(--line-strong);
-  font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:0.04em;
+  font-family:"JetBrains Mono",monospace; font-size:0.625rem; letter-spacing:0.04em;
 }
 table.calc-table th:first-child, table.calc-table td:first-child{text-align:left;}
 table.calc-table td{padding:8px 4px; border-bottom:1px solid var(--line); font-family:"JetBrains Mono",monospace;}
@@ -403,19 +409,19 @@ table.calc-table tr:last-child td{border-bottom:none;}
 /* ---------- Dilution calc ---------- */
 .dil-result{
   margin-top:14px; padding:14px; background:var(--ink-700); border-radius:10px;
-  font-family:"JetBrains Mono",monospace; font-size:13px; display:flex; flex-direction:column; gap:8px;
+  font-family:"JetBrains Mono",monospace; font-size:0.8125rem; display:flex; flex-direction:column; gap:8px;
 }
 .dil-result .line{display:flex; justify-content:space-between;}
-.dil-result .line .lbl{color:var(--paper-dim); font-family:"Noto Sans JP",sans-serif; font-size:12px;}
+.dil-result .line .lbl{color:var(--paper-dim); font-family:"Noto Sans JP",sans-serif; font-size:0.75rem;}
 
 /* ---------- Formula library cards ---------- */
 .formula-card{
   background:var(--ink-800); border:1px solid var(--line); border-radius:var(--radius);
   padding:16px; margin-bottom:12px;
 }
-.formula-card h3{font-family:"Shippori Mincho",serif; font-size:17px; margin:0 0 3px; color:var(--paper);}
-.formula-meta{font-size:11px; color:var(--paper-dim); font-family:"JetBrains Mono",monospace; margin-bottom:10px;}
-.formula-ing-list{font-size:12px; color:var(--paper-dim); line-height:1.9;}
+.formula-card h3{font-family:"Shippori Mincho",serif; font-size:1.0625rem; margin:0 0 3px; color:var(--paper);}
+.formula-meta{font-size:0.6875rem; color:var(--paper-dim); font-family:"JetBrains Mono",monospace; margin-bottom:10px;}
+.formula-ing-list{font-size:0.75rem; color:var(--paper-dim); line-height:1.9;}
 .formula-ing-list b{color:var(--paper); font-weight:500;}
 .formula-actions{display:flex; gap:8px; margin-top:12px;}
 
@@ -424,7 +430,7 @@ table.calc-table tr:last-child td{border-bottom:none;}
   text-align:center; padding:60px 20px; color:var(--paper-dim);
 }
 .empty-state svg{opacity:0.5; margin-bottom:14px;}
-.empty-state p{font-size:13px; line-height:1.7;}
+.empty-state p{font-size:0.8125rem; line-height:1.7;}
 
 /* ---------- Bottom nav ---------- */
 nav.bottom{
@@ -439,7 +445,7 @@ nav.bottom{
 }
 .nav-btn{
   flex:1; background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:4px;
-  padding:8px 2px; color:var(--paper-dim); font-family:"Noto Sans JP",sans-serif; font-size:10.5px;
+  padding:8px 2px; color:var(--paper-dim); font-family:"Noto Sans JP",sans-serif; font-size:0.65625rem;
 }
 .nav-btn.active{color:var(--amber-soft);}
 .nav-btn svg{width:20px; height:20px;}
@@ -447,7 +453,7 @@ nav.bottom{
 .toast{
   position:fixed; bottom:78px; left:50%; transform:translateX(-50%);
   background:var(--amber); color:var(--ink-900); padding:10px 18px; border-radius:100px;
-  font-size:12.5px; font-weight:700; z-index:60; opacity:0; pointer-events:none;
+  font-size:0.78125rem; font-weight:700; z-index:60; opacity:0; pointer-events:none;
   transition:opacity .2s, transform .2s;
 }
 .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px);}
@@ -522,15 +528,15 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 .settings-btn svg{width:17px; height:17px;}
 .set-group{margin-top:20px;}
 .set-label{
-  font-size:12px; color:var(--paper-dim); letter-spacing:0.03em;
+  font-size:0.75rem; color:var(--paper-dim); letter-spacing:0.03em;
   display:flex; justify-content:space-between; align-items:baseline; gap:10px;
 }
-.set-label b{color:var(--amber-soft); font-family:"JetBrains Mono",monospace; font-size:12px;}
+.set-label b{color:var(--amber-soft); font-family:"JetBrains Mono",monospace; font-size:0.75rem;}
 .seg{display:flex; gap:8px; margin-top:8px;}
 .seg button{
   flex:1; padding:10px 4px; border-radius:10px; cursor:pointer;
   border:1px solid var(--line-strong); background:var(--ink-700); color:var(--paper-dim);
-  font-family:"Noto Sans JP",sans-serif; font-size:13px; font-weight:500;
+  font-family:"Noto Sans JP",sans-serif; font-size:0.8125rem; font-weight:500;
   display:flex; align-items:center; justify-content:center; gap:6px;
 }
 .seg button.active{background:var(--amber); color:var(--ink-900); border-color:var(--amber); font-weight:700;}
@@ -541,7 +547,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 .display-reset-btn{
   margin-top:26px; width:100%; padding:12px; border-radius:10px; cursor:pointer;
   background:var(--ink-700); color:var(--paper); border:1px solid var(--line-strong);
-  font-family:"Noto Sans JP",sans-serif; font-size:13px; font-weight:500;
+  font-family:"Noto Sans JP",sans-serif; font-size:0.8125rem; font-weight:500;
 }
 #brightOverlay{
   position:fixed; inset:0; pointer-events:none; z-index:999;
@@ -549,7 +555,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 }
 .app-version{
   margin-top:16px; text-align:center;
-  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:0.06em;
+  font-family:"JetBrains Mono",monospace; font-size:0.65625rem; letter-spacing:0.06em;
   color:var(--paper-dim); opacity:0.8;
 }
 /* ---------- Print / PDF export ---------- */
@@ -572,6 +578,9 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
   .pr-footer{margin-top:18px; font-size:9.5px; color:#888; display:flex; justify-content:space-between; border-top:1px solid #ccc; padding-top:6px;}
   @page{margin:14mm 12mm;}
 }
+
+/* v1.8.7: 印刷は画面の文字サイズ設定に影響されない */
+@media print{ html{ font-size:16px !important; } }
 </style>
 </head>
 <body>
@@ -656,7 +665,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <div style="overflow-x:auto;">
         <table class="calc-table" id="calcTable"></table>
         </div>
-        <p id="calcHelpText" style="font-size:11px; color:var(--paper-dim); line-height:1.7; margin-top:10px;">
+        <p id="calcHelpText" style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin-top:10px;">
           希釈済みの香料をマイクロピペット等で量り取り、出来上がり総量になるように配合する想定の計算です。各素材の希釈率は上の「配合の設計」欄で個別に設定できます（デフォルト10%）。滴数はドロッパー1滴≈0.05mlとして目安表示しています。
         </p>
         <button class="mix-open-btn" id="openMixBtn">
@@ -693,7 +702,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
     <!-- ===== TAB: LIBRARY ===== -->
     <section id="tab-library" class="hidden">
       <div class="section-title"><span id="stLibrary">フォーミュラ集</span><small>REFERENCE · <span id="libCount">35</span></small></div>
-      <p id="libraryDesc" style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:-4px 0 14px;">
+      <p id="libraryDesc" style="font-size:0.75rem; color:var(--paper-dim); line-height:1.7; margin:-4px 0 14px;">
         既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。
       </p>
       <div id="libList"></div>
@@ -707,11 +716,11 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
           <span id="lblExportCsv">Excelに書き出す</span>
         </button>
         <div style="display:flex; gap:10px; justify-content:center; align-items:center; margin-top:10px;">
-          <button id="btnExportJson" style="background:none; border:none; color:var(--paper-dim); font-size:12px; text-decoration:underline; text-underline-offset:3px; padding:6px 8px; cursor:pointer; font-family:inherit;">
+          <button id="btnExportJson" style="background:none; border:none; color:var(--paper-dim); font-size:0.75rem; text-decoration:underline; text-underline-offset:3px; padding:6px 8px; cursor:pointer; font-family:inherit;">
             <span id="lblExportJson">バックアップ</span>
           </button>
-          <span style="color:var(--line-strong); font-size:11px;">|</span>
-          <button id="btnImportJson" style="background:none; border:none; color:var(--paper-dim); font-size:12px; text-decoration:underline; text-underline-offset:3px; padding:6px 8px; cursor:pointer; font-family:inherit;">
+          <span style="color:var(--line-strong); font-size:0.6875rem;">|</span>
+          <button id="btnImportJson" style="background:none; border:none; color:var(--paper-dim); font-size:0.75rem; text-decoration:underline; text-underline-offset:3px; padding:6px 8px; cursor:pointer; font-family:inherit;">
             <span id="lblImportJson">復元</span>
           </button>
         </div>
@@ -795,13 +804,13 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <div class="set-group">
         <div class="set-label"><span id="setFontLabel">文字サイズ</span><b id="fontVal">100%</b></div>
         <input type="range" id="fontRange" min="85" max="135" step="5" value="100">
-        <div class="range-ends"><span style="font-size:11px;">A</span><span style="font-size:17px;">A</span></div>
+        <div class="range-ends"><span style="font-size:0.6875rem;">A</span><span style="font-size:1.0625rem;">A</span></div>
       </div>
 
       <div class="set-group">
         <div class="set-label"><span id="setBrightLabel">画面の明るさ</span><b id="brightVal">±0</b></div>
         <input type="range" id="brightRange" min="-30" max="30" step="5" value="0">
-        <div class="range-ends"><span style="font-size:11px;" id="brightDarkEnd">暗く</span><span style="font-size:11px;" id="brightLightEnd">明るく</span></div>
+        <div class="range-ends"><span style="font-size:0.6875rem;" id="brightDarkEnd">暗く</span><span style="font-size:0.6875rem;" id="brightLightEnd">明るく</span></div>
       </div>
 
       <button class="display-reset-btn" id="displayResetBtn">標準に戻す</button>
@@ -1226,7 +1235,7 @@ function renderMaterials(){
       : 'ノート×系統の絞り込みに一致する香料がありません。';
     const btn = currentLang==='en' ? 'Clear filters' : '絞り込みを解除';
     wrap.innerHTML = `<div class="empty-state"><p>${esc(t('not_found'))}</p>`
-      + (hasFilter ? `<p style="font-size:12px; color:var(--paper-dim); margin:6px 0 10px;">${hint}</p><button class="chip active" id="clearMatFilters">${btn}</button>` : '')
+      + (hasFilter ? `<p style="font-size:0.75rem; color:var(--paper-dim); margin:6px 0 10px;">${hint}</p><button class="chip active" id="clearMatFilters">${btn}</button>` : '')
       + `</div>`;
     const cb = document.getElementById('clearMatFilters');
     if(cb) cb.addEventListener('click', ()=>{
@@ -1364,12 +1373,12 @@ function openCustomMatForm(editName){
   const form = document.getElementById('cmForm');
   form.innerHTML = `
     <h2>${esc(m ? t('cm_title_edit') : t('cm_title_add'))}</h2>
-    <p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:4px 0 14px;">${esc(t('cm_simple_hint'))}</p>
+    <p style="font-size:0.75rem; color:var(--paper-dim); line-height:1.7; margin:4px 0 14px;">${esc(t('cm_simple_hint'))}</p>
     <div class="calc-field" style="margin-bottom:12px;">
       <label for="cmName">${esc(t('cm_name_label'))} *</label>
       <input id="cmName" list="cmNameList" value="${esc(m?m.name:'')}" ${m?'disabled style="opacity:.6"':''} placeholder="${esc(t('cm_name_ph'))}">
       <datalist id="cmNameList">${MATERIALS.map(x=>`<option value="${esc(x.name)}">${esc(x.name_ja||'')}</option>`).join('')}</datalist>
-      <div id="cmNameHint" style="font-size:12px; color:var(--paper-dim); margin-top:4px;"></div>
+      <div id="cmNameHint" style="font-size:0.75rem; color:var(--paper-dim); margin-top:4px;"></div>
     </div>
     <div class="calc-field" style="margin-bottom:12px;">
       <label for="cmSg">${esc(t('sg_label'))} *</label>
@@ -1745,7 +1754,7 @@ function updateCalcTable(){
     const warn = it.belowPipette ? ' <span style="color:var(--danger);font-weight:700;" title="最小計量0.5μlを下回ります">⚠</span>' : '';
     rows += `<tr>
       <td>${esc(it.name)}</td>
-      <td style="font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--amber-soft); white-space:nowrap;">${it.permille.toFixed(1)}‰</td>
+      <td style="font-family:'JetBrains Mono',monospace; font-size:0.875rem; font-weight:700; color:var(--amber-soft); white-space:nowrap;">${it.permille.toFixed(1)}‰</td>
       <td>${dilPrefix}${it.dilution}${dilSuffix}</td>
       <td>${it.amount.toFixed(isUl?1:3)}${it.unit}${warn}</td>
       <td>${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
@@ -1799,7 +1808,7 @@ function updateDilution(){
       advice = `<div class="line" style="border-top:1px solid var(--line-strong); margin-top:6px; padding-top:8px;">
         <span class="lbl">${ja?'調合の方法':'Compounding'}</span>
         <span style="color:var(--sage); font-weight:700;">${ja?'原液で調合できます':'Neat compounding OK'}</span></div>
-        <div style="font-size:11px; color:var(--paper-dim); line-height:1.6; margin-top:4px;">
+        <div style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.6; margin-top:4px;">
         ${ja
           ? (trivial
               ? `この処方は微量成分がないため、どの体積でも原液から調合できます（原液での下限は約${minTxt}ml）。希釈液の在庫を消費せず、賦香率の上限もなくなります。`
@@ -1811,7 +1820,7 @@ function updateDilution(){
       advice = `<div class="line" style="border-top:1px solid var(--line-strong); margin-top:6px; padding-top:8px;">
         <span class="lbl">${ja?'調合の方法':'Compounding'}</span>
         <span style="color:var(--amber-soft); font-weight:700;">${ja?'希釈液が必要です':'Dilutions required'}</span></div>
-        <div style="font-size:11px; color:var(--paper-dim); line-height:1.6; margin-top:4px;">
+        <div style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.6; margin-top:4px;">
         ${ja
           ? `${finalVol}mlでは微量成分が最小計量(${MIN_PIPETTE_UL}μl)を下回るため、希釈液での調合が必要です。原液で組むなら約${minTxt}ml以上のバッチにしてください。`
           : `At ${finalVol}ml, trace materials fall below the ${MIN_PIPETTE_UL}μl minimum. Use dilutions, or scale up to about ${minTxt}ml.`}</div>`;
@@ -1826,7 +1835,7 @@ function updateDilution(){
     /* 原液で組めるなら問題は起きない → 情報として控えめに出す */
     const col = neatOk ? 'var(--paper-dim)' : 'var(--danger)';
     const mark = neatOk ? 'ℹ' : '⚠';
-    ceiling = `<div style="font-size:11px; color:${col}; line-height:1.6; margin-top:8px; font-weight:${neatOk?'500':'700'};">
+    ceiling = `<div style="font-size:0.6875rem; color:${col}; line-height:1.6; margin-top:8px; font-weight:${neatOk?'500':'700'};">
       ${mark} ${ja
         ? (neatOk
             ? '賦香率10%超のため、10%希釈液だけでは作れません（希釈液の量がバッチ体積を超えます）。上のとおり原液で調合すれば問題ありません。'
@@ -1842,15 +1851,15 @@ function updateDilution(){
   const dim = 'color:var(--paper-dim);';
   const wSty = gMode ? hi : dim;
   const vSty = gMode ? dim : hi;
-  const num = "font-family:'JetBrains Mono',monospace; font-size:13px; text-align:right; padding:6px 4px; white-space:nowrap;";
-  const lbl = "font-size:12px; text-align:left; padding:6px 4px;";
+  const num = "font-family:'JetBrains Mono',monospace; font-size:0.8125rem; text-align:right; padding:6px 4px; white-space:nowrap;";
+  const lbl = "font-size:0.75rem; text-align:left; padding:6px 4px;";
 
   box.innerHTML = `
     <table style="width:100%; border-collapse:collapse;">
       <thead><tr style="border-bottom:1px solid var(--line-strong);">
         <th style="${lbl} color:var(--paper-dim); font-weight:500;"></th>
-        <th style="${num} ${wSty} font-size:11px;">${esc(t('dil_weight'))} (g)</th>
-        <th style="${num} ${vSty} font-size:11px;">${esc(t('dil_volume'))} (ml)</th>
+        <th style="${num} ${wSty} font-size:0.6875rem;">${esc(t('dil_weight'))} (g)</th>
+        <th style="${num} ${vSty} font-size:0.6875rem;">${esc(t('dil_volume'))} (ml)</th>
       </tr></thead>
       <tbody>
         <tr><td style="${lbl}">${esc(t('dil_compound'))}</td>
@@ -1865,7 +1874,7 @@ function updateDilution(){
             <td style="${num} ${vSty}">${finalVol.toFixed(2)}</td></tr>
       </tbody>
     </table>
-    <div style="font-size:11px; color:var(--paper-dim); margin-top:6px; line-height:1.6;">
+    <div style="font-size:0.6875rem; color:var(--paper-dim); margin-top:6px; line-height:1.6;">
       ${esc(t('dil_density'))} ${rhoF.toFixed(3)} g/ml
       <span style="opacity:.75;">（${currentLang==='ja'?'コンパウンド':'compound'} ${rhoC.toFixed(3)} / ${currentLang==='ja'?'無水エタノール':'ethanol'} ${RHO_ETHANOL}）</span>
     </div>
@@ -2022,8 +2031,8 @@ function renderPicker(){
     <button type="button" class="mat-card" style="padding:11px 12px; margin-bottom:8px;" data-name="${esc(m.name)}">
       <div class="mat-head">
         <div>
-          <div class="mat-name" style="font-size:13.5px;">${esc(m.name)}</div>
-          <div class="mat-family" style="font-size:11px;">${m.name_ja ? esc(m.name_ja)+' ・ ' : ''}${esc(famLabel(m.family))}</div>
+          <div class="mat-name" style="font-size:0.84375rem;">${esc(m.name)}</div>
+          <div class="mat-family" style="font-size:0.6875rem;">${m.name_ja ? esc(m.name_ja)+' ・ ' : ''}${esc(famLabel(m.family))}</div>
         </div>
         <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
       </div>
@@ -2065,14 +2074,14 @@ function openLibDetail(i){
   detail.innerHTML = `
     <h2>${esc(fmlName(f))}</h2>
     <div class="formula-meta">${esc(fmlUnit(f.unit))} ・ ${esc(t('tbl_total'))} ${f.total}</div>
-    ${f.note_text ? `<p style="font-size:12px; color:var(--paper-dim); line-height:1.7; margin:8px 0 14px;">${esc(fmlNoteText(f))}</p>` : ''}
+    ${f.note_text ? `<p style="font-size:0.75rem; color:var(--paper-dim); line-height:1.7; margin:8px 0 14px;">${esc(fmlNoteText(f))}</p>` : ''}
     ${f.items.map(it=>`
       <div class="row">
         <div class="k"><span class="note-tag ${noteClass(it.note)}">${esc(fmlNote(it.note))}</span></div>
         <div class="v" style="text-align:left; flex:2;">
           <div style="color:var(--paper); font-weight:500;">${esc(fmlMat(it))} <span style="color:var(--amber-soft); font-family:'JetBrains Mono',monospace;">${it.amount}</span></div>
-          ${it.role ? `<div style="font-size:11px; color:var(--paper-dim); margin-top:2px;">${esc(fmlRole(it))}</div>` : ''}
-          ${it.alt ? `<div style="font-size:10.5px; color:var(--sage); margin-top:2px;">${altLabel}${esc(fmlAlt(it))}</div>` : ''}
+          ${it.role ? `<div style="font-size:0.6875rem; color:var(--paper-dim); margin-top:2px;">${esc(fmlRole(it))}</div>` : ''}
+          ${it.alt ? `<div style="font-size:0.65625rem; color:var(--sage); margin-top:2px;">${altLabel}${esc(fmlAlt(it))}</div>` : ''}
         </div>
       </div>
     `).join('')}
@@ -2475,7 +2484,7 @@ function renderSaved(){
     }));
   }catch(err){
     wrap.innerHTML = `<div class="empty-state"><p>${esc(t('load_failed'))}<br>
-      <span style="color:var(--danger); font-family:'JetBrains Mono',monospace; font-size:11px;">${esc(err && err.message ? err.message : String(err))}</span>
+      <span style="color:var(--danger); font-family:'JetBrains Mono',monospace; font-size:0.6875rem;">${esc(err && err.message ? err.message : String(err))}</span>
     </p></div>`;
   }
 }
@@ -2547,7 +2556,13 @@ function applyDisplay(){
   const metaTheme = document.querySelector('meta[name="theme-color"]');
   if(metaTheme) metaTheme.setAttribute('content', THEME_META_COLOR[displayCfg.theme] || THEME_META_COLOR.dark);
   /* 文字サイズ（画面全体をスケール） */
-  try{ document.body.style.zoom = String(displayCfg.font / 100); document.documentElement.style.setProperty('--appzoom', String(displayCfg.font / 100)); }catch(e){}
+  /* v1.8.7: body zoom はiOSで要素ごとに倍率がずれるため廃止。
+     html の font-size を変えて rem 指定を一括で拡縮する */
+  try{
+    document.documentElement.style.fontSize = (16 * displayCfg.font / 100) + 'px';
+    document.documentElement.style.setProperty('--appzoom', '1');
+    document.body.style.zoom = '';
+  }catch(e){}
   /* 明るさ（オーバーレイの濃度で調整） */
   const ov = document.getElementById('brightOverlay');
   if(displayCfg.bright < 0){
@@ -2606,7 +2621,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.8.6';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.8.7';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
