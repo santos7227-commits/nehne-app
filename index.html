@@ -2036,7 +2036,7 @@ function renderPicker(){
         </div>
         <span class="note-tag ${noteClass(m.note)}">${esc(m.note)}</span>
       </div>
-    </div>
+    </button>
   `).join('') || `<div class="empty-state"><p>${esc(t('not_found'))}</p></div>`;
   wrap.querySelectorAll('.mat-card').forEach(c=>c.addEventListener('click', ()=>{
     addIngredient(c.dataset.name);
@@ -2061,7 +2061,7 @@ function renderLibrary(){
         <button class="btn btn-secondary btn-sm" style="flex:1;" data-detail="${i}">${esc(t('detail_btn'))}</button>
         <button class="btn btn-primary btn-sm" style="flex:1;" data-load="${i}">${esc(t('load_btn'))}</button>
       </div>
-    </button>
+    </div>
   `).join('');
   wrap.querySelectorAll('[data-detail]').forEach(b=>b.addEventListener('click', ()=>openLibDetail(parseInt(b.dataset.detail))));
   wrap.querySelectorAll('[data-load]').forEach(b=>b.addEventListener('click', ()=>loadLibIntoBuilder(parseInt(b.dataset.load))));
@@ -2621,7 +2621,7 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.8.7';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.8.8';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
