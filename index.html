@@ -554,6 +554,16 @@ html[data-simple="1"] .adv-only{display:none !important;}
 .st-tips{font-size:0.71875rem; color:var(--paper-dim); line-height:1.9; margin:8px 0 0; padding-left:1.1em;}
 .st-tips li{margin-bottom:2px;}
 .st-tips b{color:var(--amber-soft);}
+.bt-fixed{opacity:0.92;}
+.bt-ro{
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  background:rgba(242,234,217,0.05); border:1px solid var(--line); border-radius:8px; padding:4px 4px 6px;
+}
+.bt-ro .rk{font-size:0.5625rem; color:var(--paper-dim); letter-spacing:0.02em;}
+.bt-ro .rv{font-family:'JetBrains Mono',monospace; font-size:0.8125rem; color:var(--paper); font-weight:700;}
+.bt-ro .ra{font-size:0.5rem; color:var(--amber-soft);}
+.bt-sub{font-size:0.6875rem; color:var(--paper-dim); margin:16px 0 0; border-top:1px solid var(--line); padding-top:12px; line-height:1.7;}
+.bt-empty{font-size:0.6875rem; color:var(--paper-dim); text-align:center; padding:12px 4px 2px; opacity:.8;}
 .bt-del{
   background:none; border:none; color:var(--paper-dim); font-size:0.9375rem;
   padding:0 4px 8px; cursor:pointer; font-family:inherit;
@@ -1002,7 +1012,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <div class="set-group">
         <div class="set-label"><span id="setBottleLabel">遮光瓶の登録</span></div>
         <p style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin:6px 0 0;" id="setBottleHelp">
-          希釈液を仕込む瓶です。「実容量」は口いっぱいまで入る量。振り混ぜる余裕があるかの判定に使います。
+          希釈液をつくる瓶の一覧です。早見表ページの選択ボタンになります。作る量＝その瓶に仕込む希釈液の量、実容量＝口いっぱいまで入る量です。
         </p>
         <div id="bottleEditor"></div>
       </div>
@@ -1199,7 +1209,7 @@ const STR = {
     use_sum_empty:'先に配合比を入力してください', use_sum_done:'合計を {N}{U} にしました',
     src_neat_note:'原液（希釈率100%）で量る前提の計算に切り替えました。⚠ が付く素材は最小計量0.5μlを下回るので、合計量を増やすか希釈液に戻してください。',
     set_bottle_label:'遮光瓶の登録',
-    set_bottle_help:'希釈液を仕込む瓶です。「実容量」は口いっぱいまで入る量。振り混ぜる余裕があるかの判定に使います。',
+    set_bottle_help:'希釈液をつくる瓶の一覧です。早見表ページの選択ボタンになります。作る量＝その瓶に仕込む希釈液の量、実容量＝口いっぱいまで入る量です。',
     bt_make:'作る量(ml)', bt_cap:'実容量(ml)',
     station_btn:'この素材の希釈液をつくる',
     station_title:'希釈液をつくる',
@@ -1245,6 +1255,8 @@ const STR = {
     st_tip4:'<b>保管は冷暗所で。</b>直射日光と高温を避け、ふたはしっかり締めてください（エタノールは揮発します）。',
     st_ml_note:'ml は比重から換算した参考値です。はかりがあるなら g を見てください（そちらが正確です）。',
     bt_add:'＋ 手持ちの瓶を追加', bt_del:'削除', bt_new_label:'手持ちの瓶',
+    bt_custom_head:'手持ちの瓶：実容量（口までの量）だけ入れてください。作る量は、振り混ぜる余裕を残して自動で決まります。',
+    bt_custom_empty:'まだ登録がありません', bt_auto:'自動', bt_custom_label:'手持ち {C}ml瓶',
     st_pick_material:'素材を選ぶと比重が自動で入ります',
   },
   en: {
@@ -1360,7 +1372,7 @@ const STR = {
     use_sum_help_g:'With a 6:9:5 ratio you measure roughly 6g, 9g and 5g — the ratio numbers double as the amounts.',
     use_sum_empty:'Enter the ratios first', use_sum_done:'Total set to {N}{U}',
     src_neat_note:'Switched to measuring neat materials (100%). Anything marked ⚠ falls below the 0.5μl minimum — scale up or go back to dilutions.',
-    set_bottle_label:'Bottles', set_bottle_help:'Bottles you prepare dilutions in. "Capacity" is the brim-full volume, used to check you have room to shake.',
+    set_bottle_label:'Bottles', set_bottle_help:'The bottles you prepare dilutions in — these become the buttons on the quick reference page. "Batch" is how much you make; "Capacity" is the brim-full volume.',
     bt_make:'Batch (ml)', bt_cap:'Capacity (ml)',
     station_btn:'Prepare a dilution of this material',
     station_title:'Prepare a dilution',
@@ -1406,6 +1418,8 @@ const STR = {
     st_tip4:'<b>Store cool and dark.</b> Keep it out of sunlight and heat, and cap it tightly — ethanol evaporates.',
     st_ml_note:'The ml figures are converted from specific gravity. If you have a scale, use the g column — it is the accurate one.',
     bt_add:'+ Add a bottle', bt_del:'Delete', bt_new_label:'My bottle',
+    bt_custom_head:'Your own bottles: just enter the capacity (brim-full). The batch size is set automatically, leaving room to shake.',
+    bt_custom_empty:'None yet', bt_auto:'auto', bt_custom_label:'My {C}ml bottle',
     st_pick_material:'Pick a material to fill in its specific gravity',
   }
 };
@@ -1456,56 +1470,93 @@ function setSourceMode(mode){
 }
 
 /* ---------------- v1.11.0: 遮光瓶の登録 ---------------- */
-/* v1.11.1: 10ml瓶は実際に10mlしか入らないため、作る量の既定を8mlに。
-   既定値を変えたので保存キーもv2に上げて作り直す */
-const BOTTLE_KEY = 'nehne_bottles_v2';
-const BOTTLE_DEFAULT = [
-  {label:'10ml瓶',  make:8,   cap:10},
-  {label:'26ml瓶',  make:20,  cap:26},
-  {label:'120ml瓶', make:100, cap:120}
+/* v1.12.1: よく使う3本は「固定枠」。編集も削除もできない。
+   手持ちの瓶は実容量（口までの量）だけ入れてもらい、作る量は自動で決める。
+   固定枠を導入したので保存キーをv3に上げて作り直す */
+const BOTTLE_KEY = 'nehne_bottles_v3';
+const BOTTLE_FIXED = [
+  {label:'10ml瓶',  make:8,   cap:10,  fixed:true},
+  {label:'26ml瓶',  make:20,  cap:26,  fixed:true},
+  {label:'120ml瓶', make:100, cap:120, fixed:true}
 ];
+/* 瓶の実容量から「仕込む量」を決める。振り混ぜる余裕として2割空けたうえで、
+   きりのいい数字に丸める（15ml→12ml、30ml→24ml） */
+function makeFromCap(cap){
+  if(!(cap>0)) return 0;
+  const raw = cap * 0.8;
+  return raw >= 10 ? Math.round(raw) : Math.round(raw*2)/2;
+}
+function customLabel(cap, others){
+  const base = t('bt_custom_label').replace('{C}', String(cap));
+  if(!others) return base;
+  let name = base, k = 2;
+  while(others.indexOf(name) >= 0){ name = base + ' (' + k + ')'; k++; }
+  return name;
+}
 let bottles = (function(){
+  const fixed = BOTTLE_FIXED.map(b=>Object.assign({}, b));
+  let custom = [];
   try{
     const v = JSON.parse(localStorage.getItem(BOTTLE_KEY) || 'null');
-    if(Array.isArray(v) && v.length) return v.map((b,i)=>Object.assign({}, BOTTLE_DEFAULT[i]||{label:'',make:10,cap:10}, b));
+    if(Array.isArray(v)) custom = v.filter(b=>b && !b.fixed && b.cap>0)
+                                   .map(b=>({label:b.label||'', cap:b.cap, make:b.make>0?b.make:makeFromCap(b.cap)}));
   }catch(e){}
-  return BOTTLE_DEFAULT.map(b=>Object.assign({}, b));
+  return fixed.concat(custom);
 })();
-function persistBottles(){ try{ localStorage.setItem(BOTTLE_KEY, JSON.stringify(bottles)); }catch(e){} }
+function persistBottles(){
+  /* 固定枠はコード側の定義が正なので、保存するのは手持ちの瓶だけ */
+  try{ localStorage.setItem(BOTTLE_KEY, JSON.stringify(bottles.filter(b=>!b.fixed))); }catch(e){}
+}
 function renderBottleEditor(){
   const wrap = document.getElementById('bottleEditor');
   if(!wrap) return;
-  wrap.innerHTML = bottles.map((b,i)=>`
-    <div class="bt-row">
+  const restation = ()=>{ if(!document.getElementById('stationOverlay').classList.contains('hidden')) renderStation(); };
+
+  const fixedRows = bottles.map((b,i)=>({b,i})).filter(o=>o.b.fixed).map(({b,i})=>`
+    <div class="bt-row bt-fixed">
       <div class="bt-name">${esc(b.label)}</div>
-      <div class="bt-f"><label for="btMake${i}">${esc(t('bt_make'))}</label>
-        <input id="btMake${i}" type="number" min="1" step="1" value="${b.make}" data-i="${i}" data-f="make"></div>
-      <div class="bt-f"><label for="btCap${i}">${esc(t('bt_cap'))}</label>
-        <input id="btCap${i}" type="number" min="1" step="1" value="${b.cap}" data-i="${i}" data-f="cap"></div>
-      ${bottles.length>1 ? `<button type="button" class="bt-del" data-del="${i}" aria-label="${esc(b.label)} ${esc(t('bt_del'))}">✕</button>` : ''}
-    </div>`).join('') + `<button type="button" class="bt-add" id="btAddBtn">${esc(t('bt_add'))}</button>`;
+      <div class="bt-ro"><span class="rk">${esc(t('bt_make'))}</span><span class="rv">${b.make}</span></div>
+      <div class="bt-ro"><span class="rk">${esc(t('bt_cap'))}</span><span class="rv">${b.cap}</span></div>
+    </div>`).join('');
+
+  const customRows = bottles.map((b,i)=>({b,i})).filter(o=>!o.b.fixed).map(({b,i})=>`
+    <div class="bt-row">
+      <div class="bt-f" style="flex:1.1;"><label for="btCap${i}">${esc(t('bt_cap'))}</label>
+        <input id="btCap${i}" type="number" min="1" step="1" value="${b.cap}" data-i="${i}"></div>
+      <div class="bt-ro" style="flex:1;"><span class="rk">${esc(t('bt_make'))}</span><span class="rv">${b.make}</span>
+        <span class="ra">${esc(t('bt_auto'))}</span></div>
+      <button type="button" class="bt-del" data-del="${i}" aria-label="${esc(b.label)} ${esc(t('bt_del'))}">✕</button>
+    </div>`).join('');
+
+  wrap.innerHTML = fixedRows
+    + `<div class="bt-sub">${esc(t('bt_custom_head'))}</div>`
+    + (customRows || `<div class="bt-empty">${esc(t('bt_custom_empty'))}</div>`)
+    + `<button type="button" class="bt-add" id="btAddBtn">${esc(t('bt_add'))}</button>`;
+
   const addBtn = document.getElementById('btAddBtn');
   if(addBtn) addBtn.addEventListener('click', ()=>{
     const cap = 30;
-    bottles.push({label: t('bt_new_label') + ' ' + (bottles.length+1), make: Math.round(cap*0.8), cap});
-    persistBottles(); renderBottleEditor();
+    bottles.push({label: customLabel(cap, bottles.map(x=>x.label)), cap, make: makeFromCap(cap)});
+    persistBottles(); renderBottleEditor(); restation();
   });
   wrap.querySelectorAll('[data-del]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const i = parseInt(btn.dataset.del,10);
       bottles.splice(i,1);
       if(stBottleIdx >= bottles.length) stBottleIdx = bottles.length-1;
-      persistBottles(); renderBottleEditor();
-      if(!document.getElementById('stationOverlay').classList.contains('hidden')) renderStation();
+      persistBottles(); renderBottleEditor(); restation();
     });
   });
+  /* 手持ちの瓶は実容量だけ入力。作る量とラベルは自動で決まる */
   wrap.querySelectorAll('input').forEach(inp=>{
     inp.addEventListener('change', (e)=>{
+      const i = parseInt(e.target.dataset.i,10);
       const v = parseFloat(e.target.value);
-      if(!(v>0)){ e.target.value = bottles[e.target.dataset.i][e.target.dataset.f]; return; }
-      bottles[e.target.dataset.i][e.target.dataset.f] = v;
-      persistBottles();
-      if(!document.getElementById('stationOverlay').classList.contains('hidden')) renderStation();
+      if(!(v>0)){ e.target.value = bottles[i].cap; return; }
+      bottles[i].cap = v;
+      bottles[i].make = makeFromCap(v);
+      bottles[i].label = customLabel(v, bottles.filter((x,k)=>k!==i).map(x=>x.label));
+      persistBottles(); renderBottleEditor(); restation();
     });
   });
 }
@@ -3633,7 +3684,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.12.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.12.1';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
