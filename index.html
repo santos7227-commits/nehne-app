@@ -492,6 +492,50 @@ table.calc-table tr:last-child td{border-bottom:none;}
   border-top:1px dashed var(--line); padding-top:8px;
 }
 html[data-simple="1"] .adv-only{display:none !important;}
+/* ---------- v1.11.0: 希釈ステーション ---------- */
+.st-h{font-family:"Shippori Mincho",serif; font-size:1.0625rem; color:var(--paper); margin:2px 0 2px;}
+.st-sub{font-size:0.71875rem; color:var(--paper-dim); margin:0 0 14px;}
+.st-label{font-size:0.6875rem; color:var(--paper-dim); letter-spacing:0.04em; margin:14px 0 6px;}
+.st-card{background:var(--ink-700); border:1px solid var(--line-strong); border-radius:12px; padding:12px 14px; margin-top:8px;}
+.st-card .st-route{font-size:0.75rem; color:var(--amber-soft); font-weight:700; margin-bottom:8px;}
+.st-card .st-route small{color:var(--paper-dim); font-weight:400; font-size:0.6875rem; margin-left:6px;}
+.st-row{display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px solid var(--line);}
+.st-row:last-child{border-bottom:none;}
+.st-row .k{font-size:0.8125rem;}
+.st-row .v{font-family:'JetBrains Mono',monospace; font-size:0.9375rem; font-weight:700; color:var(--amber-soft); white-space:nowrap;}
+.st-row .v small{font-family:'JetBrains Mono',monospace; color:var(--paper-dim); font-size:0.75rem; font-weight:400; margin-left:8px;}
+.st-row.total .k, .st-row.total .v{color:var(--paper); font-weight:700;}
+.st-head{
+  display:flex; justify-content:flex-end; gap:0; font-size:0.625rem; color:var(--paper-dim);
+  border-bottom:1px solid var(--line-strong); padding-bottom:4px; margin-bottom:2px;
+}
+.st-space{border-radius:10px; padding:9px 12px; margin-top:12px; font-size:0.75rem; line-height:1.7;}
+.st-space.ok{background:rgba(142,166,131,0.14); color:var(--sage);}
+.st-space.warn{background:rgba(200,150,63,0.14); color:var(--amber-soft);}
+.st-space.ng{background:rgba(196,106,90,0.16); color:var(--danger);}
+.st-steps{font-size:0.75rem; color:var(--paper-dim); line-height:1.9; margin:12px 0 0; padding-left:1.2em;}
+.st-note{font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin-top:10px;}
+.st-copy{
+  width:100%; margin-top:12px; background:var(--ink-700); border:1px dashed var(--line-strong);
+  border-radius:10px; padding:10px; color:var(--paper-dim); font-size:0.75rem;
+  cursor:pointer; font-family:inherit; text-align:left;
+}
+.st-copy b{color:var(--paper); font-family:'JetBrains Mono',monospace; display:block; margin-top:3px; font-size:0.75rem;}
+.st-round{
+  margin-top:10px; padding:9px 11px; background:rgba(200,150,63,0.10);
+  border-radius:9px; font-size:0.6875rem; color:var(--paper-dim); line-height:1.7;
+}
+.st-round b{display:block; color:var(--amber-soft); font-size:0.8125rem; margin:2px 0 1px;}
+.st-round span{font-family:'JetBrains Mono',monospace; font-size:0.6875rem;}
+/* 遮光瓶の登録 */
+.bt-row{display:flex; gap:8px; align-items:flex-end; margin-top:8px;}
+.bt-row .bt-name{flex:1.2; font-size:0.75rem; color:var(--paper);}
+.bt-row .bt-f{flex:1;}
+.bt-row .bt-f label{display:block; font-size:0.59375rem; color:var(--paper-dim); margin-bottom:3px;}
+.bt-row input{
+  width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
+  color:var(--paper); text-align:center; padding:7px 4px; font-family:'JetBrains Mono',monospace; font-size:0.8125rem;
+}
 /* ---------- v1.10.0: バックアップの案内 ---------- */
 .nudge{
   background:rgba(200,150,63,0.10); border:1px solid rgba(200,150,63,0.35);
@@ -730,6 +774,10 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <div class="section-title"><span class="step-badge" id="stepBadge2">STEP 2</span><span id="stWeighout">量り取る量</span><small>WEIGH-OUT</small></div>
       <p class="section-sub" id="subWeighout">レシピどおりに、実際に何をどれだけ量るかを計算します。</p>
       <div class="builder-card">
+        <div class="chip-row" id="sourceChips" style="margin-bottom:10px;">
+          <button class="chip active" data-source="dil" id="srcDilChip">希釈液で組む</button>
+          <button class="chip" data-source="neat" id="srcNeatChip">原液で組む</button>
+        </div>
         <div class="chip-row adv-only" id="calcModeChips" style="margin-bottom:12px;">
           <button class="chip active" data-mode="ul">体積（μl・希釈済み香料）</button>
           <button class="chip" data-mode="g">重量（g・比重から換算）</button>
@@ -912,12 +960,29 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <div class="range-ends"><span style="font-size:0.6875rem;" id="brightDarkEnd">暗く</span><span style="font-size:0.6875rem;" id="brightLightEnd">明るく</span></div>
       </div>
 
+      <div class="set-group">
+        <div class="set-label"><span id="setBottleLabel">遮光瓶の登録</span></div>
+        <p style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin:6px 0 0;" id="setBottleHelp">
+          希釈液を仕込む瓶です。「実容量」は口いっぱいまで入る量。振り混ぜる余裕があるかの判定に使います。
+        </p>
+        <div id="bottleEditor"></div>
+      </div>
+
       <button class="btn btn-secondary btn-block" id="openWelcomeBtn" style="margin-bottom:12px;"><span id="openWelcomeLabel">はじめての方へ（使い方）</span></button>
       <button class="display-reset-btn" id="displayResetBtn">標準に戻す</button>
       <div class="app-version" id="appVersionLabel"></div>
     </div>
   </div>
   <div id="brightOverlay"></div>
+
+  <!-- ===== v1.11.0: 希釈ステーション ===== -->
+  <div class="overlay hidden" id="stationOverlay" role="dialog" aria-modal="true" aria-label="希釈液をつくる">
+    <div class="sheet" style="position:relative;">
+      <button type="button" class="close-btn" id="stCloseBtn" aria-label="閉じる">✕</button>
+      <div class="sheet-handle"></div>
+      <div id="stBody"></div>
+    </div>
+  </div>
 
   <!-- ===== v1.9.0: はじめての方へ ===== -->
   <div class="overlay hidden" id="welcomeOverlay" role="dialog" aria-modal="true" aria-label="はじめての方へ">
@@ -1087,6 +1152,33 @@ const STR = {
     conc_preset_cologne:'オーデコロン', conc_preset_edt:'オードトワレ', conc_preset_edp:'オードパルファン', conc_preset_parfum:'パルファン',
     nudge_backup:'保存したフォーミュラは、この端末のブラウザの中だけにあります。機種変更やデータ消去で消えないよう、ときどきバックアップを取っておくと安心です。',
     nudge_backup_btn:'今すぐバックアップ', nudge_later:'あとで',
+    /* v1.11.0 */
+    src_dil:'希釈液で組む', src_neat:'原液で組む',
+    src_neat_note:'原液（希釈率100%）で量る前提の計算に切り替えました。⚠ が付く素材は最小計量0.5μlを下回るので、合計量を増やすか希釈液に戻してください。',
+    set_bottle_label:'遮光瓶の登録',
+    set_bottle_help:'希釈液を仕込む瓶です。「実容量」は口いっぱいまで入る量。振り混ぜる余裕があるかの判定に使います。',
+    bt_make:'作る量(ml)', bt_cap:'実容量(ml)',
+    station_btn:'この素材の希釈液をつくる',
+    station_title:'希釈液をつくる',
+    station_sub:'希釈率は重量比（w/w）です。はかりがあるなら g、ピペットなら ml を見てください。',
+    st_bottle:'どの瓶に作りますか', st_dilution:'何%の希釈液を作りますか', st_custom:'カスタム',
+    st_route_neat:'原液から作る', st_route_stock:'手持ちの10%希釈液から作る',
+    st_route_stock_reco:'おすすめ', st_route_neat_note:'原液を直接量るルートです。',
+    st_neat:'香料原液', st_stock10:'10%希釈液', st_eth:'無水エタノール', st_total:'合計',
+    st_col_g:'重量(g)', st_col_ml:'容量(ml)',
+    st_space_ok:'瓶に余裕があります（ヘッドスペース {H}ml）。しっかり振り混ぜられます。',
+    st_space_warn:'余裕がやや少なめです（ヘッドスペース {H}ml）。こぼさないよう静かに混ぜてください。',
+    st_space_ng:'この瓶には入りきらないか、振り混ぜる余裕がありません（ヘッドスペース {H}ml）。ひとつ大きい瓶にするか、設定で実容量を登録してください。',
+    st_steps_title:'作り方',
+    st_step1:'瓶にラベルを貼り、先に書いておく（あとからだと書き忘れます）',
+    st_step2:'香料原液を先に入れる（あとからだと瓶の壁に残って回収しにくい）',
+    st_step3:'無水エタノールを注ぎ、ふたを閉めて30秒ほど振る',
+    st_step4:'数日置くとなじみます。使う前にも軽く振る',
+    st_label_copy:'ラベル文面をコピー', st_label_copied:'コピーしました',
+    st_tiny_warn:'この量だと原液が {A} と微量になります。手持ちの10%希釈液から作るルートの方が正確です。',
+    st_stock_note:'すでに作ってある10%希釈液を薄めるルートです。10%を作る手順をもう一度繰り返すだけなので、量りやすく精度も出ます。',
+    st_scale_lead:'はかりで作るなら（重量比なので、比率がそのまま重量の比になります）',
+    st_approx:'できあがり約',
   },
   en: {
     app_title:"nehne Perfumer's Notebook", app_subtitle:"Perfumer's Notebook",
@@ -1194,6 +1286,32 @@ const STR = {
     conc_preset_cologne:'Cologne', conc_preset_edt:'Eau de toilette', conc_preset_edp:'Eau de parfum', conc_preset_parfum:'Parfum',
     nudge_backup:'Saved formulas live only in this browser on this device. Take a backup now and then so a new phone or a cleared cache does not lose them.',
     nudge_backup_btn:'Back up now', nudge_later:'Later',
+    /* v1.11.0 */
+    src_dil:'From dilutions', src_neat:'From neat',
+    src_neat_note:'Switched to measuring neat materials (100%). Anything marked ⚠ falls below the 0.5μl minimum — scale up or go back to dilutions.',
+    set_bottle_label:'Bottles', set_bottle_help:'Bottles you prepare dilutions in. "Capacity" is the brim-full volume, used to check you have room to shake.',
+    bt_make:'Batch (ml)', bt_cap:'Capacity (ml)',
+    station_btn:'Prepare a dilution of this material',
+    station_title:'Prepare a dilution',
+    station_sub:'Dilution rates are by weight (w/w). Use the g column with a scale, the ml column with pipettes.',
+    st_bottle:'Which bottle?', st_dilution:'What strength?', st_custom:'Custom',
+    st_route_neat:'From the neat material', st_route_stock:'From your 10% stock',
+    st_route_stock_reco:'recommended', st_route_neat_note:'Measure the neat material directly.',
+    st_neat:'Concentrate', st_stock10:'10% dilution', st_eth:'Ethanol (anhydrous)', st_total:'Total',
+    st_col_g:'Weight (g)', st_col_ml:'Volume (ml)',
+    st_space_ok:'Plenty of room ({H}ml headspace) — easy to shake.',
+    st_space_warn:'A little tight ({H}ml headspace). Mix gently.',
+    st_space_ng:'This will not fit, or leaves no room to shake ({H}ml headspace). Use a larger bottle, or register the real capacity in settings.',
+    st_steps_title:'How to make it',
+    st_step1:'Label the bottle first — it is easy to forget afterwards',
+    st_step2:'Add the concentrate first (adding it last leaves residue on the walls)',
+    st_step3:'Pour in the ethanol, cap, and shake for about 30 seconds',
+    st_step4:'Let it rest a few days to settle; shake lightly before use',
+    st_label_copy:'Copy label text', st_label_copied:'Copied',
+    st_tiny_warn:'At this size the concentrate comes to only {A}. Making it from your 10% stock is more accurate.',
+    st_stock_note:'Dilute the 10% stock you already have. It is the same operation as making a 10%, so it is easy to measure and more precise.',
+    st_scale_lead:'On a scale (w/w means the ratio is simply a weight ratio)',
+    st_approx:'yields approx.',
   }
 };
 function t(key){
@@ -1217,6 +1335,259 @@ function setLang(lang){
   renderLibrary();
   if(!document.getElementById('tab-saved').classList.contains('hidden')) renderSaved();
 }
+/* ---------------- v1.11.0: 希釈液から / 原液から ----------------
+   原液を選ぶと全素材を希釈率100%として計算する。戻したときに元の値へ復帰できるよう
+   直前の希釈率を控えておく。 */
+let sourceMode = 'dil';
+let __prevDilutions = null;
+function setSourceMode(mode){
+  if(mode === sourceMode) return;
+  if(mode === 'neat'){
+    __prevDilutions = builderIngredients.map(ing=>ing.dilution);
+    builderIngredients.forEach(ing=>{ ing.dilution = 100; });
+  } else {
+    if(__prevDilutions){
+      builderIngredients.forEach((ing,i)=>{
+        if(__prevDilutions[i] !== undefined) ing.dilution = __prevDilutions[i];
+      });
+    }
+    __prevDilutions = null;
+  }
+  sourceMode = mode;
+  document.querySelectorAll('#sourceChips .chip').forEach(c=>{
+    c.classList.toggle('active', c.dataset.source === sourceMode);
+  });
+  renderBuilder();
+}
+
+/* ---------------- v1.11.0: 遮光瓶の登録 ---------------- */
+const BOTTLE_KEY = 'nehne_bottles_v1';
+const BOTTLE_DEFAULT = [
+  {label:'10ml瓶',  make:10,  cap:10},
+  {label:'26ml瓶',  make:20,  cap:26},
+  {label:'120ml瓶', make:100, cap:120}
+];
+let bottles = (function(){
+  try{
+    const v = JSON.parse(localStorage.getItem(BOTTLE_KEY) || 'null');
+    if(Array.isArray(v) && v.length) return v.map((b,i)=>Object.assign({}, BOTTLE_DEFAULT[i]||{label:'',make:10,cap:10}, b));
+  }catch(e){}
+  return BOTTLE_DEFAULT.map(b=>Object.assign({}, b));
+})();
+function persistBottles(){ try{ localStorage.setItem(BOTTLE_KEY, JSON.stringify(bottles)); }catch(e){} }
+function renderBottleEditor(){
+  const wrap = document.getElementById('bottleEditor');
+  if(!wrap) return;
+  wrap.innerHTML = bottles.map((b,i)=>`
+    <div class="bt-row">
+      <div class="bt-name">${esc(b.label)}</div>
+      <div class="bt-f"><label for="btMake${i}">${esc(t('bt_make'))}</label>
+        <input id="btMake${i}" type="number" min="1" step="1" value="${b.make}" data-i="${i}" data-f="make"></div>
+      <div class="bt-f"><label for="btCap${i}">${esc(t('bt_cap'))}</label>
+        <input id="btCap${i}" type="number" min="1" step="1" value="${b.cap}" data-i="${i}" data-f="cap"></div>
+    </div>`).join('');
+  wrap.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('change', (e)=>{
+      const v = parseFloat(e.target.value);
+      if(!(v>0)){ e.target.value = bottles[e.target.dataset.i][e.target.dataset.f]; return; }
+      bottles[e.target.dataset.i][e.target.dataset.f] = v;
+      persistBottles();
+    });
+  });
+}
+
+/* ---------------- v1.11.0: 希釈ステーション ----------------
+   希釈率は重量比(w/w)。目標は「瓶に入れる体積」なので、
+   まず希釈液の比重から総重量を出し、そこを原液とエタノールに配分する。 */
+let stMat = null, stBottleIdx = 1, stDil = 10, stCustomMake = null;
+
+function stationAmounts(sgNeat, dilPct, volMl){
+  const f = dilPct/100;
+  const rhoD = dilutionDensity(sgNeat, dilPct);
+  const totalG = volMl * rhoD;
+  const neatG = totalG * f, ethG = totalG * (1-f);
+  return {
+    rhoD, totalG, volMl,
+    neatG, neatMl: neatG / (sgNeat>0?sgNeat:RHO_DEFAULT),
+    ethG,  ethMl:  ethG / RHO_ETHANOL
+  };
+}
+/* 手持ちの10%(w/w)希釈液から、より薄い希釈液を作る場合 */
+function stationFromStock(sgNeat, dilPct, volMl, stockPct){
+  const a = stationAmounts(sgNeat, dilPct, volMl);
+  const rhoS = dilutionDensity(sgNeat, stockPct);
+  const stockG = a.totalG * (dilPct/stockPct);   /* 必要な希釈液の重量 */
+  const ethG = a.totalG - stockG;
+  return {stockG, stockMl: stockG/rhoS, ethG, ethMl: ethG/RHO_ETHANOL, totalG: a.totalG, volMl};
+}
+function fmt(v, dp){ return v.toFixed(dp==null ? (v<1 ? 3 : 2) : dp); }
+
+/* v1.11.0: 重量比(w/w)なら「1:9」がそのまま重量の比になる。
+   はかりで作る人向けに、原液をきりのいい重量に丸めた作り方も併記する。 */
+function niceStep(v){
+  if(v < 0.1) return 0.01;
+  if(v < 1)   return 0.05;
+  if(v < 10)  return 0.1;
+  return 0.5;
+}
+function roundedRecipe(mainG, dilPct, rhoMain){
+  const f = dilPct/100;
+  const step = niceStep(mainG);
+  const mG = Math.round(mainG/step)*step;
+  const eG = mG * (1-f)/f;
+  const dp = step < 0.1 ? 2 : (step < 1 ? 2 : 1);
+  const volMl = mG/rhoMain + eG/RHO_ETHANOL;
+  const ratio = Math.round((1-f)/f * 10)/10;
+  return {mG, eG, dp, volMl, ratio};
+}
+
+function renderStation(){
+  const body = document.getElementById('stBody');
+  if(!body || !stMat) return;
+  const m = stMat;
+  const sg = m.sg>0 ? m.sg : RHO_DEFAULT;
+  const b = bottles[stBottleIdx] || bottles[0];
+  const makeMl = (stCustomMake!=null && stCustomMake>0) ? stCustomMake : b.make;
+  const capMl = (stCustomMake!=null) ? null : b.cap;
+  const a = stationAmounts(sg, stDil, makeMl);
+
+  const bottleChips = bottles.map((bb,i)=>
+    `<button type="button" class="chip${(stCustomMake==null && i===stBottleIdx)?' active':''}" data-bi="${i}">${esc(bb.label)} → ${bb.make}ml</button>`
+  ).join('') + `<button type="button" class="chip${stCustomMake!=null?' active':''}" data-bi="custom">${esc(t('st_custom'))}</button>`;
+
+  const dilChips = [10,1].map(d=>
+    `<button type="button" class="chip${stDil===d?' active':''}" data-dil="${d}">${d}%</button>`
+  ).join('') + `<button type="button" class="chip${(stDil!==10&&stDil!==1)?' active':''}" data-dil="custom">${esc(t('st_custom'))}</button>`;
+
+  const head = `<div class="st-head"><span style="width:96px; text-align:right;">${esc(t('st_col_g'))}</span><span style="width:86px; text-align:right;">${esc(t('st_col_ml'))}</span></div>`;
+  const row = (k, g, ml, cls)=>`<div class="st-row ${cls||''}"><span class="k">${esc(k)}</span>
+    <span class="v" style="width:96px; text-align:right;">${fmt(g)}</span><span class="v" style="width:86px; text-align:right; color:var(--paper-dim); font-weight:400;">${fmt(ml)}</span></div>`;
+
+  /* ルートA: 原液から */
+  let routeA = `<div class="st-card">
+    <div class="st-route">A. ${esc(t('st_route_neat'))}<small>${esc(t('st_route_neat_note'))}</small></div>
+    ${head}
+    ${row(t('st_neat'), a.neatG, a.neatMl)}
+    ${row(t('st_eth'), a.ethG, a.ethMl)}
+    ${row(t('st_total'), a.totalG, a.volMl, 'total')}
+    ${(function(){
+      const r = roundedRecipe(a.neatG, stDil, sg);
+      return `<div class="st-round">${esc(t('st_scale_lead'))}<b>${esc(t('st_neat'))} ${r.mG.toFixed(r.dp)}g ＋ ${esc(t('st_eth'))} ${r.eG.toFixed(r.dp)}g</b>
+        <span>1 : ${r.ratio}　→　${esc(t('st_approx'))} ${r.volMl.toFixed(1)}ml</span></div>`;
+    })()}
+  </div>`;
+  /* 原液が微量すぎるときの注意 */
+  if(a.neatMl < 0.2){
+    routeA += `<div class="st-note" style="color:var(--amber-soft);">⚠ ${esc(t('st_tiny_warn').replace('{A}', fmt(a.neatMl,3)+'ml / '+fmt(a.neatG,3)+'g'))}</div>`;
+  }
+
+  /* ルートB: 手持ちの10%から（10%未満を作るときだけ） */
+  let routeB = '';
+  if(stDil < 10){
+    const c = stationFromStock(sg, stDil, makeMl, 10);
+    routeB = `<div class="st-card" style="border-color:var(--amber);">
+      <div class="st-route">B. ${esc(t('st_route_stock'))}<small>${esc(t('st_route_stock_reco'))}</small></div>
+      ${head}
+      ${row(t('st_stock10'), c.stockG, c.stockMl)}
+      ${row(t('st_eth'), c.ethG, c.ethMl)}
+      ${row(t('st_total'), c.totalG, c.volMl, 'total')}
+      ${(function(){
+        const rhoS = dilutionDensity(sg, 10);
+        const r = roundedRecipe(c.stockG, stDil*10, rhoS);
+        return `<div class="st-round">${esc(t('st_scale_lead'))}<b>${esc(t('st_stock10'))} ${r.mG.toFixed(r.dp)}g ＋ ${esc(t('st_eth'))} ${r.eG.toFixed(r.dp)}g</b>
+          <span>1 : ${r.ratio}　→　${esc(t('st_approx'))} ${r.volMl.toFixed(1)}ml</span></div>`;
+      })()}
+      <div class="st-note">${esc(t('st_stock_note'))}</div>
+    </div>`;
+  }
+
+  /* ヘッドスペースの判定 */
+  let space = '';
+  if(capMl){
+    const h = capMl - makeMl;
+    const ratio = h / capMl;
+    const cls = ratio >= 0.15 ? 'ok' : (ratio >= 0.07 ? 'warn' : 'ng');
+    const key = cls==='ok' ? 'st_space_ok' : (cls==='warn' ? 'st_space_warn' : 'st_space_ng');
+    space = `<div class="st-space ${cls}">${esc(t(key).replace('{H}', h.toFixed(1)))}</div>`;
+  }
+
+  const labelText = `${m.name} ${stDil}% w/w  ${new Date().toISOString().slice(0,10)}`;
+
+  body.innerHTML = `
+    <h2 class="st-h">${esc(t('station_title'))}</h2>
+    <div class="st-sub">${esc(m.name)}${m.name_ja && m.name_ja!==m.name ? '（'+esc(m.name_ja)+'）' : ''} ・ ${esc(t('sg_label'))} ${esc(String(sg))}<br>${esc(t('station_sub'))}</div>
+
+    <div class="st-label">${esc(t('st_bottle'))}</div>
+    <div class="chip-row" id="stBottleChips">${bottleChips}</div>
+    <div id="stCustomWrap" class="${stCustomMake!=null?'':'hidden'}">
+      <div class="calc-field"><label for="stCustomMake">${esc(t('bt_make'))}</label>
+        <input type="number" id="stCustomMake" min="1" step="1" value="${stCustomMake!=null?stCustomMake:makeMl}"></div>
+    </div>
+
+    <div class="st-label">${esc(t('st_dilution'))}</div>
+    <div class="chip-row" id="stDilChips">${dilChips}</div>
+    <div id="stDilCustomWrap" class="${(stDil!==10&&stDil!==1)?'':'hidden'}">
+      <div class="calc-field"><label for="stDilCustom">%</label>
+        <input type="number" id="stDilCustom" min="0.1" max="100" step="0.1" value="${stDil}"></div>
+    </div>
+
+    ${routeB}
+    ${routeA}
+    ${space}
+
+    <div class="st-label">${esc(t('st_steps_title'))}</div>
+    <ol class="st-steps">
+      <li>${esc(t('st_step1'))}</li>
+      <li>${esc(t('st_step2'))}</li>
+      <li>${esc(t('st_step3'))}</li>
+      <li>${esc(t('st_step4'))}</li>
+    </ol>
+
+    <button type="button" class="st-copy" id="stCopyBtn">${esc(t('st_label_copy'))}<b>${esc(labelText)}</b></button>
+  `;
+
+  body.querySelectorAll('#stBottleChips .chip').forEach(c=>{
+    c.addEventListener('click', ()=>{
+      if(c.dataset.bi === 'custom'){ stCustomMake = makeMl; }
+      else { stCustomMake = null; stBottleIdx = parseInt(c.dataset.bi,10); }
+      renderStation();
+    });
+  });
+  body.querySelectorAll('#stDilChips .chip').forEach(c=>{
+    c.addEventListener('click', ()=>{
+      stDil = (c.dataset.dil === 'custom') ? 5 : parseFloat(c.dataset.dil);
+      renderStation();
+    });
+  });
+  const cm = document.getElementById('stCustomMake');
+  if(cm) cm.addEventListener('change', ()=>{
+    const v = parseFloat(cm.value);
+    if(v>0){ stCustomMake = v; renderStation(); }
+  });
+  const dc = document.getElementById('stDilCustom');
+  if(dc) dc.addEventListener('change', ()=>{
+    const v = parseFloat(dc.value);
+    if(v>0 && v<=100){ stDil = v; renderStation(); }
+  });
+  const cp = document.getElementById('stCopyBtn');
+  if(cp) cp.addEventListener('click', ()=>{
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(labelText).then(()=>toast(t('st_label_copied')), ()=>toast(labelText));
+      } else { toast(labelText); }
+    }catch(e){ toast(labelText); }
+  });
+}
+function openStation(name){
+  const m = findMaterial(name);
+  if(!m) return;
+  stMat = m;
+  stDil = (m.defaultDilution>0 && m.defaultDilution<=100) ? m.defaultDilution : 10;
+  stCustomMake = null;
+  renderStation();
+  openOverlay('stationOverlay');
+}
+
 /* ---------------- v1.10.0: かんたんモード ----------------
    初回は「保存フォーミュラが無い＝新規ユーザー」ならON、既存ユーザーはOFF。
    以後はユーザーの選択を保存する。 */
@@ -1340,7 +1711,14 @@ function applyStaticLang(){
   document.getElementById('targetLabel').textContent = mode==='ul' ? t('target_volume_label') : t('target_weight_label');
   const tuLabel = document.getElementById('targetUnitLabel');
   if(tuLabel) tuLabel.textContent = t('unit_label');
-  document.getElementById('calcHelpText').textContent = simpleMode ? t('simple_note') : (mode==='ul' ? t('help_ul') : t('help_g'));
+  document.getElementById('calcHelpText').textContent = (sourceMode === 'neat') ? t('src_neat_note')
+    : (simpleMode ? t('simple_note') : (mode==='ul' ? t('help_ul') : t('help_g')));
+  document.getElementById('srcDilChip').textContent = t('src_dil');
+  document.getElementById('srcNeatChip').textContent = t('src_neat');
+  document.getElementById('setBottleLabel').textContent = t('set_bottle_label');
+  document.getElementById('setBottleHelp').textContent = t('set_bottle_help');
+  renderBottleEditor();
+  if(!document.getElementById('stationOverlay').classList.contains('hidden')) renderStation();
 }
 document.getElementById('langToggleBtn').addEventListener('click', ()=>{
   setLang(currentLang==='ja' ? 'en' : 'ja');
@@ -1389,7 +1767,7 @@ function noteGroup(note){
 
 /* v1.8.6: Escapeで閉じる／モーダル内でフォーカスを循環させる（キーボード操作の確保） */
 document.addEventListener('keydown', (e)=>{
-  const open = ['pickerOverlay','cmOverlay','matOverlay','welcomeOverlay'].map(id=>document.getElementById(id))
+  const open = ['pickerOverlay','cmOverlay','matOverlay','welcomeOverlay','stationOverlay'].map(id=>document.getElementById(id))
                  .filter(el=>el && !el.classList.contains('hidden'));
   if(!open.length) return;
   const top = open[0];
@@ -1585,48 +1963,18 @@ function openMaterialDetail(name){
     <div class="row"><div class="k">${esc(t('components_label'))}</div><div class="v">${esc(isEn ? (m.components_en||m.components) : m.components)}</div></div>
     <div class="row"><div class="k">${esc(t('default_dilution_label'))}</div><div class="v">${esc(m.defaultDilution)}%</div></div>
     <div class="row"><div class="k">${esc(t('sg_label'))}</div><div class="v">${esc(m.sg)}</div></div>
-    <details class="help-details" id="dilRecipeBox" style="margin-top:14px;">
-      <summary>${esc(t('dilrec_summary'))}</summary>
-      <div class="chip-row" id="dilRecipeChips" style="margin:10px 0 2px;">
-        ${[5,10,20,50].map((v,i)=>`<button type="button" class="chip${i===1?' active':''}" data-vol="${v}">${v}ml</button>`).join('')}
-      </div>
-      <div class="dr-out" id="dilRecipeOut"></div>
-      <p style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin-top:8px;">${esc(t('dilrec_help'))}</p>
-    </details>
-    <button class="btn btn-primary btn-block" style="margin-top:18px;" id="addFromDetailBtn">${esc(t('add_to_formula_btn'))}</button>
+    <button class="btn btn-secondary btn-block" style="margin-top:16px;" id="openStationBtn">${esc(t('station_btn'))}</button>
+    <button class="btn btn-primary btn-block" style="margin-top:10px;" id="addFromDetailBtn">${esc(t('add_to_formula_btn'))}</button>
     ${m.custom ? `<div style="display:flex; gap:10px; margin-top:10px;">
       <button class="btn btn-block" id="editCustomBtn">${esc(t('cm_edit'))}</button>
       <button class="btn btn-block" id="deleteCustomBtn" style="color:#e07a5f;">${esc(t('cm_delete'))}</button>
     </div>` : ''}
   `;
-  /* v1.9.0: 希釈液そのものの作り方。ここが無いと初心者は最初の一歩で詰まる */
-  (function(){
-    const chips = document.getElementById('dilRecipeChips');
-    const out = document.getElementById('dilRecipeOut');
-    if(!chips || !out) return;
-    const dil = (m.defaultDilution>0 && m.defaultDilution<=100) ? m.defaultDilution : 10;
-    const sg = (m.sg>0) ? m.sg : RHO_DEFAULT;
-    const draw = (vol)=>{
-      const neatMl = vol * dil/100;
-      const ethMl  = vol - neatMl;
-      const dp = neatMl < 1 ? 2 : 1;
-      out.innerHTML = `
-        <div class="dr-row"><span>${esc(t('dilrec_neat'))}（${dil}%）</span>
-          <span class="drv">${neatMl.toFixed(dp)} ml<span class="drg">${(neatMl*sg).toFixed(2)} g</span></span></div>
-        <div class="dr-row"><span>${esc(t('dilrec_eth'))}</span>
-          <span class="drv">${ethMl.toFixed(dp)} ml<span class="drg">${(ethMl*RHO_ETHANOL).toFixed(2)} g</span></span></div>
-        <div class="dr-row"><span style="color:var(--paper-dim);">${esc(t('dilrec_total'))}</span>
-          <span class="drv" style="color:var(--paper);">${vol.toFixed(0)} ml</span></div>`;
-    };
-    chips.querySelectorAll('.chip').forEach(c=>{
-      c.addEventListener('click', ()=>{
-        chips.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
-        c.classList.add('active');
-        draw(parseFloat(c.dataset.vol));
-      });
-    });
-    draw(10);
-  })();
+  /* v1.9.0→v1.11.0: 希釈液の作り方は独立した「希釈ステーション」へ */
+  document.getElementById('openStationBtn').addEventListener('click', ()=>{
+    closeOverlay('matOverlay');
+    openStation(m.name);
+  });
   document.getElementById('addFromDetailBtn').addEventListener('click', ()=>{
     addIngredient(m.name);
     closeOverlay('matOverlay');
@@ -1826,12 +2174,15 @@ let builderIngredients = []; // {name, parts, note, dilution}
 
 function addIngredient(name, parts, note, dilution){
   const mat = findMaterial(name);
+  const baseDil = dilution!==undefined ? dilution : (mat && mat.defaultDilution ? mat.defaultDilution : 10);
   builderIngredients.push({
     name,
     parts: parts!==undefined ? parts : 10,
     note: note || (mat ? mat.note : 'Middle'),
-    dilution: dilution!==undefined ? dilution : (mat && mat.defaultDilution ? mat.defaultDilution : 10)
+    /* v1.11.0: 原液モードのときは追加した素材も原液として扱う */
+    dilution: (typeof sourceMode !== 'undefined' && sourceMode === 'neat') ? 100 : baseDil
   });
+  if(typeof sourceMode !== 'undefined' && sourceMode === 'neat' && __prevDilutions) __prevDilutions.push(baseDil);
   renderBuilder();
 }
 
@@ -2004,17 +2355,28 @@ const MIN_PIPETTE_UL = 0.5;          /* 最小計量体積 */
 const RHO_ETHANOL = 0.789;           /* 無水エタノールの比重 (g/ml, 20℃) */
 const RHO_DEFAULT = 0.90;            /* 比重が未登録の素材の既定値 */
 
-/* この処方のコンパウンド原液の比重。素材の比重を純香料比で加重平均する */
+/* v1.11.0: 希釈液そのものの比重。
+   希釈率は重量比(w/w)なので、質量分率fから比容積の足し算で求める。
+   例) 比重0.87の原液を10%(w/w)に希釈 → 1/(0.1/0.87 + 0.9/0.789) ≒ 0.796 */
+function dilutionDensity(sgNeat, dilPct){
+  const f = ((dilPct>0 && dilPct<=100) ? dilPct : 10)/100;
+  const rn = sgNeat>0 ? sgNeat : RHO_DEFAULT;
+  return 1 / (f/rn + (1-f)/RHO_ETHANOL);
+}
+
+/* この処方のコンパウンド原液の比重。
+   v1.11.0: 純香料比は「質量比」なので、比重は比容積の加重和の逆数で求める
+   （旧版は比重の単純加重平均で、わずかにずれていた） */
 function compoundDensity(){
   const ratios = neatRatios();
-  let rho = 0, w = 0;
+  let vol = 0, w = 0;
   builderIngredients.forEach((ing,i)=>{
     if(!(ratios[i]>0)) return;
     const mat = findMaterial(ing.name);
     const sg = (mat && mat.sg>0) ? mat.sg : RHO_DEFAULT;
-    rho += ratios[i]*sg; w += ratios[i];
+    vol += ratios[i]/sg; w += ratios[i];
   });
-  return w>0 ? rho/w : RHO_DEFAULT;
+  return (w>0 && vol>0) ? w/vol : RHO_DEFAULT;
 }
 
 /* 純香料換算比(‰の元)。処方の不変量 */
@@ -2023,30 +2385,42 @@ function neatRatios(){
   return builderIngredients.map(ing => sum>0 ? (ing.parts>0?ing.parts:0)/sum : 0);
 }
 
+/* v1.11.0: 希釈率は重量比(w/w)に統一。
+   量り取る液の「質量」の重み = parts / 希釈率。
+   体積で量るときは、その質量を希釈液の比重で体積に直してから正規化する。
+   こうすると体積モードと重量モードで、出来上がるコンパウンドの組成が完全に一致する
+   （旧版は体積モードで希釈率を体積比として扱っていたため、比重差の分だけずれていた）。 */
+function mixInfos(items){
+  const dilOf = (ing) => (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
+  return items.map(ing=>{
+    const mat = findMaterial(ing.name) || {};
+    const sg = mat.sg>0 ? mat.sg : RHO_DEFAULT;
+    const dil = dilOf(ing);
+    const rhoD = dilutionDensity(sg, dil);
+    const massW = (ing.parts>0 ? ing.parts : 0) / (dil/100);
+    return {sg, dil, rhoD, massW, volW: massW/rhoD};
+  });
+}
+
 function computeMixItems(){
   const targetWeight = parseFloat(document.getElementById('targetWeight').value) || 0;
   const ratios = neatRatios();
   const isUl = calcMode==='ul';
 
-  /* 量り取る液の重み = parts / 希釈率。これを正規化して総量に合わせる */
-  const dilOf = (ing) => (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
-  const weights = builderIngredients.map(ing => {
-    const p = ing.parts>0 ? ing.parts : 0;
-    return p / (dilOf(ing)/100);
-  });
+  const infos = mixInfos(builderIngredients);
+  const weights = infos.map(o => isUl ? o.volW : o.massW);
   const wSum = weights.reduce((a,b)=>a+b,0);
 
   return builderIngredients.map((ing,i)=>{
-    const mat = findMaterial(ing.name) || {sg:0.9};
-    const dil = dilOf(ing);
-    /* 実際に量り取る希釈液の量。合計は必ず出来上がり総量になる */
+    const o = infos[i];
+    /* 実際に量り取る希釈液の量。合計は必ず「混ぜる香料の合計量」になる */
     const measured = wSum>0 ? (weights[i]/wSum) * targetWeight : 0;
-    /* そのうち純香料の量 */
-    const neat = measured * (dil/100);
-    const sg = mat.sg>0 ? mat.sg : 0.9;
-    const ulEquiv = isUl ? measured : (measured/sg*1000);
+    /* そのうち純香料の量（amount と同じ単位系で表示する） */
+    const neatMass = (isUl ? measured * o.rhoD : measured) * (o.dil/100);
+    const neat = isUl ? (neatMass / o.sg) : neatMass;
+    const ulEquiv = isUl ? measured : (measured / o.rhoD * 1000);
     return {
-      name: ingName(ing), note: ing.note, dilution: dil,
+      name: ingName(ing), note: ing.note, dilution: o.dil,
       neat, amount: measured, unit: isUl?'μl':'g',
       permille: ratios[i]*1000,
       drops: ulEquiv/50,
@@ -2063,13 +2437,25 @@ function compoundPurity(){
   return items.reduce((a,b)=>a+b.neat,0) / tot * 100;
 }
 
-/* この処方を原液だけで組める最小バッチ体積(ml)。賦香率と最小計量から逆算 */
+/* この処方を原液だけで組める最小バッチ体積(ml)。賦香率と最小計量から逆算。
+   v1.11.0: 賦香率は重量比なので、質量→体積の換算に最小成分の比重と香水の比重を使う */
 function minNeatBatchMl(concPct){
-  const ratios = neatRatios().filter(r=>r>0);
-  if(!ratios.length) return null;
-  const smallest = Math.min(...ratios);
+  const ratios = neatRatios();
+  let smallest = Infinity, smallestSg = RHO_DEFAULT;
+  builderIngredients.forEach((ing,i)=>{
+    if(!(ratios[i]>0)) return;
+    if(ratios[i] < smallest){
+      smallest = ratios[i];
+      const mat = findMaterial(ing.name);
+      smallestSg = (mat && mat.sg>0) ? mat.sg : RHO_DEFAULT;
+    }
+  });
+  if(!isFinite(smallest)) return null;
   const load = (concPct>0?concPct:10)/100;
-  return MIN_PIPETTE_UL / (load * smallest) / 1000;
+  const rhoC = compoundDensity();
+  const rhoF = 1/(load/rhoC + (1-load)/RHO_ETHANOL);
+  /* 最小成分の原液体積(ml) = V*rhoF*load*smallest/sg ≧ 0.5μl */
+  return (MIN_PIPETTE_UL/1000) * smallestSg / (load * smallest * rhoF);
 }
 
 function updateCalcTable(){
@@ -2114,7 +2500,8 @@ function updateCalcTable(){
   `;
   /* かんたんモードであることと、希釈率の扱いを明示する */
   const help = document.getElementById('calcHelpText');
-  if(help) help.textContent = simpleMode ? t('simple_note') : (isUl ? t('help_ul') : t('help_g'));
+  if(help) help.textContent = (sourceMode === 'neat') ? t('src_neat_note')
+                            : (simpleMode ? t('simple_note') : (isUl ? t('help_ul') : t('help_g')));
   updateIngredientAmounts(items);
   updateDilution();
 }
@@ -2516,17 +2903,26 @@ function computeMixItemsFor(f){
   const sumParts = items.reduce((a,b)=>a+(b.parts>0?b.parts:0),0);
   const dilOf = (ing)=> (ing.dilution>0 && ing.dilution<=100) ? ing.dilution : 10;
 
-  const weights = items.map(ing => (ing.parts>0 ? ing.parts : 0) / (dilOf(ing)/100));
+  /* v1.11.0: 画面と同じ w/w モデル */
+  const infos = items.map(ing=>{
+    const mat = findMaterial(ing.name) || {};
+    const sg = mat.sg>0 ? mat.sg : RHO_DEFAULT;
+    const dil = dilOf(ing);
+    const rhoD = dilutionDensity(sg, dil);
+    const massW = (ing.parts>0 ? ing.parts : 0) / (dil/100);
+    return {sg, dil, rhoD, massW, volW: massW/rhoD};
+  });
+  const weights = infos.map(o => isUl ? o.volW : o.massW);
   const wSum = weights.reduce((a,b)=>a+b,0);
 
   return items.map((ing,i)=>{
-    const mat = findMaterial(ing.name) || {sg:0.9};
-    const dil = dilOf(ing);
+    const o = infos[i];
+    const dil = o.dil;
     const amount = wSum>0 ? weights[i]/wSum*targetWeight : 0;
-    const neat = amount * (dil/100);
+    const neatMass = (isUl ? amount * o.rhoD : amount) * (dil/100);
+    const neat = isUl ? (neatMass / o.sg) : neatMass;
     const pct = sumParts>0 ? (ing.parts>0?ing.parts:0)/sumParts*100 : 0;
-    const sg = mat.sg>0 ? mat.sg : 0.9;
-    const ulEquiv = isUl ? amount : (amount/sg*1000);
+    const ulEquiv = isUl ? amount : (amount / o.rhoD * 1000);
     return {
       name:ingName(ing), note:ing.note, parts:(ing.parts||0),
       pct, permille: pct*10, dilution:dil, neat,
@@ -3049,6 +3445,11 @@ function closeWelcome(){
 }
 document.getElementById('wcCloseBtn').addEventListener('click', closeWelcome);
 document.getElementById('welcomeOverlay').addEventListener('click', (e)=>{ if(e.target.id==='welcomeOverlay') closeWelcome(); });
+document.getElementById('stCloseBtn').addEventListener('click', ()=>closeOverlay('stationOverlay'));
+document.getElementById('stationOverlay').addEventListener('click', (e)=>{ if(e.target.id==='stationOverlay') closeOverlay('stationOverlay'); });
+document.querySelectorAll('#sourceChips .chip').forEach(c=>{
+  c.addEventListener('click', ()=> setSourceMode(c.dataset.source));
+});
 document.querySelectorAll('#simpleSeg button').forEach(b=>{
   b.addEventListener('click', ()=> setSimpleMode(b.dataset.simple==='1'));
 });
@@ -3058,7 +3459,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.10.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.11.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
@@ -3078,6 +3479,7 @@ applySettingsLang();
 applyDisplay();
 applySimpleMode();
 renderPresets();
+renderBottleEditor();
 buildChips();
 renderMaterials();
 renderBuilder();
@@ -3093,7 +3495,7 @@ renderLibrary();
 /* ===== v1.5.4: Android「戻る」ジェスチャー対応 =====
    モーダル表示中の戻る操作はアプリ終了ではなくモーダルを閉じる */
 (function(){
-  const ids = ['pickerOverlay','cmOverlay','libOverlay','mixOverlay','matOverlay','settingsOverlay','welcomeOverlay'];
+  const ids = ['pickerOverlay','cmOverlay','libOverlay','mixOverlay','matOverlay','settingsOverlay','welcomeOverlay','stationOverlay'];
   const els = ids.map(id=>document.getElementById(id)).filter(Boolean);
   let closingByPop = false, skipNextClose = false;
   const obs = new MutationObserver(muts=>{
