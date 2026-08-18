@@ -432,6 +432,52 @@ table.calc-table tr:last-child td{border-bottom:none;}
 .empty-state svg{opacity:0.5; margin-bottom:14px;}
 .empty-state p{font-size:0.8125rem; line-height:1.7;}
 
+/* ---------- v1.9.0: STEPバッジ / 欄の説明 ---------- */
+.step-badge{
+  font-family:"Noto Sans JP",sans-serif; font-size:0.625rem; font-weight:700;
+  letter-spacing:0.06em; background:var(--amber); color:var(--ink-900);
+  border-radius:6px; padding:2px 7px; align-self:center; white-space:nowrap;
+}
+.section-sub{
+  font-size:0.75rem; color:var(--paper-dim); line-height:1.65; margin:-4px 0 10px;
+}
+/* ---------- v1.9.0: 空状態のアクション ---------- */
+.empty-actions{display:flex; flex-direction:column; gap:10px; max-width:300px; margin:18px auto 0;}
+/* ---------- v1.9.0: はじめての方へ ---------- */
+.wc-step{display:none;}
+.wc-step.on{display:block;}
+.wc-h{font-family:"Shippori Mincho",serif; font-size:1.125rem; color:var(--paper); margin:2px 0 10px;}
+.wc-p{font-size:0.8125rem; line-height:1.85; color:var(--paper-dim); margin:0 0 10px;}
+.wc-p b{color:var(--paper);}
+.wc-box{
+  background:rgba(200,150,63,0.10); border-left:3px solid var(--amber);
+  border-radius:0 10px 10px 0; padding:10px 12px; margin:10px 0;
+  font-size:0.78125rem; line-height:1.8; color:var(--paper-dim);
+}
+.wc-box b{color:var(--amber-soft);}
+.wc-term{border-top:1px solid var(--line); padding:9px 0 2px; font-size:0.8125rem; line-height:1.7;}
+.wc-term:first-of-type{border-top:none;}
+.wc-term .wt{color:var(--amber-soft); font-weight:700;}
+.wc-term .wd{color:var(--paper-dim); font-size:0.75rem; display:block;}
+.wc-dots{text-align:center; margin:16px 0 12px;}
+.wc-dots i{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--line-strong); margin:0 4px;}
+.wc-dots i.on{background:var(--amber);}
+.wc-nav{display:flex; gap:10px;}
+.wc-skip{
+  display:block; width:100%; background:none; border:none; color:var(--paper-dim);
+  font-size:0.75rem; text-decoration:underline; text-underline-offset:3px;
+  padding:10px 4px 2px; cursor:pointer; font-family:inherit;
+}
+/* ---------- v1.9.0: 希釈液の作り方 ---------- */
+.dr-out{margin-top:10px;}
+.dr-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  border-bottom:1px solid var(--line); padding:7px 2px; font-size:0.8125rem;
+}
+.dr-row:last-child{border-bottom:none;}
+.dr-row .drv{font-family:'JetBrains Mono',monospace; color:var(--amber-soft); font-weight:700;}
+.dr-row .drg{font-family:'JetBrains Mono',monospace; color:var(--paper-dim); font-size:0.75rem; margin-left:8px; font-weight:400;}
+
 /* ---------- Bottom nav ---------- */
 nav.bottom{
   position:fixed; bottom:0; left:50%; transform:translateX(-50%);
@@ -624,7 +670,8 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 
     <!-- ===== TAB: BUILDER ===== -->
     <section id="tab-builder" class="hidden">
-      <div class="section-title"><span id="stCompound">配合の設計</span><small>COMPOUND</small></div>
+      <div class="section-title"><span class="step-badge" id="stepBadge1">STEP 1</span><span id="stCompound">配合の設計</span><small>COMPOUND</small></div>
+      <p class="section-sub" id="subCompound">香りのレシピ（香料どうしの比率）を決めます。</p>
       <div class="builder-card">
         <input class="builder-name-input" id="builderName" placeholder="フォーミュラ名を入力…" value="Untitled Formula">
 
@@ -644,7 +691,8 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         </details>
       </div>
 
-      <div class="section-title"><span id="stWeighout">原液の計算</span><small>WEIGH-OUT</small></div>
+      <div class="section-title"><span class="step-badge" id="stepBadge2">STEP 2</span><span id="stWeighout">量り取る量</span><small>WEIGH-OUT</small></div>
+      <p class="section-sub" id="subWeighout">レシピどおりに、実際に何をどれだけ量るかを計算します。</p>
       <div class="builder-card">
         <div class="chip-row" id="calcModeChips" style="margin-bottom:12px;">
           <button class="chip active" data-mode="ul">体積（μl・希釈済み香料）</button>
@@ -652,7 +700,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         </div>
         <div class="calc-inputs">
           <div class="calc-field" id="calcModeFieldWrap">
-            <label id="targetLabel" for="targetWeight">出来上がり総量</label>
+            <label id="targetLabel" for="targetWeight">混ぜる香料の合計量</label>
             <input type="number" id="targetWeight" value="100" min="0" step="1">
           </div>
           <div class="calc-field">
@@ -666,7 +714,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <table class="calc-table" id="calcTable"></table>
         </div>
         <p id="calcHelpText" style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin-top:10px;">
-          希釈済みの香料をマイクロピペット等で量り取り、出来上がり総量になるように配合する想定の計算です。各素材の希釈率は上の「配合の設計」欄で個別に設定できます（デフォルト10%）。滴数はドロッパー1滴≈0.05mlとして目安表示しています。
+          ここに出る量は「希釈済みの香料」を量り取る量です（合計がちょうど上の数字になります）。マイクロピペットや電子はかりでこの表のとおりに量ってください。滴数はドロッパー1滴≈0.05mlとしての目安です。
         </p>
         <button class="mix-open-btn" id="openMixBtn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
@@ -674,7 +722,8 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         </button>
       </div>
 
-      <div class="section-title"><span id="stDilution">希釈と賦香率</span><small>DILUTION</small></div>
+      <div class="section-title"><span class="step-badge" id="stepBadge3">STEP 3</span><span id="stDilution">香水に仕上げる</span><small>DILUTION</small></div>
+      <p class="section-sub" id="subDilution">STEP 2 で混ぜた香料を、アルコールで薄めて香水にします。試作だけならここは不要です。</p>
       <div class="builder-card">
         <div class="calc-inputs">
           <div class="calc-field">
@@ -682,7 +731,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
             <input type="number" id="concPct" value="10" min="0.1" step="0.5">
           </div>
           <div class="calc-field">
-            <label id="finalVolLabel" for="finalVol">仕上げ総量（ml）</label>
+            <label id="finalVolLabel" for="finalVol">出来上がる香水の量（ml）</label>
             <input type="number" id="finalVol" value="50" min="1" step="1">
           </div>
         </div>
@@ -772,7 +821,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <div class="sheet-handle"></div>
       <div class="mix-header">
         <div class="mix-title" id="mixTitle">フォーミュラ名</div>
-        <div class="mix-sub" id="mixSub">出来上がり総量</div>
+        <div class="mix-sub" id="mixSub">混ぜる香料の合計量</div>
         <div class="mix-progress-bar"><div class="mix-progress-fill" id="mixProgressFill"></div></div>
         <div class="mix-progress-text" id="mixProgressText">0 / 0 完了</div>
       </div>
@@ -813,11 +862,21 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <div class="range-ends"><span style="font-size:0.6875rem;" id="brightDarkEnd">暗く</span><span style="font-size:0.6875rem;" id="brightLightEnd">明るく</span></div>
       </div>
 
+      <button class="btn btn-secondary btn-block" id="openWelcomeBtn" style="margin-bottom:12px;"><span id="openWelcomeLabel">はじめての方へ（使い方）</span></button>
       <button class="display-reset-btn" id="displayResetBtn">標準に戻す</button>
       <div class="app-version" id="appVersionLabel"></div>
     </div>
   </div>
   <div id="brightOverlay"></div>
+
+  <!-- ===== v1.9.0: はじめての方へ ===== -->
+  <div class="overlay hidden" id="welcomeOverlay" role="dialog" aria-modal="true" aria-label="はじめての方へ">
+    <div class="sheet" style="position:relative;">
+      <button type="button" class="close-btn" id="wcCloseBtn" aria-label="閉じる">✕</button>
+      <div class="sheet-handle"></div>
+      <div id="wcBody"></div>
+    </div>
+  </div>
 
   <nav class="bottom">
     <button class="nav-btn active" data-tab="materials">
@@ -878,17 +937,20 @@ const STR = {
     page_materials:'素材ライブラリ', page_builder:'配合を作る', page_library:'フォーミュラ集', page_saved:'マイフォーミュラ',
     search_materials_ph:'素材名・成分・語彙で検索…',
     chip_all_notes:'すべてのノート', chip_all_families:'すべての系統',
-    section_compound:'配合の設計', section_weighout:'原液の計算', section_dilution:'希釈と賦香率',
+    section_compound:'配合の設計', section_weighout:'量り取る量', section_dilution:'香水に仕上げる',
+    sub_compound:'香りのレシピ（香料どうしの比率）を決めます。',
+    sub_weighout:'レシピどおりに、実際に何をどれだけ量るかを計算します。',
+    sub_dilution:'STEP 2 で混ぜた香料を、アルコールで薄めて香水にします。試作だけならここは不要です。',
     section_library:'フォーミュラ集', section_saved:'マイフォーミュラ',
     builder_name_ph:'フォーミュラ名を入力…', untitled_formula:'Untitled Formula',
     add_ingredient_btn:'＋ 素材を追加',
     mode_volume:'体積（μl・希釈済み香料）', mode_weight:'重量（g・比重から換算）',
-    target_volume_label:'出来上がり総量', target_weight_label:'原液（コンパウンド）総量', unit_label:'単位',
+    target_volume_label:'混ぜる香料の合計量', target_weight_label:'混ぜる香料の合計量', unit_label:'単位',
     parts_label:'配合比', dilution_pct_label:'希釈率(%)', amount_estimate_label:'使用量目安',
-    help_ul:'希釈済みの香料をマイクロピペット等で量り取り、出来上がり総量になるように配合する想定の計算です。各素材の希釈率は上の「配合の設計」欄で個別に設定できます（デフォルト10%）。滴数はドロッパー1滴≈0.05mlとして目安表示しています。',
-    help_g:'各素材は個別の希釈率とSG（比重）を用いて、実際に量り取る希釈液の重量（g）を算出しています。SGは素材詳細で確認できます（希釈率は上の欄で個別に設定）。',
+    help_ul:'ここに出る量は「希釈済みの香料」を量り取る量です（合計がちょうど上の数字になります）。マイクロピペットや電子はかりでこの表のとおりに量ってください。滴数はドロッパー1滴≈0.05mlとしての目安です。',
+    help_g:'ここに出る量は「希釈済みの香料」を量り取る重量（g）です。素材ごとの希釈率と比重（SG）から換算しています。合計はちょうど上の数字になります。',
     open_mix_btn:'調香専用ページを開く',
-    target_conc_label:'目標賦香率（%）', final_vol_label:'仕上げ総量（ml）',
+    target_conc_label:'目標賦香率（%）', final_vol_label:'出来上がる香水の量（ml）',
     exp_csv:'Excelに書き出す', exp_json:'バックアップ', exp_import:'復元',
     dil_compound:'コンパウンド（原液）', dil_alcohol:'無水エタノール', dil_final:'合計', dil_weight:'重量', dil_volume:'容量', dil_density:'香水の比重',
     clear_btn:'クリア', save_btn:'保存する',
@@ -932,11 +994,32 @@ const STR = {
     toast_add_materials_first:'先に素材を追加してください', toast_parts_missing:'配合比が未入力の素材があります。「処方」タブで入力してください',
     load_failed:'読み込みに失敗しました。',
     err_zero_parts:'⚠ エラー：すべての素材の配合比が0のため計算できません。各素材に配合比を入力してください。',
-    err_zero_target:'⚠ エラー：出来上がり総量が0以下、または未入力です。1以上の数値を入力してください。',
+    err_zero_target:'⚠ エラー：混ぜる香料の合計量が0以下、または未入力です。1以上の数値を入力してください。',
     err_dilution_range:'⚠ エラー：希釈率が範囲外（1〜100%）の素材があります。該当する素材の希釈率を修正してください。',
     help_terms_summary:'？ 用語について',
     help_dilution_text:'「配合比」は処方そのもの（純香料どうしの比率）で、右の‰表示がその正体です。「希釈率」は、その素材を量るときに使う液の濃さです（例：10%希釈＝香料原液1に対しアルコール9）。希釈率を変えても配合比＝香りは変わりません。変わるのは量り取る液の体積だけです。だから同じ処方を、0.1mlの希釈液でも、300mlの原液でもブレずに再現できます。',
     help_conc_text:'「賦香率」は、出来上がった香水の中に純香料が何%含まれているかを表します。目安：オーデコロン2〜5%、オードトワレ5〜15%、オードパルファン15〜20%、パルファン20〜30%。希釈率とは別の軸です（希釈率＝素材側の話、賦香率＝完成品側の話）。ただし10%希釈の液だけで調合する場合、賦香率は10%が物理的な上限になります。それ以上濃くしたいときは原液での調合が必要です。',
+    /* v1.9.0 */
+    builder_empty_title:'まだ素材がありません', builder_empty_body:'はじめての方は、できあがった処方を読み込むところから始めるのがおすすめです。',
+    builder_empty_lib_btn:'フォーミュラ集から選ぶ', builder_empty_add_btn:'自分で素材を追加する',
+    open_welcome_btn:'はじめての方へ（使い方）',
+    wc_next:'次へ', wc_back:'戻る', wc_skip:'閉じる（あとで設定から開けます）',
+    wc1_h:'ようこそ', 
+    wc1_p:'このアプリは、香りのレシピを作って、実際に量る量を自動で計算するノートです。まずは調香の全体像から。',
+    wc1_box:'調香は<b>2段階</b>でできています。<br><b>① 香料どうしを混ぜる</b>（香りの素をつくる）<br><b>② アルコールで薄める</b>（スプレーできる香水にする）',
+    wc1_p2:'処方タブの3つの欄は、この順番にそのまま並んでいます。STEP 1・2 が①、STEP 3 が②です。',
+    wc2_h:'覚えることは3つだけ',
+    wc2_t1:'配合比（‰）', wc2_d1:'香料どうしを混ぜる比率＝香りのレシピそのもの。数字は自由で、比率だけに意味があります。',
+    wc2_t2:'希釈率', wc2_d2:'手元の素材ボトルの濃さ。10%希釈＝香料原液1にアルコール9。<b>素材側</b>の話です。',
+    wc2_t3:'賦香率', wc2_d3:'できあがった香水の濃さ。オードトワレなら5〜15%。<b>完成品側</b>の話です。',
+    wc2_box:'大事なルール：香りを決めるのは<b>配合比だけ</b>。希釈率を変えても香りは変わらず、量り取る量が変わるだけです。',
+    wc3_h:'はじめかた',
+    wc3_p:'いきなり0からレシピを組む必要はありません。まずは<b>フォーミュラ集</b>の処方を1本読み込んで、量り取る量の表を眺めてみてください。それが一番の近道です。',
+    wc3_box:'試作は<b>0.1ml（100μl）</b>から。素材の消費はごくわずかで、失敗してもほとんど損をしません。',
+    wc3_lib:'フォーミュラ集を見る', wc3_build:'自分で作りはじめる',
+    dilrec_summary:'？ この素材の希釈液の作り方',
+    dilrec_make:'作る量', dilrec_neat:'香料原液', dilrec_eth:'無水エタノール', dilrec_total:'合計（約）',
+    dilrec_help:'デフォルト希釈率での作り方です。まず遮光ビンに香料原液を量り、あとからエタノールを加えてよく振り混ぜます。混ぜた直後より、数日置いた方が香りがなじみます。',
   },
   en: {
     app_title:"nehne Perfumer's Notebook", app_subtitle:"Perfumer's Notebook",
@@ -944,17 +1027,20 @@ const STR = {
     page_materials:'Material Library', page_builder:'Build a Blend', page_library:'Formula Library', page_saved:'My Formulas',
     search_materials_ph:'Search by name, component, or descriptor…',
     chip_all_notes:'All notes', chip_all_families:'All families',
-    section_compound:'Formula Design', section_weighout:'Weigh-out Calculator', section_dilution:'Dilution & Concentration',
+    section_compound:'Formula Design', section_weighout:'Amounts to Measure', section_dilution:'Finish as Perfume',
+    sub_compound:'Set the recipe — the ratio between your fragrance materials.',
+    sub_weighout:'Work out exactly how much of each material to measure out.',
+    sub_dilution:'Dilute the compound from STEP 2 with alcohol. Skip this for scent trials.',
     section_library:'Formula Library', section_saved:'My Formulas',
     builder_name_ph:'Enter a name for your formula…', untitled_formula:'Untitled Formula',
     add_ingredient_btn:'+ Add material',
     mode_volume:'Volume (μl · pre-diluted)', mode_weight:'Weight (g · via specific gravity)',
-    target_volume_label:'Total finished amount', target_weight_label:'Total compound weight', unit_label:'Unit',
+    target_volume_label:'Total amount to mix', target_weight_label:'Total amount to mix', unit_label:'Unit',
     parts_label:'Parts', dilution_pct_label:'Dilution (%)', amount_estimate_label:'Est. amount',
     help_ul:'Assumes you measure pre-diluted fragrance with a micropipette to reach the total finished amount. Each material\'s dilution rate can be set individually above in "Formula Design" (default 10%). Drop counts assume 1 drop ≈ 0.05ml.',
     help_g:'Each material\'s weigh-out (g) is calculated from its individual dilution rate and specific gravity (SG). SG can be checked in the material detail view (dilution rate is set in the field above).',
     open_mix_btn:'Open Compounding Mode',
-    target_conc_label:'Target concentration (%)', final_vol_label:'Finished total volume (ml)',
+    target_conc_label:'Target concentration (%)', final_vol_label:'Perfume you end up with (ml)',
     exp_csv:'Export to Excel', exp_json:'Backup', exp_import:'Restore',
     dil_compound:'Compound (concentrate)', dil_alcohol:'Ethanol (anhydrous)', dil_final:'Total', dil_weight:'Weight', dil_volume:'Volume', dil_density:'Perfume density',
     clear_btn:'Clear', save_btn:'Save',
@@ -998,11 +1084,32 @@ const STR = {
     toast_add_materials_first:'Please add materials first', toast_parts_missing:'Some materials have no parts set. Enter them in the "Formula" tab',
     load_failed:'Failed to load.',
     err_zero_parts:'⚠ Error: all material parts are 0, so nothing can be calculated. Enter parts for each material.',
-    err_zero_target:'⚠ Error: total finished amount is 0 or empty. Enter a number greater than 0.',
+    err_zero_target:'⚠ Error: total amount to mix is 0 or empty. Enter a number greater than 0.',
     err_dilution_range:'⚠ Error: one or more materials have a dilution rate outside 1–100%. Please correct it.',
     help_terms_summary:'？ About these terms',
     help_dilution_text:'"Dilution rate" is the strength (%) at which the fragrance you\'re measuring has already been pre-diluted in alcohol (e.g. 10% dilution = 1 part fragrance concentrate to 9 parts alcohol). The lower the number, the more of it you need to weigh out to deliver the same number of "parts".',
     help_conc_text:'"Concentration" (賦香率) is the percentage of pure fragrance compound in the finished perfume. Typical ranges: Eau de Parfum 15–20%, Eau de Toilette 5–15%, Parfum/Extrait 20–30%.',
+    /* v1.9.0 */
+    builder_empty_title:'No materials yet', builder_empty_body:'New here? The easiest start is to load one of the reference formulas.',
+    builder_empty_lib_btn:'Pick from the Library', builder_empty_add_btn:'Add materials myself',
+    open_welcome_btn:'Getting started',
+    wc_next:'Next', wc_back:'Back', wc_skip:'Close (reopen anytime from settings)',
+    wc1_h:'Welcome',
+    wc1_p:'This app is a notebook for building fragrance recipes and calculating exactly how much to measure out. First, the big picture.',
+    wc1_box:'Blending happens in <b>two stages</b>.<br><b>1. Mix the materials</b> (make the compound)<br><b>2. Dilute with alcohol</b> (turn it into a wearable perfume)',
+    wc1_p2:'The three panels in the Formula tab follow exactly that order: STEP 1–2 are stage 1, STEP 3 is stage 2.',
+    wc2_h:'Only three terms to learn',
+    wc2_t1:'Parts (‰)', wc2_d1:'The ratio between materials — the recipe itself. Any numbers will do; only the ratio matters.',
+    wc2_t2:'Dilution rate', wc2_d2:'How strong the bottle in your hand is. 10% = 1 part concentrate to 9 parts alcohol. This is about <b>materials</b>.',
+    wc2_t3:'Concentration', wc2_d3:'How strong the finished perfume is. Eau de toilette is 5–15%. This is about the <b>finished product</b>.',
+    wc2_box:'Key rule: only the <b>parts</b> decide the scent. Changing a dilution rate never changes the scent — only the amount you measure.',
+    wc3_h:'Where to start',
+    wc3_p:'You do not have to invent a recipe from scratch. Load one of the <b>reference formulas</b> and look at the amounts table — that is the fastest way in.',
+    wc3_box:'Trial at <b>0.1ml (100μl)</b>. It uses almost no material, so a failed trial costs you nothing.',
+    wc3_lib:'Browse the Library', wc3_build:'Start building my own',
+    dilrec_summary:'？ How to prepare this dilution',
+    dilrec_make:'Batch size', dilrec_neat:'Concentrate', dilrec_eth:'Ethanol (anhydrous)', dilrec_total:'Total (approx.)',
+    dilrec_help:'Based on the default dilution rate. Measure the concentrate into an amber bottle first, then add the ethanol and shake well. The blend settles better after a few days.',
   }
 };
 function t(key){
@@ -1037,6 +1144,11 @@ function applyStaticLang(){
   document.getElementById('stCompound').textContent = t('section_compound');
   document.getElementById('stWeighout').textContent = t('section_weighout');
   document.getElementById('stDilution').textContent = t('section_dilution');
+  document.getElementById('subCompound').textContent = t('sub_compound');
+  document.getElementById('subWeighout').textContent = t('sub_weighout');
+  document.getElementById('subDilution').textContent = t('sub_dilution');
+  document.getElementById('openWelcomeLabel').textContent = t('open_welcome_btn');
+  if(!document.getElementById('welcomeOverlay').classList.contains('hidden')) renderWelcome();
   document.getElementById('stLibrary').textContent = t('section_library');
   document.getElementById('stSaved').textContent = t('section_saved');
   document.getElementById('builderName').placeholder = t('builder_name_ph');
@@ -1116,7 +1228,7 @@ function noteGroup(note){
 
 /* v1.8.6: Escapeで閉じる／モーダル内でフォーカスを循環させる（キーボード操作の確保） */
 document.addEventListener('keydown', (e)=>{
-  const open = ['pickerOverlay','cmOverlay','matOverlay'].map(id=>document.getElementById(id))
+  const open = ['pickerOverlay','cmOverlay','matOverlay','welcomeOverlay'].map(id=>document.getElementById(id))
                  .filter(el=>el && !el.classList.contains('hidden'));
   if(!open.length) return;
   const top = open[0];
@@ -1312,12 +1424,48 @@ function openMaterialDetail(name){
     <div class="row"><div class="k">${esc(t('components_label'))}</div><div class="v">${esc(isEn ? (m.components_en||m.components) : m.components)}</div></div>
     <div class="row"><div class="k">${esc(t('default_dilution_label'))}</div><div class="v">${esc(m.defaultDilution)}%</div></div>
     <div class="row"><div class="k">${esc(t('sg_label'))}</div><div class="v">${esc(m.sg)}</div></div>
+    <details class="help-details" id="dilRecipeBox" style="margin-top:14px;">
+      <summary>${esc(t('dilrec_summary'))}</summary>
+      <div class="chip-row" id="dilRecipeChips" style="margin:10px 0 2px;">
+        ${[5,10,20,50].map((v,i)=>`<button type="button" class="chip${i===1?' active':''}" data-vol="${v}">${v}ml</button>`).join('')}
+      </div>
+      <div class="dr-out" id="dilRecipeOut"></div>
+      <p style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin-top:8px;">${esc(t('dilrec_help'))}</p>
+    </details>
     <button class="btn btn-primary btn-block" style="margin-top:18px;" id="addFromDetailBtn">${esc(t('add_to_formula_btn'))}</button>
     ${m.custom ? `<div style="display:flex; gap:10px; margin-top:10px;">
       <button class="btn btn-block" id="editCustomBtn">${esc(t('cm_edit'))}</button>
       <button class="btn btn-block" id="deleteCustomBtn" style="color:#e07a5f;">${esc(t('cm_delete'))}</button>
     </div>` : ''}
   `;
+  /* v1.9.0: 希釈液そのものの作り方。ここが無いと初心者は最初の一歩で詰まる */
+  (function(){
+    const chips = document.getElementById('dilRecipeChips');
+    const out = document.getElementById('dilRecipeOut');
+    if(!chips || !out) return;
+    const dil = (m.defaultDilution>0 && m.defaultDilution<=100) ? m.defaultDilution : 10;
+    const sg = (m.sg>0) ? m.sg : RHO_DEFAULT;
+    const draw = (vol)=>{
+      const neatMl = vol * dil/100;
+      const ethMl  = vol - neatMl;
+      const dp = neatMl < 1 ? 2 : 1;
+      out.innerHTML = `
+        <div class="dr-row"><span>${esc(t('dilrec_neat'))}（${dil}%）</span>
+          <span class="drv">${neatMl.toFixed(dp)} ml<span class="drg">${(neatMl*sg).toFixed(2)} g</span></span></div>
+        <div class="dr-row"><span>${esc(t('dilrec_eth'))}</span>
+          <span class="drv">${ethMl.toFixed(dp)} ml<span class="drg">${(ethMl*RHO_ETHANOL).toFixed(2)} g</span></span></div>
+        <div class="dr-row"><span style="color:var(--paper-dim);">${esc(t('dilrec_total'))}</span>
+          <span class="drv" style="color:var(--paper);">${vol.toFixed(0)} ml</span></div>`;
+    };
+    chips.querySelectorAll('.chip').forEach(c=>{
+      c.addEventListener('click', ()=>{
+        chips.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+        c.classList.add('active');
+        draw(parseFloat(c.dataset.vol));
+      });
+    });
+    draw(10);
+  })();
   document.getElementById('addFromDetailBtn').addEventListener('click', ()=>{
     addIngredient(m.name);
     closeOverlay('matOverlay');
@@ -1529,7 +1677,18 @@ function addIngredient(name, parts, note, dilution){
 function renderBuilder(){
   const wrap = document.getElementById('ingList');
   if(builderIngredients.length===0){
-    wrap.innerHTML = `<div class="empty-state" style="padding:30px 10px;"><p>${esc(t('toast_add_materials_first'))}<br>「${esc(t('add_ingredient_btn'))}」</p></div>`;
+    /* v1.9.0: 「素材を追加してください」で終わらせず、次の一手を出す */
+    wrap.innerHTML = `<div class="empty-state" style="padding:26px 10px;">
+        <p><b style="color:var(--paper); font-size:0.9375rem;">${esc(t('builder_empty_title'))}</b><br>${esc(t('builder_empty_body'))}</p>
+        <div class="empty-actions">
+          <button class="btn btn-primary btn-block" id="emptyGoLibBtn">${esc(t('builder_empty_lib_btn'))}</button>
+          <button class="btn btn-secondary btn-block" id="emptyAddIngBtn">${esc(t('builder_empty_add_btn'))}</button>
+        </div>
+      </div>`;
+    const goLib = document.getElementById('emptyGoLibBtn');
+    if(goLib) goLib.addEventListener('click', ()=>{ document.querySelector('.nav-btn[data-tab="library"]').click(); });
+    const addIng = document.getElementById('emptyAddIngBtn');
+    if(addIng) addIng.addEventListener('click', ()=>{ document.getElementById('addIngBtn').click(); });
   } else {
     wrap.innerHTML = builderIngredients.map((ing,i)=>`
       <div class="ingredient-row">
@@ -2620,8 +2779,71 @@ document.getElementById('displayResetBtn').addEventListener('click', ()=>{
 /* 言語切替時に設定パネルの表記も更新（既存リスナーの後に発火） */
 document.getElementById('langToggleBtn').addEventListener('click', applySettingsLang);
 
+/* ---------------- v1.9.0: はじめての方へ ---------------- */
+const ONBOARD_KEY = 'nehne_onboarded_v1';
+let wcStep = 1;
+
+function renderWelcome(){
+  const body = document.getElementById('wcBody');
+  if(!body) return;
+  const dots = (k)=>`<div class="wc-dots">${[1,2,3].map(i=>`<i class="${i===k?'on':''}"></i>`).join('')}</div>`;
+  body.innerHTML = `
+    <div class="wc-step ${wcStep===1?'on':''}" data-step="1">
+      <h2 class="wc-h">${esc(t('wc1_h'))}</h2>
+      <p class="wc-p">${esc(t('wc1_p'))}</p>
+      <div class="wc-box">${t('wc1_box')}</div>
+      <p class="wc-p">${esc(t('wc1_p2'))}</p>
+    </div>
+    <div class="wc-step ${wcStep===2?'on':''}" data-step="2">
+      <h2 class="wc-h">${esc(t('wc2_h'))}</h2>
+      <div class="wc-term"><span class="wt">${esc(t('wc2_t1'))}</span><span class="wd">${t('wc2_d1')}</span></div>
+      <div class="wc-term"><span class="wt">${esc(t('wc2_t2'))}</span><span class="wd">${t('wc2_d2')}</span></div>
+      <div class="wc-term"><span class="wt">${esc(t('wc2_t3'))}</span><span class="wd">${t('wc2_d3')}</span></div>
+      <div class="wc-box">${t('wc2_box')}</div>
+    </div>
+    <div class="wc-step ${wcStep===3?'on':''}" data-step="3">
+      <h2 class="wc-h">${esc(t('wc3_h'))}</h2>
+      <p class="wc-p">${t('wc3_p')}</p>
+      <div class="wc-box">${t('wc3_box')}</div>
+    </div>
+    ${dots(wcStep)}
+    <div class="wc-nav">
+      ${wcStep>1 ? `<button class="btn btn-secondary btn-block" id="wcBackBtn">${esc(t('wc_back'))}</button>` : ''}
+      ${wcStep<3
+        ? `<button class="btn btn-primary btn-block" id="wcNextBtn">${esc(t('wc_next'))}</button>`
+        : `<button class="btn btn-primary btn-block" id="wcLibBtn">${esc(t('wc3_lib'))}</button>`}
+    </div>
+    ${wcStep===3 ? `<button class="wc-skip" id="wcBuildBtn" style="text-decoration:none; color:var(--paper); font-size:0.8125rem; border:1px solid var(--line-strong); border-radius:10px; padding:11px 4px; margin-top:10px;">${esc(t('wc3_build'))}</button>` : ''}
+    <button class="wc-skip" id="wcSkipBtn">${esc(t('wc_skip'))}</button>
+  `;
+  const on = (id, fn)=>{ const el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
+  on('wcNextBtn', ()=>{ wcStep = Math.min(3, wcStep+1); renderWelcome(); });
+  on('wcBackBtn', ()=>{ wcStep = Math.max(1, wcStep-1); renderWelcome(); });
+  on('wcSkipBtn', closeWelcome);
+  on('wcLibBtn', ()=>{ closeWelcome(); document.querySelector('.nav-btn[data-tab="library"]').click(); });
+  on('wcBuildBtn', ()=>{ closeWelcome(); document.querySelector('.nav-btn[data-tab="builder"]').click(); });
+}
+function openWelcome(){
+  wcStep = 1;
+  renderWelcome();
+  openOverlay('welcomeOverlay');
+  /* Escape・Android戻る・シート外タップなど、どの閉じ方でも再表示しないよう
+     「開いた時点」で既読にする */
+  try{ localStorage.setItem(ONBOARD_KEY, '1'); }catch(e){}
+}
+function closeWelcome(){
+  closeOverlay('welcomeOverlay');
+  try{ localStorage.setItem(ONBOARD_KEY, '1'); }catch(e){}
+}
+document.getElementById('wcCloseBtn').addEventListener('click', closeWelcome);
+document.getElementById('welcomeOverlay').addEventListener('click', (e)=>{ if(e.target.id==='welcomeOverlay') closeWelcome(); });
+document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
+  closeOverlay('settingsOverlay');
+  openWelcome();
+});
+
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.8.8';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.9.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
@@ -2644,10 +2866,17 @@ renderMaterials();
 renderBuilder();
 renderLibrary();
 
+/* v1.9.0: 初回起動時だけ「はじめての方へ」を出す */
+(function(){
+  let seen = null;
+  try{ seen = localStorage.getItem(ONBOARD_KEY); }catch(e){ seen = '1'; }
+  if(!seen) setTimeout(openWelcome, 400);
+})();
+
 /* ===== v1.5.4: Android「戻る」ジェスチャー対応 =====
    モーダル表示中の戻る操作はアプリ終了ではなくモーダルを閉じる */
 (function(){
-  const ids = ['pickerOverlay','cmOverlay','libOverlay','mixOverlay','matOverlay','settingsOverlay'];
+  const ids = ['pickerOverlay','cmOverlay','libOverlay','mixOverlay','matOverlay','settingsOverlay','welcomeOverlay'];
   const els = ids.map(id=>document.getElementById(id)).filter(Boolean);
   let closingByPop = false, skipNextClose = false;
   const obs = new MutationObserver(muts=>{
