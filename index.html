@@ -793,7 +793,10 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
           </div>
         </div>
         <div class="preset-row" id="targetPresets"></div>
-        <button class="btn btn-secondary btn-sm adv-only" id="useSumBtn" style="margin-top:8px;">Σ 配合比の合計を総量にセット</button>
+        <button class="btn btn-secondary btn-sm adv-only" id="useSumBtn" style="margin-top:8px;">Σ 配合比と同じ数字で量る</button>
+        <p class="adv-only" id="useSumHelp" style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin:6px 0 0;">
+          配合比が 6:9:5 なら、およそ 6μl・9μl・5μl。配合比の数字をそのまま量に読み替えられるので、少量で手早く試したいときに便利です（比重の差でわずかに前後します）。
+        </p>
         <div class="error-banner hidden" id="calcErrorBanner"></div>
         <div style="overflow-x:auto;">
         <table class="calc-table" id="calcTable"></table>
@@ -1154,6 +1157,10 @@ const STR = {
     nudge_backup_btn:'今すぐバックアップ', nudge_later:'あとで',
     /* v1.11.0 */
     src_dil:'希釈液で組む', src_neat:'原液で組む',
+    use_sum_btn:'Σ 配合比と同じ数字で量る', use_sum_btn_total:'Σ 配合比と同じ数字で量る（合計 {N}{U}）',
+    use_sum_help:'配合比が 6:9:5 なら、およそ 6μl・9μl・5μl。配合比の数字をそのまま量に読み替えられるので、少量で手早く試したいときに便利です（比重の差でわずかに前後します）。',
+    use_sum_help_g:'配合比が 6:9:5 なら、およそ 6g・9g・5g。配合比の数字をそのまま量に読み替えられます。',
+    use_sum_empty:'先に配合比を入力してください', use_sum_done:'合計を {N}{U} にしました',
     src_neat_note:'原液（希釈率100%）で量る前提の計算に切り替えました。⚠ が付く素材は最小計量0.5μlを下回るので、合計量を増やすか希釈液に戻してください。',
     set_bottle_label:'遮光瓶の登録',
     set_bottle_help:'希釈液を仕込む瓶です。「実容量」は口いっぱいまで入る量。振り混ぜる余裕があるかの判定に使います。',
@@ -1288,6 +1295,10 @@ const STR = {
     nudge_backup_btn:'Back up now', nudge_later:'Later',
     /* v1.11.0 */
     src_dil:'From dilutions', src_neat:'From neat',
+    use_sum_btn:'Σ Measure the ratio numbers directly', use_sum_btn_total:'Σ Measure the ratio numbers directly (total {N}{U})',
+    use_sum_help:'With a 6:9:5 ratio you measure roughly 6μl, 9μl and 5μl — the ratio numbers double as the amounts, which is handy for quick small trials (specific gravity shifts them very slightly).',
+    use_sum_help_g:'With a 6:9:5 ratio you measure roughly 6g, 9g and 5g — the ratio numbers double as the amounts.',
+    use_sum_empty:'Enter the ratios first', use_sum_done:'Total set to {N}{U}',
     src_neat_note:'Switched to measuring neat materials (100%). Anything marked ⚠ falls below the 0.5μl minimum — scale up or go back to dilutions.',
     set_bottle_label:'Bottles', set_bottle_help:'Bottles you prepare dilutions in. "Capacity" is the brim-full volume, used to check you have room to shake.',
     bt_make:'Batch (ml)', bt_cap:'Capacity (ml)',
@@ -1361,9 +1372,11 @@ function setSourceMode(mode){
 }
 
 /* ---------------- v1.11.0: 遮光瓶の登録 ---------------- */
-const BOTTLE_KEY = 'nehne_bottles_v1';
+/* v1.11.1: 10ml瓶は実際に10mlしか入らないため、作る量の既定を8mlに。
+   既定値を変えたので保存キーもv2に上げて作り直す */
+const BOTTLE_KEY = 'nehne_bottles_v2';
 const BOTTLE_DEFAULT = [
-  {label:'10ml瓶',  make:10,  cap:10},
+  {label:'10ml瓶',  make:8,   cap:10},
   {label:'26ml瓶',  make:20,  cap:26},
   {label:'120ml瓶', make:100, cap:120}
 ];
@@ -1937,11 +1950,11 @@ document.getElementById('matSearch').addEventListener('input', renderMaterials);
   const btn = document.getElementById('useSumBtn');
   if(btn) btn.addEventListener('click', ()=>{
     const sum = builderIngredients.reduce((a,b)=>a+(parseFloat(b.parts)||0),0);
-    if(!(sum>0)){ toast(currentLang==='ja'?'先に配合比を入力してください':'Enter ratios first'); return; }
+    if(!(sum>0)){ toast(t('use_sum_empty')); return; }
     const tw = document.getElementById('targetWeight');
     tw.value = sum;
     tw.dispatchEvent(new Event('input'));
-    toast(currentLang==='ja'?`総量を合計値 ${sum} にセットしました`:`Total set to ${sum}`);
+    toast(t('use_sum_done').replace('{N}', String(Math.round(sum*100)/100)).replace('{U}', calcMode==='ul'?'μl':'g'));
   });
 })();
 
@@ -2498,6 +2511,20 @@ function updateCalcTable(){
     <tbody>${rows || `<tr><td colspan="${cols}" style="color:var(--paper-dim); text-align:center; padding:16px 0;">${esc(t('tbl_empty'))}</td></tr>`}</tbody>
     ${items.length ? `<tfoot><tr class="total-row"><td>${esc(t('tbl_total'))}</td><td class="adv-only">1000.0‰</td><td class="adv-only">—</td><td>${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td class="adv-only">—</td></tr></tfoot>` : ''}
   `;
+  /* v1.11.1: Σボタンは「配合比の数字をそのまま量にする」ボタン。
+     合計値を文言に入れて、押すと何が起きるか事前に分かるようにする */
+  (function(){
+    const sumBtn = document.getElementById('useSumBtn');
+    const sumHelp = document.getElementById('useSumHelp');
+    if(!sumBtn) return;
+    const sum = builderIngredients.reduce((a,b)=>a+(parseFloat(b.parts)||0),0);
+    const unit = isUl ? 'μl' : 'g';
+    sumBtn.textContent = sum>0
+      ? t('use_sum_btn_total').replace('{N}', String(Math.round(sum*100)/100)).replace('{U}', unit)
+      : t('use_sum_btn');
+    if(sumHelp) sumHelp.textContent = isUl ? t('use_sum_help') : t('use_sum_help_g');
+  })();
+
   /* かんたんモードであることと、希釈率の扱いを明示する */
   const help = document.getElementById('calcHelpText');
   if(help) help.textContent = (sourceMode === 'neat') ? t('src_neat_note')
@@ -3459,7 +3486,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.11.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.11.1';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
