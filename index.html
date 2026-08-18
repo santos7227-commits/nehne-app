@@ -468,6 +468,41 @@ table.calc-table tr:last-child td{border-bottom:none;}
   font-size:0.75rem; text-decoration:underline; text-underline-offset:3px;
   padding:10px 4px 2px; cursor:pointer; font-family:inherit;
 }
+/* ---------- v1.10.0: 入力プリセットチップ ---------- */
+.preset-row{display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; margin:8px 0 2px; padding-bottom:4px;}
+.preset-row::-webkit-scrollbar{display:none;}
+.preset{
+  flex:0 0 auto; padding:5px 11px; border-radius:100px;
+  border:1px dashed var(--line-strong); background:transparent; color:var(--paper-dim);
+  font-size:0.71875rem; white-space:nowrap; cursor:pointer; font-family:"Noto Sans JP",sans-serif;
+}
+.preset.active{border-style:solid; border-color:var(--amber); color:var(--amber-soft); font-weight:700;}
+.preset-lead{
+  flex:0 0 auto; align-self:center; font-size:0.65625rem; color:var(--paper-dim);
+  padding-right:2px; white-space:nowrap; opacity:.85;
+}
+.preset b{font-family:'JetBrains Mono',monospace; font-weight:700;}
+/* ---------- v1.10.0: ピラミッドの助言 ---------- */
+.pyr-hint{font-size:0.71875rem; line-height:1.6; margin-top:6px; color:var(--paper-dim);}
+.pyr-hint.ok{color:var(--sage);}
+.pyr-hint.warn{color:var(--amber-soft);}
+/* ---------- v1.10.0: かんたんモード ---------- */
+.simple-note{
+  font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin-top:10px;
+  border-top:1px dashed var(--line); padding-top:8px;
+}
+html[data-simple="1"] .adv-only{display:none !important;}
+/* ---------- v1.10.0: バックアップの案内 ---------- */
+.nudge{
+  background:rgba(200,150,63,0.10); border:1px solid rgba(200,150,63,0.35);
+  border-radius:12px; padding:12px 14px; margin-bottom:14px;
+}
+.nudge p{font-size:0.75rem; line-height:1.7; color:var(--paper-dim); margin:0 0 10px;}
+.nudge .nudge-actions{display:flex; gap:10px; align-items:center;}
+.nudge .nudge-later{
+  background:none; border:none; color:var(--paper-dim); font-size:0.75rem;
+  text-decoration:underline; text-underline-offset:3px; cursor:pointer; font-family:inherit; padding:6px 4px;
+}
 /* ---------- v1.9.0: 希釈液の作り方 ---------- */
 .dr-out{margin-top:10px;}
 .dr-row{
@@ -681,6 +716,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
           <span><i class="dot" style="background:var(--mid-color)"></i>Middle <b id="pctMid">0%</b></span>
           <span><i class="dot" style="background:var(--base-color)"></i>Base <b id="pctBase">0%</b></span>
         </div>
+        <div class="pyr-hint" id="pyramidHint"></div>
 
         <div id="ingList" style="margin-top:14px;"></div>
         <button class="add-ing-btn" id="addIngBtn"><span id="addIngBtnLabel">＋ 素材を追加</span></button>
@@ -694,7 +730,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <div class="section-title"><span class="step-badge" id="stepBadge2">STEP 2</span><span id="stWeighout">量り取る量</span><small>WEIGH-OUT</small></div>
       <p class="section-sub" id="subWeighout">レシピどおりに、実際に何をどれだけ量るかを計算します。</p>
       <div class="builder-card">
-        <div class="chip-row" id="calcModeChips" style="margin-bottom:12px;">
+        <div class="chip-row adv-only" id="calcModeChips" style="margin-bottom:12px;">
           <button class="chip active" data-mode="ul">体積（μl・希釈済み香料）</button>
           <button class="chip" data-mode="g">重量（g・比重から換算）</button>
         </div>
@@ -708,7 +744,8 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
             <input value="μl" id="targetUnitDisplay" disabled style="opacity:.6">
           </div>
         </div>
-        <button class="btn btn-secondary btn-sm" id="useSumBtn" style="margin-top:8px;">Σ 配合比の合計を総量にセット</button>
+        <div class="preset-row" id="targetPresets"></div>
+        <button class="btn btn-secondary btn-sm adv-only" id="useSumBtn" style="margin-top:8px;">Σ 配合比の合計を総量にセット</button>
         <div class="error-banner hidden" id="calcErrorBanner"></div>
         <div style="overflow-x:auto;">
         <table class="calc-table" id="calcTable"></table>
@@ -735,6 +772,8 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
             <input type="number" id="finalVol" value="50" min="1" step="1">
           </div>
         </div>
+        <div class="preset-row" id="concPresets"></div>
+        <div class="preset-row" id="volPresets"></div>
         <div class="dil-result" id="dilResult"></div>
         <details class="help-details">
           <summary id="helpConcSummary">？ 用語について</summary>
@@ -840,6 +879,17 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <div class="sheet-handle"></div>
       <button class="close-btn" id="settingsCloseBtn" aria-label="Close">×</button>
       <h2 id="setTitle">表示設定</h2>
+
+      <div class="set-group">
+        <div class="set-label"><span id="setSimpleLabel">表示モード</span></div>
+        <div class="seg" id="simpleSeg">
+          <button data-simple="1"><span id="simpleOnLabel">かんたん</span></button>
+          <button data-simple="0"><span id="simpleOffLabel">くわしい</span></button>
+        </div>
+        <p style="font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin:8px 0 0;" id="simpleHelpText">
+          「かんたん」は希釈率・‰・滴数などの詳細を隠して、必要な数字だけを表示します。
+        </p>
+      </div>
 
       <div class="set-group">
         <div class="set-label"><span id="setThemeLabel">背景テーマ</span></div>
@@ -1020,6 +1070,23 @@ const STR = {
     dilrec_summary:'？ この素材の希釈液の作り方',
     dilrec_make:'作る量', dilrec_neat:'香料原液', dilrec_eth:'無水エタノール', dilrec_total:'合計（約）',
     dilrec_help:'デフォルト希釈率での作り方です。まず遮光ビンに香料原液を量り、あとからエタノールを加えてよく振り混ぜます。混ぜた直後より、数日置いた方が香りがなじみます。',
+    /* v1.10.0 */
+    set_simple_label:'表示モード', simple_on:'かんたん', simple_off:'くわしい',
+    simple_help:'「かんたん」は希釈率・‰・滴数などの詳細を隠して、必要な数字だけを表示します。',
+    simple_note:'かんたんモードです。希釈率は各素材の標準値（多くは10%）を使っています。細かく調整するには、設定から「くわしい」に切り替えてください。',
+    pyr_hint_empty:'素材を追加すると、香りのバランスの目安が出ます。',
+    pyr_ok:'バランス良好です。',
+    pyr_top_low:'トップが少なめです。つけた瞬間の印象が弱くなりがちです。',
+    pyr_top_high:'トップが多めです。立ち上がりは華やかですが、香りが早く消えがちです。',
+    pyr_mid_low:'ミドルが少なめです。香りの中心が痩せて、トップとベースが分離して感じられることがあります。',
+    pyr_mid_high:'ミドルが多めです。まとまりは良いですが、輪郭がぼやけることがあります。',
+    pyr_base_low:'ベースが少なめです。残り香が短くなりがちです。',
+    pyr_base_high:'ベースが多めです。重く、開きにくい香りになりがちです。',
+    pyr_guide:'目安：トップ 20〜40% / ミドル 30〜50% / ベース 20〜40%',
+    preset_label_trial:'試作', preset_label_small:'小分け', preset_label_bottle:'ボトル1本',
+    conc_preset_cologne:'オーデコロン', conc_preset_edt:'オードトワレ', conc_preset_edp:'オードパルファン', conc_preset_parfum:'パルファン',
+    nudge_backup:'保存したフォーミュラは、この端末のブラウザの中だけにあります。機種変更やデータ消去で消えないよう、ときどきバックアップを取っておくと安心です。',
+    nudge_backup_btn:'今すぐバックアップ', nudge_later:'あとで',
   },
   en: {
     app_title:"nehne Perfumer's Notebook", app_subtitle:"Perfumer's Notebook",
@@ -1110,6 +1177,23 @@ const STR = {
     dilrec_summary:'？ How to prepare this dilution',
     dilrec_make:'Batch size', dilrec_neat:'Concentrate', dilrec_eth:'Ethanol (anhydrous)', dilrec_total:'Total (approx.)',
     dilrec_help:'Based on the default dilution rate. Measure the concentrate into an amber bottle first, then add the ethanol and shake well. The blend settles better after a few days.',
+    /* v1.10.0 */
+    set_simple_label:'Display mode', simple_on:'Simple', simple_off:'Detailed',
+    simple_help:'Simple mode hides dilution rates, ‰ and drop counts, showing only the numbers you need.',
+    simple_note:'Simple mode. Each material uses its standard dilution rate (usually 10%). Switch to Detailed in settings to adjust them.',
+    pyr_hint_empty:'Add materials to see how your top / middle / base balance looks.',
+    pyr_ok:'Nicely balanced.',
+    pyr_top_low:'Light on top notes — the first impression may feel weak.',
+    pyr_top_high:'Heavy on top notes — bright on application, but it may fade quickly.',
+    pyr_mid_low:'Light on middle notes — the heart may feel thin, leaving top and base disconnected.',
+    pyr_mid_high:'Heavy on middle notes — cohesive, but the character may blur.',
+    pyr_base_low:'Light on base notes — the dry-down may be short.',
+    pyr_base_high:'Heavy on base notes — it may feel dense and slow to open.',
+    pyr_guide:'Guide: Top 20–40% / Middle 30–50% / Base 20–40%',
+    preset_label_trial:'trial', preset_label_small:'small', preset_label_bottle:'one bottle',
+    conc_preset_cologne:'Cologne', conc_preset_edt:'Eau de toilette', conc_preset_edp:'Eau de parfum', conc_preset_parfum:'Parfum',
+    nudge_backup:'Saved formulas live only in this browser on this device. Take a backup now and then so a new phone or a cleared cache does not lose them.',
+    nudge_backup_btn:'Back up now', nudge_later:'Later',
   }
 };
 function t(key){
@@ -1133,6 +1217,78 @@ function setLang(lang){
   renderLibrary();
   if(!document.getElementById('tab-saved').classList.contains('hidden')) renderSaved();
 }
+/* ---------------- v1.10.0: かんたんモード ----------------
+   初回は「保存フォーミュラが無い＝新規ユーザー」ならON、既存ユーザーはOFF。
+   以後はユーザーの選択を保存する。 */
+const SIMPLE_KEY = 'nehne_simple_v1';
+let simpleMode = (function(){
+  try{
+    const v = localStorage.getItem(SIMPLE_KEY);
+    if(v === '1') return true;
+    if(v === '0') return false;
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(k && k.startsWith('myformula:')) return false;  /* 既存ユーザーは従来表示のまま */
+    }
+    return true;
+  }catch(e){ return false; }
+})();
+function applySimpleMode(){
+  document.documentElement.setAttribute('data-simple', simpleMode ? '1' : '0');
+  document.querySelectorAll('#simpleSeg button').forEach(b=>{
+    b.classList.toggle('active', (b.dataset.simple==='1') === simpleMode);
+  });
+}
+function setSimpleMode(on){
+  simpleMode = !!on;
+  try{ localStorage.setItem(SIMPLE_KEY, simpleMode ? '1' : '0'); }catch(e){}
+  if(simpleMode){
+    /* かんたんモードでは体積(μl)基準に戻す。重量モードは詳細表示側の機能 */
+    const ulChip = document.querySelector('#calcModeChips [data-mode="ul"]');
+    if(ulChip && !ulChip.classList.contains('active')) ulChip.click();
+  }
+  applySimpleMode();
+  renderBuilder();
+  renderPresets();
+}
+
+/* ---------------- v1.10.0: 入力のプリセット ---------------- */
+function renderPresets(){
+  const mk = (rowId, inputId, opts, lead)=>{
+    const row = document.getElementById(rowId);
+    const inp = document.getElementById(inputId);
+    if(!row || !inp) return;
+    const cur = parseFloat(inp.value);
+    row.innerHTML = (lead ? `<span class="preset-lead">${esc(lead)}</span>` : '') + opts.map(o=>
+      `<button type="button" class="preset${Math.abs(o.v-cur)<1e-9?' active':''}" data-v="${o.v}">`
+      + `<b>${esc(o.main)}</b>${o.sub?`<span style="opacity:.75;"> ${esc(o.sub)}</span>`:''}</button>`).join('');
+    row.querySelectorAll('.preset').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        inp.value = b.dataset.v;
+        inp.dispatchEvent(new Event('input', {bubbles:true}));
+        renderPresets();
+      });
+    });
+  };
+  const isUl = (calcMode !== 'g');
+  mk('targetPresets', 'targetWeight', isUl
+    ? [{v:100, main:'100μl', sub:'0.1ml・'+t('preset_label_trial')},
+       {v:500, main:'500μl', sub:'0.5ml'},
+       {v:1000, main:'1000μl', sub:'1ml'},
+       {v:5000, main:'5000μl', sub:'5ml'}]
+    : [{v:1, main:'1g'}, {v:5, main:'5g'}, {v:10, main:'10g'}, {v:50, main:'50g'}]);
+  mk('concPresets', 'concPct', [
+    {v:5,  main:'5%',  sub:t('conc_preset_cologne')},
+    {v:10, main:'10%', sub:t('conc_preset_edt')},
+    {v:18, main:'18%', sub:t('conc_preset_edp')},
+    {v:25, main:'25%', sub:t('conc_preset_parfum')}], t('target_conc_label'));
+  mk('volPresets', 'finalVol', [
+    {v:10, main:'10ml', sub:t('preset_label_small')},
+    {v:30, main:'30ml'},
+    {v:50, main:'50ml', sub:t('preset_label_bottle')},
+    {v:100, main:'100ml'}], t('final_vol_label'));
+}
+
 function applyStaticLang(){
   ['ExportCsv','ExportJson','ImportJson'].forEach((n,i)=>{
     const el = document.getElementById('lbl'+n);
@@ -1148,6 +1304,11 @@ function applyStaticLang(){
   document.getElementById('subWeighout').textContent = t('sub_weighout');
   document.getElementById('subDilution').textContent = t('sub_dilution');
   document.getElementById('openWelcomeLabel').textContent = t('open_welcome_btn');
+  document.getElementById('setSimpleLabel').textContent = t('set_simple_label');
+  document.getElementById('simpleOnLabel').textContent = t('simple_on');
+  document.getElementById('simpleOffLabel').textContent = t('simple_off');
+  document.getElementById('simpleHelpText').textContent = t('simple_help');
+  if(typeof renderPresets === 'function') renderPresets();
   if(!document.getElementById('welcomeOverlay').classList.contains('hidden')) renderWelcome();
   document.getElementById('stLibrary').textContent = t('section_library');
   document.getElementById('stSaved').textContent = t('section_saved');
@@ -1179,7 +1340,7 @@ function applyStaticLang(){
   document.getElementById('targetLabel').textContent = mode==='ul' ? t('target_volume_label') : t('target_weight_label');
   const tuLabel = document.getElementById('targetUnitLabel');
   if(tuLabel) tuLabel.textContent = t('unit_label');
-  document.getElementById('calcHelpText').textContent = mode==='ul' ? t('help_ul') : t('help_g');
+  document.getElementById('calcHelpText').textContent = simpleMode ? t('simple_note') : (mode==='ul' ? t('help_ul') : t('help_g'));
 }
 document.getElementById('langToggleBtn').addEventListener('click', ()=>{
   setLang(currentLang==='ja' ? 'en' : 'ja');
@@ -1704,7 +1865,7 @@ function renderBuilder(){
             <label for="ingParts${i}">${esc(t('parts_label'))}</label>
             <input id="ingParts${i}" aria-label="${esc(ing.name)} ${esc(t('parts_label'))}" class="ing-parts" type="number" min="0" step="0.1" value="${ing.parts}" data-i="${i}">
           </div>
-          <div class="ing-field">
+          <div class="ing-field adv-only">
             <label for="ingDil${i}">${esc(t('dilution_pct_label'))}</label>
             <input id="ingDil${i}" aria-label="${esc(ing.name)} ${esc(t('dilution_pct_label'))}" class="ing-dilution" type="number" min="1" max="100" step="1" value="${ing.dilution}" data-i="${i}">
           </div>
@@ -1778,6 +1939,31 @@ function updatePyramid(){
   document.getElementById('pctTop').textContent = sum? Math.round(totals.top/sum*100)+'%' : '0%';
   document.getElementById('pctMid').textContent = sum? Math.round(totals.mid/sum*100)+'%' : '0%';
   document.getElementById('pctBase').textContent = sum? Math.round(totals.base/sum*100)+'%' : '0%';
+
+  /* v1.10.0: バランスの目安。エラーではなく助言として1行だけ出す */
+  const hint = document.getElementById('pyramidHint');
+  if(!hint) return;
+  if(sum<=0 || builderIngredients.length<2){
+    hint.className = 'pyr-hint';
+    hint.textContent = t('pyr_hint_empty');
+    return;
+  }
+  const pct = {top: totals.top/sum*100, mid: totals.mid/sum*100, base: totals.base/sum*100};
+  const RANGE = {top:[20,40], mid:[30,50], base:[20,40]};
+  let worst = null, worstGap = 0;
+  ['top','mid','base'].forEach(k=>{
+    const [lo,hi] = RANGE[k];
+    const gap = pct[k] < lo ? (lo - pct[k]) : (pct[k] > hi ? (pct[k] - hi) : 0);
+    if(gap > worstGap){ worstGap = gap; worst = (pct[k] < lo) ? k+'_low' : k+'_high'; }
+  });
+  /* 5ポイント以内のはみ出しは誤差の範囲として「良好」扱いにする */
+  if(!worst || worstGap <= 5){
+    hint.className = 'pyr-hint ok';
+    hint.textContent = '◎ ' + t('pyr_ok');
+  } else {
+    hint.className = 'pyr-hint warn';
+    hint.textContent = t('pyr_' + worst) + '　' + t('pyr_guide');
+  }
 }
 
 let calcMode = 'ul'; // 'ul' = volume-based (pre-diluted fragrance), 'g' = weight-based (per-material dilution/SG)
@@ -1803,6 +1989,7 @@ document.getElementById('calcModeChips').querySelectorAll('.chip').forEach(chip=
     }
     updateCalcTable();
     updateDilution();   /* 単位トグルに合わせて希釈表の強調列も切り替える */
+    renderPresets();    /* v1.10.0: μl / g でプリセットの中身が変わる */
   });
 });
 
@@ -1913,17 +2100,21 @@ function updateCalcTable(){
     const warn = it.belowPipette ? ' <span style="color:var(--danger);font-weight:700;" title="最小計量0.5μlを下回ります">⚠</span>' : '';
     rows += `<tr>
       <td>${esc(it.name)}</td>
-      <td style="font-family:'JetBrains Mono',monospace; font-size:0.875rem; font-weight:700; color:var(--amber-soft); white-space:nowrap;">${it.permille.toFixed(1)}‰</td>
-      <td>${dilPrefix}${it.dilution}${dilSuffix}</td>
+      <td class="adv-only" style="font-family:'JetBrains Mono',monospace; font-size:0.875rem; font-weight:700; color:var(--amber-soft); white-space:nowrap;">${it.permille.toFixed(1)}‰</td>
+      <td class="adv-only">${dilPrefix}${it.dilution}${dilSuffix}</td>
       <td>${it.amount.toFixed(isUl?1:3)}${it.unit}${warn}</td>
-      <td>${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
+      <td class="adv-only">${it.amount>0 ? it.drops.toFixed(1)+dropsSuffix : '—'}</td>
     </tr>`;
   });
+  const cols = simpleMode ? 2 : 5;
   table.innerHTML = `
-    <thead><tr><th>${esc(t('tbl_material'))}</th><th>${esc(t('tbl_permille'))}</th><th>${esc(t('tbl_dilution'))}</th><th>${esc(t('tbl_amount'))}</th><th>${esc(t('tbl_drops'))}</th></tr></thead>
-    <tbody>${rows || `<tr><td colspan="5" style="color:var(--paper-dim); text-align:center; padding:16px 0;">${esc(t('tbl_empty'))}</td></tr>`}</tbody>
-    ${items.length ? `<tfoot><tr class="total-row"><td>${esc(t('tbl_total'))}</td><td>1000.0‰</td><td>—</td><td>${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td>—</td></tr></tfoot>` : ''}
+    <thead><tr><th>${esc(t('tbl_material'))}</th><th class="adv-only">${esc(t('tbl_permille'))}</th><th class="adv-only">${esc(t('tbl_dilution'))}</th><th>${esc(t('tbl_amount'))}</th><th class="adv-only">${esc(t('tbl_drops'))}</th></tr></thead>
+    <tbody>${rows || `<tr><td colspan="${cols}" style="color:var(--paper-dim); text-align:center; padding:16px 0;">${esc(t('tbl_empty'))}</td></tr>`}</tbody>
+    ${items.length ? `<tfoot><tr class="total-row"><td>${esc(t('tbl_total'))}</td><td class="adv-only">1000.0‰</td><td class="adv-only">—</td><td>${totalOut.toFixed(isUl?1:3)}${isUl?'μl':'g'}</td><td class="adv-only">—</td></tr></tfoot>` : ''}
   `;
+  /* かんたんモードであることと、希釈率の扱いを明示する */
+  const help = document.getElementById('calcHelpText');
+  if(help) help.textContent = simpleMode ? t('simple_note') : (isUl ? t('help_ul') : t('help_g'));
   updateIngredientAmounts(items);
   updateDilution();
 }
@@ -2040,8 +2231,8 @@ function updateDilution(){
     ${advice}${ceiling}
   `;
 }
-document.getElementById('concPct').addEventListener('input', updateDilution);
-document.getElementById('finalVol').addEventListener('input', updateDilution);
+document.getElementById('concPct').addEventListener('input', ()=>{ updateDilution(); renderPresets(); });
+document.getElementById('finalVol').addEventListener('input', ()=>{ updateDilution(); renderPresets(); });
 
 document.getElementById('clearBuilderBtn').addEventListener('click', ()=>{
   if(builderIngredients.length===0) return;
@@ -2430,11 +2621,18 @@ async function exportSavedCsv(){
   }catch(e){ toast((currentLang==='ja'?'書き出しに失敗しました: ':'Export failed: ') + (e.message||e)); }
 }
 
+const BACKUP_ACK_KEY = 'nehne_backup_ack_v1';
+function ackBackup(count){ try{ localStorage.setItem(BACKUP_ACK_KEY, String(count)); }catch(e){} }
+function backupAcked(){
+  try{ return parseInt(localStorage.getItem(BACKUP_ACK_KEY) || '0', 10) || 0; }catch(e){ return 0; }
+}
 async function exportSavedJson(){
   try{
     const keys = nStorage.list('myformula:');
     if(!keys.length){ toast(currentLang==='ja'?'保存された処方がありません':'No saved formulas'); return; }
     await shareOrDownload(buildSavedJson(), `nehne_backup_${stamp()}.json`, 'application/json');
+    ackBackup(keys.length);
+    renderSaved();
     toast(currentLang==='ja'?`${keys.length}件をバックアップしました`:`Backed up ${keys.length} formula(s)`);
   }catch(e){ toast((currentLang==='ja'?'バックアップに失敗しました: ':'Backup failed: ') + (e.message||e)); }
 }
@@ -2594,10 +2792,20 @@ function renderSaved(){
       }
     }
     entries.sort((a,b)=> (b.data.savedAt||0) - (a.data.savedAt||0));
+    /* v1.10.0: 3件以上たまり、前回の確認から3件増えたらバックアップを案内する */
+    const nudge = (keys.length >= 3 && (keys.length - backupAcked()) >= 3)
+      ? `<div class="nudge" id="backupNudge">
+           <p>${esc(t('nudge_backup'))}</p>
+           <div class="nudge-actions">
+             <button class="btn btn-primary btn-sm" id="nudgeBackupBtn" style="flex:1;">${esc(t('nudge_backup_btn'))}</button>
+             <button class="nudge-later" id="nudgeLaterBtn">${esc(t('nudge_later'))}</button>
+           </div>
+         </div>`
+      : '';
     const failedBanner = failedKeys.length
       ? `<div class="error-banner">⚠ ${currentLang==='ja' ? `${failedKeys.length}件のフォーミュラの読み込みに失敗しました（データ破損の可能性があります）。` : `Failed to load ${failedKeys.length} formula(s) — the saved data may be corrupted.`}</div>`
       : '';
-    wrap.innerHTML = failedBanner + entries.map(e=>{
+    wrap.innerHTML = nudge + failedBanner + entries.map(e=>{
       const f = e.data;
       const sum = (f.items||[]).reduce((a,b)=>a+(b.parts||0),0);
       return `
@@ -2615,6 +2823,10 @@ function renderSaved(){
         </div>
       </div>`;
     }).join('');
+    const nb = document.getElementById('nudgeBackupBtn');
+    if(nb) nb.addEventListener('click', exportSavedJson);
+    const nl = document.getElementById('nudgeLaterBtn');
+    if(nl) nl.addEventListener('click', ()=>{ ackBackup(keys.length); renderSaved(); });
     wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click', ()=>{
       try{
         const raw = nStorage.get(b.dataset.edit);
@@ -2837,13 +3049,16 @@ function closeWelcome(){
 }
 document.getElementById('wcCloseBtn').addEventListener('click', closeWelcome);
 document.getElementById('welcomeOverlay').addEventListener('click', (e)=>{ if(e.target.id==='welcomeOverlay') closeWelcome(); });
+document.querySelectorAll('#simpleSeg button').forEach(b=>{
+  b.addEventListener('click', ()=> setSimpleMode(b.dataset.simple==='1'));
+});
 document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
   closeOverlay('settingsOverlay');
   openWelcome();
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.9.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.10.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
@@ -2861,6 +3076,8 @@ document.getElementById('langToggleBtn').textContent = currentLang==='ja' ? 'EN'
 applyStaticLang();
 applySettingsLang();
 applyDisplay();
+applySimpleMode();
+renderPresets();
 buildChips();
 renderMaterials();
 renderBuilder();
