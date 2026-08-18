@@ -527,6 +527,41 @@ html[data-simple="1"] .adv-only{display:none !important;}
 }
 .st-round b{display:block; color:var(--amber-soft); font-size:0.8125rem; margin:2px 0 1px;}
 .st-round span{font-family:'JetBrains Mono',monospace; font-size:0.6875rem;}
+/* v1.12.0: 比率の大見出しと作り方 */
+.st-ratio{
+  background:linear-gradient(180deg, rgba(200,150,63,0.16), rgba(200,150,63,0.06));
+  border:1px solid rgba(200,150,63,0.40); border-radius:14px;
+  padding:14px; margin-top:10px; text-align:center;
+}
+.st-ratio .rl{font-size:0.6875rem; color:var(--paper-dim); letter-spacing:0.06em;}
+.st-ratio .rv{
+  font-family:'JetBrains Mono',monospace; font-size:1.5rem; font-weight:700;
+  color:var(--amber-soft); margin:4px 0 2px; letter-spacing:0.02em;
+}
+.st-ratio .rn{font-size:0.6875rem; color:var(--paper-dim); line-height:1.6;}
+.st-sg{display:flex; gap:8px; align-items:flex-end; margin-top:10px;}
+.st-sg .f{flex:1;}
+.st-sg label{display:block; font-size:0.625rem; color:var(--paper-dim); margin-bottom:4px;}
+.st-sg input{
+  width:100%; background:var(--ink-700); border:1px solid var(--line-strong); border-radius:8px;
+  color:var(--paper); text-align:center; padding:8px 4px; font-family:'JetBrains Mono',monospace; font-size:0.875rem;
+}
+.st-sg .hint{flex:1.4; font-size:0.625rem; color:var(--paper-dim); line-height:1.5; padding-bottom:8px;}
+.st-prep{
+  font-size:0.71875rem; color:var(--paper-dim); line-height:1.9;
+  background:var(--ink-700); border-radius:10px; padding:10px 12px; margin-top:8px;
+}
+.st-tips{font-size:0.71875rem; color:var(--paper-dim); line-height:1.9; margin:8px 0 0; padding-left:1.1em;}
+.st-tips li{margin-bottom:2px;}
+.st-tips b{color:var(--amber-soft);}
+.bt-del{
+  background:none; border:none; color:var(--paper-dim); font-size:0.9375rem;
+  padding:0 4px 8px; cursor:pointer; font-family:inherit;
+}
+.bt-add{
+  width:100%; margin-top:10px; background:none; border:1px dashed var(--line-strong);
+  border-radius:9px; padding:9px; color:var(--paper-dim); font-size:0.75rem; cursor:pointer; font-family:inherit;
+}
 /* 遮光瓶の登録 */
 .bt-row{display:flex; gap:8px; align-items:flex-end; margin-top:8px;}
 .bt-row .bt-name{flex:1.2; font-size:0.75rem; color:var(--paper);}
@@ -741,6 +776,7 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <div class="search-wrap"><input class="search-box" id="matSearch" placeholder="素材名・成分・語彙で検索…"><button type="button" class="search-clear" id="matSearchClear" aria-label="検索をクリア">✕</button></div>
         <div id="matCount" role="status" aria-live="polite" class="sr-only"></div>
       </div>
+      <button class="btn btn-secondary btn-block" id="openStationGeneralBtn" style="margin:2px 0 10px; font-size:0.8125rem;"><span id="openStationGeneralLabel">希釈液のつくり方（早見表）</span></button>
       <button class="add-ing-btn" id="addCustomMatBtn" style="margin:2px 0 10px;"><span id="addCustomMatBtnLabel">＋ 香料を追加（名前と比重だけでOK）</span></button>
       <div class="chip-row" id="noteChips"></div>
       <div class="chip-row" id="famChips"></div>
@@ -1186,6 +1222,30 @@ const STR = {
     st_stock_note:'すでに作ってある10%希釈液を薄めるルートです。10%を作る手順をもう一度繰り返すだけなので、量りやすく精度も出ます。',
     st_scale_lead:'はかりで作るなら（重量比なので、比率がそのまま重量の比になります）',
     st_approx:'できあがり約',
+    /* v1.12.0 */
+    station_general_btn:'希釈液のつくり方（早見表）',
+    station_general_title:'希釈液のつくり方',
+    station_general_sub:'希釈率は重量比（w/w）なので、原液とアルコールの比率はどの素材でも同じです。ml で量りたいときだけ、その素材の比重が必要になります。',
+    st_ratio_label:'原液 : 無水エタノール（重量比）',
+    st_ratio_note:'この比率は素材によらず同じです。原液 1 に対してアルコール {R} を足せば {D}% になります。',
+    st_sg_label:'比重（SG）', st_sg_hint:'ml の換算にだけ使います。素材詳細で確認できます（未指定なら 0.90）。',
+    st_general_material:'すべての素材に共通',
+    st_prep_title:'準備するもの',
+    st_prep_body:'遮光瓶／無水エタノール（薬局。消毒用は水が入っているので不可）／電子はかり（0.01g単位）またはピペット／ラベルとペン／小さなじょうご',
+    st_p1:'瓶にラベルを貼り、素材名・希釈率・日付を先に書く',
+    st_p2:'空の瓶をはかりに載せ、ゼロ（風袋引き）にする',
+    st_p3:'香料原液を表の重量まで入れる（先に入れるのがコツ。あとからだと瓶の壁に残る）',
+    st_p4:'もう一度ゼロにして、無水エタノールを表の重量まで注ぐ',
+    st_p5:'ふたを閉め、30秒ほどしっかり振る',
+    st_p6:'数日置くとなじむ。使う前にも軽く振る',
+    st_tips_title:'コツと注意',
+    st_tip1:'<b>1%は2段希釈で。</b>原液を直接量ると微量すぎて誤差が出ます。先に10%を作り、それをさらに10倍に薄めるのが確実です。',
+    st_tip2:'<b>粘度の高い素材</b>（レジノイド・アブソリュート・バルサム類）は、ぬるま湯で瓶ごと温めると量りやすくなります。',
+    st_tip3:'<b>作った日付は必ず記録。</b>柑橘系は酸化が早いので、半年〜1年で作り直す目安になります。',
+    st_tip4:'<b>保管は冷暗所で。</b>直射日光と高温を避け、ふたはしっかり締めてください（エタノールは揮発します）。',
+    st_ml_note:'ml は比重から換算した参考値です。はかりがあるなら g を見てください（そちらが正確です）。',
+    bt_add:'＋ 手持ちの瓶を追加', bt_del:'削除', bt_new_label:'手持ちの瓶',
+    st_pick_material:'素材を選ぶと比重が自動で入ります',
   },
   en: {
     app_title:"nehne Perfumer's Notebook", app_subtitle:"Perfumer's Notebook",
@@ -1323,6 +1383,30 @@ const STR = {
     st_stock_note:'Dilute the 10% stock you already have. It is the same operation as making a 10%, so it is easy to measure and more precise.',
     st_scale_lead:'On a scale (w/w means the ratio is simply a weight ratio)',
     st_approx:'yields approx.',
+    /* v1.12.0 */
+    station_general_btn:'How to make dilutions (quick reference)',
+    station_general_title:'How to make dilutions',
+    station_general_sub:'Dilution rates are by weight (w/w), so the concentrate-to-alcohol ratio is the same for every material. Specific gravity only matters if you want to measure by volume.',
+    st_ratio_label:'Concentrate : ethanol (by weight)',
+    st_ratio_note:'This ratio is the same for every material — 1 part concentrate to {R} parts alcohol gives {D}%.',
+    st_sg_label:'Specific gravity', st_sg_hint:'Used only for the ml conversion. Check it in the material detail view (defaults to 0.90).',
+    st_general_material:'Same for all materials',
+    st_prep_title:'What you need',
+    st_prep_body:'Amber bottle / anhydrous ethanol (rubbing alcohol contains water and will not do) / a 0.01g scale or pipettes / label and pen / a small funnel',
+    st_p1:'Label the bottle first with the material, strength and date',
+    st_p2:'Put the empty bottle on the scale and tare it to zero',
+    st_p3:'Add the concentrate up to the weight in the table (add it first — otherwise it clings to the walls)',
+    st_p4:'Tare again, then pour in ethanol up to its weight',
+    st_p5:'Cap it and shake well for about 30 seconds',
+    st_p6:'Let it rest a few days to settle; shake lightly before use',
+    st_tips_title:'Tips',
+    st_tip1:'<b>Make 1% in two steps.</b> Weighing the neat material directly is too small to be accurate — make a 10% first, then dilute that tenfold.',
+    st_tip2:'<b>Thick materials</b> (resinoids, absolutes, balsams) are much easier to measure if you warm the bottle in lukewarm water first.',
+    st_tip3:'<b>Always record the date.</b> Citrus oxidises quickly, so this tells you when to remake it (six months to a year).',
+    st_tip4:'<b>Store cool and dark.</b> Keep it out of sunlight and heat, and cap it tightly — ethanol evaporates.',
+    st_ml_note:'The ml figures are converted from specific gravity. If you have a scale, use the g column — it is the accurate one.',
+    bt_add:'+ Add a bottle', bt_del:'Delete', bt_new_label:'My bottle',
+    st_pick_material:'Pick a material to fill in its specific gravity',
   }
 };
 function t(key){
@@ -1398,13 +1482,30 @@ function renderBottleEditor(){
         <input id="btMake${i}" type="number" min="1" step="1" value="${b.make}" data-i="${i}" data-f="make"></div>
       <div class="bt-f"><label for="btCap${i}">${esc(t('bt_cap'))}</label>
         <input id="btCap${i}" type="number" min="1" step="1" value="${b.cap}" data-i="${i}" data-f="cap"></div>
-    </div>`).join('');
+      ${bottles.length>1 ? `<button type="button" class="bt-del" data-del="${i}" aria-label="${esc(b.label)} ${esc(t('bt_del'))}">✕</button>` : ''}
+    </div>`).join('') + `<button type="button" class="bt-add" id="btAddBtn">${esc(t('bt_add'))}</button>`;
+  const addBtn = document.getElementById('btAddBtn');
+  if(addBtn) addBtn.addEventListener('click', ()=>{
+    const cap = 30;
+    bottles.push({label: t('bt_new_label') + ' ' + (bottles.length+1), make: Math.round(cap*0.8), cap});
+    persistBottles(); renderBottleEditor();
+  });
+  wrap.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const i = parseInt(btn.dataset.del,10);
+      bottles.splice(i,1);
+      if(stBottleIdx >= bottles.length) stBottleIdx = bottles.length-1;
+      persistBottles(); renderBottleEditor();
+      if(!document.getElementById('stationOverlay').classList.contains('hidden')) renderStation();
+    });
+  });
   wrap.querySelectorAll('input').forEach(inp=>{
     inp.addEventListener('change', (e)=>{
       const v = parseFloat(e.target.value);
       if(!(v>0)){ e.target.value = bottles[e.target.dataset.i][e.target.dataset.f]; return; }
       bottles[e.target.dataset.i][e.target.dataset.f] = v;
       persistBottles();
+      if(!document.getElementById('stationOverlay').classList.contains('hidden')) renderStation();
     });
   });
 }
@@ -1412,7 +1513,9 @@ function renderBottleEditor(){
 /* ---------------- v1.11.0: 希釈ステーション ----------------
    希釈率は重量比(w/w)。目標は「瓶に入れる体積」なので、
    まず希釈液の比重から総重量を出し、そこを原液とエタノールに配分する。 */
-let stMat = null, stBottleIdx = 1, stDil = 10, stCustomMake = null;
+/* stSg の初期値は数値リテラルで持つ。RHO_DEFAULT はこの行より後ろで宣言されるため、
+   ここで参照すると初期化前アクセス(TDZ)になる */
+let stMat = null, stBottleIdx = 1, stDil = 10, stCustomMake = null, stSg = 0.90;
 
 function stationAmounts(sgNeat, dilPct, volMl){
   const f = dilPct/100;
@@ -1456,9 +1559,9 @@ function roundedRecipe(mainG, dilPct, rhoMain){
 
 function renderStation(){
   const body = document.getElementById('stBody');
-  if(!body || !stMat) return;
-  const m = stMat;
-  const sg = m.sg>0 ? m.sg : RHO_DEFAULT;
+  if(!body) return;
+  const m = stMat;                       /* null なら「共通」モード */
+  const sg = stSg>0 ? stSg : RHO_DEFAULT;
   const b = bottles[stBottleIdx] || bottles[0];
   const makeMl = (stCustomMake!=null && stCustomMake>0) ? stCustomMake : b.make;
   const capMl = (stCustomMake!=null) ? null : b.cap;
@@ -1524,11 +1627,41 @@ function renderStation(){
     space = `<div class="st-space ${cls}">${esc(t(key).replace('{H}', h.toFixed(1)))}</div>`;
   }
 
-  const labelText = `${m.name} ${stDil}% w/w  ${new Date().toISOString().slice(0,10)}`;
+  const labelText = m ? `${m.name} ${stDil}% w/w  ${new Date().toISOString().slice(0,10)}` : '';
+
+  /* 比率の大見出し。w/w なので素材によらず一定 */
+  const ratioN = Math.round((100-stDil)/stDil * 100)/100;
+  const ratioBox = `<div class="st-ratio">
+    <div class="rl">${esc(t('st_ratio_label'))}</div>
+    <div class="rv">1 : ${ratioN}</div>
+    <div class="rn">${esc(t('st_ratio_note').replace('{R}', String(ratioN)).replace('{D}', String(stDil)))}</div>
+  </div>`;
+
+  const sgBox = `<div class="st-sg">
+    <div class="f"><label for="stSgInput">${esc(t('st_sg_label'))}</label>
+      <input type="number" id="stSgInput" min="0.5" max="1.5" step="0.01" value="${sg}"></div>
+    <div class="hint">${esc(t('st_sg_hint'))}</div>
+  </div>`;
+
+  const howTo = `
+    <div class="st-label">${esc(t('st_prep_title'))}</div>
+    <div class="st-prep">${esc(t('st_prep_body'))}</div>
+    <div class="st-label">${esc(t('st_steps_title'))}</div>
+    <ol class="st-steps">
+      ${['st_p1','st_p2','st_p3','st_p4','st_p5','st_p6'].map(k=>`<li>${esc(t(k))}</li>`).join('')}
+    </ol>
+    <div class="st-label">${esc(t('st_tips_title'))}</div>
+    <ul class="st-tips">
+      ${['st_tip1','st_tip2','st_tip3','st_tip4'].map(k=>`<li>${t(k)}</li>`).join('')}
+    </ul>`;
 
   body.innerHTML = `
-    <h2 class="st-h">${esc(t('station_title'))}</h2>
-    <div class="st-sub">${esc(m.name)}${m.name_ja && m.name_ja!==m.name ? '（'+esc(m.name_ja)+'）' : ''} ・ ${esc(t('sg_label'))} ${esc(String(sg))}<br>${esc(t('station_sub'))}</div>
+    <h2 class="st-h">${esc(m ? t('station_title') : t('station_general_title'))}</h2>
+    <div class="st-sub">${m
+      ? esc(m.name) + (m.name_ja && m.name_ja!==m.name ? '（'+esc(m.name_ja)+'）' : '') + ' ・ ' + esc(t('sg_label')) + ' ' + esc(String(m.sg))
+      : esc(t('st_general_material'))}<br>${esc(m ? t('station_sub') : t('station_general_sub'))}</div>
+
+    ${ratioBox}
 
     <div class="st-label">${esc(t('st_bottle'))}</div>
     <div class="chip-row" id="stBottleChips">${bottleChips}</div>
@@ -1547,16 +1680,12 @@ function renderStation(){
     ${routeB}
     ${routeA}
     ${space}
+    ${sgBox}
+    <div class="st-note">${esc(t('st_ml_note'))}</div>
 
-    <div class="st-label">${esc(t('st_steps_title'))}</div>
-    <ol class="st-steps">
-      <li>${esc(t('st_step1'))}</li>
-      <li>${esc(t('st_step2'))}</li>
-      <li>${esc(t('st_step3'))}</li>
-      <li>${esc(t('st_step4'))}</li>
-    </ol>
+    ${howTo}
 
-    <button type="button" class="st-copy" id="stCopyBtn">${esc(t('st_label_copy'))}<b>${esc(labelText)}</b></button>
+    ${m ? `<button type="button" class="st-copy" id="stCopyBtn">${esc(t('st_label_copy'))}<b>${esc(labelText)}</b></button>` : ''}
   `;
 
   body.querySelectorAll('#stBottleChips .chip').forEach(c=>{
@@ -1582,6 +1711,11 @@ function renderStation(){
     const v = parseFloat(dc.value);
     if(v>0 && v<=100){ stDil = v; renderStation(); }
   });
+  const sgi = document.getElementById('stSgInput');
+  if(sgi) sgi.addEventListener('change', ()=>{
+    const v = parseFloat(sgi.value);
+    if(v>0){ stSg = v; renderStation(); }
+  });
   const cp = document.getElementById('stCopyBtn');
   if(cp) cp.addEventListener('click', ()=>{
     try{
@@ -1595,7 +1729,18 @@ function openStation(name){
   const m = findMaterial(name);
   if(!m) return;
   stMat = m;
+  stSg = m.sg>0 ? m.sg : RHO_DEFAULT;
   stDil = (m.defaultDilution>0 && m.defaultDilution<=100) ? m.defaultDilution : 10;
+  stCustomMake = null;
+  renderStation();
+  openOverlay('stationOverlay');
+}
+/* v1.12.0: 素材を選ばずに開く早見表モード。
+   希釈率は重量比なので、原液とアルコールの比率は素材によらず共通に出せる。 */
+function openStationGeneral(){
+  stMat = null;
+  stSg = RHO_DEFAULT;
+  stDil = 10;
   stCustomMake = null;
   renderStation();
   openOverlay('stationOverlay');
@@ -1730,6 +1875,7 @@ function applyStaticLang(){
   document.getElementById('srcNeatChip').textContent = t('src_neat');
   document.getElementById('setBottleLabel').textContent = t('set_bottle_label');
   document.getElementById('setBottleHelp').textContent = t('set_bottle_help');
+  document.getElementById('openStationGeneralLabel').textContent = t('station_general_btn');
   renderBottleEditor();
   if(!document.getElementById('stationOverlay').classList.contains('hidden')) renderStation();
 }
@@ -3472,6 +3618,7 @@ function closeWelcome(){
 }
 document.getElementById('wcCloseBtn').addEventListener('click', closeWelcome);
 document.getElementById('welcomeOverlay').addEventListener('click', (e)=>{ if(e.target.id==='welcomeOverlay') closeWelcome(); });
+document.getElementById('openStationGeneralBtn').addEventListener('click', openStationGeneral);
 document.getElementById('stCloseBtn').addEventListener('click', ()=>closeOverlay('stationOverlay'));
 document.getElementById('stationOverlay').addEventListener('click', (e)=>{ if(e.target.id==='stationOverlay') closeOverlay('stationOverlay'); });
 document.querySelectorAll('#sourceChips .chip').forEach(c=>{
@@ -3486,7 +3633,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.11.1';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.12.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
