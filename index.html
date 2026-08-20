@@ -890,6 +890,15 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
       <p id="libraryDesc" style="font-size:0.75rem; color:var(--paper-dim); line-height:1.7; margin:-4px 0 14px;">
         既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。
       </p>
+      <a href="formulas/tea-fig.html" class="formula-card" style="display:block; text-decoration:none;">
+        <h3>紅茶とイチジク ─ 天然香料のみの処方 <span style="font-size:0.75rem; color:var(--paper-dim);">↗</span></h3>
+        <div class="formula-meta">スケルトン5本 ・ ベースアコード11本 ・ フル23本</div>
+        <div class="formula-ing-list">ジン／紅茶／フィグミルクの三層構造。仕込み量の自動計算つき解説ページが開きます。</div>
+      </a>
+      <a href="formulas/mix.html" class="formula-card" style="display:block; text-decoration:none; margin-bottom:16px;">
+        <h3>調香ページ（速記版） <span style="font-size:0.75rem; color:var(--paper-dim);">↗</span></h3>
+        <div class="formula-ing-list">上の3処方を連続で仕込むための消し込み画面。マイフォーミュラの処方は各カードの「調香」から。</div>
+      </a>
       <div id="libList"></div>
     </section>
 
@@ -3437,6 +3446,7 @@ function renderSaved(){
           ${(f.items||[]).length>4 ? `<div style="opacity:.6;">${t('and_more_prefix')}${f.items.length-4}${t('and_more_suffix')}</div>` : ''}
         </div>
         <div class="formula-actions">
+          <button class="btn btn-primary btn-sm" style="flex:1;" data-mix="${e.key}">${currentLang==='ja'?'調香':'Mix'}</button>
           <button class="btn btn-secondary btn-sm" style="flex:1;" data-edit="${e.key}">${esc(t('edit_btn'))}</button>
           <button class="btn btn-secondary btn-sm" style="flex:1;" data-print="${e.key}">🖨 ${esc(t('print_btn'))}</button>
           <button class="btn btn-danger btn-sm" style="flex:1;" data-del="${e.key}">${esc(t('delete_btn'))}</button>
@@ -3460,6 +3470,22 @@ function renderSaved(){
         document.querySelector('.nav-btn[data-tab="builder"]').click();
       }catch(err){
         toast((currentLang==='ja'?'編集用データの読み込みに失敗しました: ':'Failed to load formula for editing: ') + (err && err.message ? err.message : String(err)));
+      }
+    }));
+    wrap.querySelectorAll('[data-mix]').forEach(b=>b.addEventListener('click', ()=>{
+      try{
+        const raw = nStorage.get(b.dataset.mix);
+        const f = JSON.parse(raw);
+        builderIngredients = f.items.map(it=>({
+          name: it.name, name_en: it.name_en, parts: it.parts, note: it.note,
+          dilution: it.dilution || (findMaterial(it.name)||{}).defaultDilution || 10
+        }));
+        document.getElementById('builderName').value = f.name;
+        document.getElementById('targetWeight').value = f.targetWeight || 100;
+        renderBuilder();
+        openMixPage();
+      }catch(err){
+        toast((currentLang==='ja'?'調香ページの読み込みに失敗しました: ':'Failed to open mix page: ') + (err && err.message ? err.message : String(err)));
       }
     }));
     wrap.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click', ()=>printSavedFormula(b.dataset.print)));
@@ -3684,7 +3710,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.12.1';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.13.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
