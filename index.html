@@ -900,9 +900,14 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <div class="formula-meta">スケルトン5本 ・ ベースアコード11本 ・ フル18本</div>
         <div class="formula-ing-list">フルーティ／ホワイトフローラル／スイートウッディの三層構造。仕込み量の自動計算つき解説ページが開きます。</div>
       </a>
+      <a href="formulas/anise-vanilla.html" class="formula-card" style="display:block; text-decoration:none;">
+        <h3>アニスとバニラ ─ 天然香料のみの処方 <span style="font-size:0.75rem; color:var(--paper-dim);">↗</span></h3>
+        <div class="formula-meta">スケルトン5本 ・ ベースアコード11本 ・ フル16本</div>
+        <div class="formula-ing-list">コロン仕立て。甘草／白い花／粉っぽいバニラの三層構造。仕込み量の自動計算つき解説ページが開きます。</div>
+      </a>
       <a href="formulas/mix.html" class="formula-card" style="display:block; text-decoration:none; margin-bottom:16px;">
         <h3>調香ページ（速記版） <span style="font-size:0.75rem; color:var(--paper-dim);">↗</span></h3>
-        <div class="formula-ing-list">上の2香調・計6処方を連続で仕込むための消し込み画面。マイフォーミュラの処方は各カードの「調香」から。</div>
+        <div class="formula-ing-list">上の3香調・計9処方を連続で仕込むための消し込み画面。マイフォーミュラの処方は各カードの「調香」から。</div>
       </a>
       <div id="libList"></div>
     </section>
@@ -3715,7 +3720,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.14.1';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.15.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
