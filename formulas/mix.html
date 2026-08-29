@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0d1a19">
-<title>調香ページ ─ 紅茶とイチジク | nehne</title>
+<title>調香ページ | nehne</title>
 <style>
 :root{--g:#00A496;--gl:#1d3b38;--gold:#C9A227;--bg:#0d1a19;--card:#162624;--ink:#eaf5f3;--sub:#7f9a97;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
@@ -14,6 +14,8 @@ body{background:var(--bg);color:var(--ink);overscroll-behavior:none;
  display:flex;flex-direction:column;
  padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}
 
+#bar.top{padding-bottom:2px;border-bottom:1px solid #1c302e}
+#bar.top .chip{font-size:13px;padding:8px 14px}
 #bar{flex:0 0 auto;display:flex;gap:5px;padding:8px 8px 6px;overflow-x:auto;scrollbar-width:none;align-items:center}
 #bar::-webkit-scrollbar{display:none}
 .chip{flex:0 0 auto;background:var(--card);color:var(--sub);border:1px solid #24403d;border-radius:999px;
@@ -54,6 +56,11 @@ body{background:var(--bg);color:var(--ink);overscroll-behavior:none;
 </head>
 <body>
 
+<div id="bar" class="top">
+  <button class="chip on" data-s="0">紅茶とイチジク</button>
+  <button class="chip" data-s="1">ピーチとチュベローズ</button>
+</div>
+
 <div id="bar">
   <button class="chip on" data-f="0">スケルトン</button>
   <button class="chip" data-f="1">ベース</button>
@@ -79,7 +86,8 @@ body{background:var(--bg);color:var(--ink);overscroll-behavior:none;
 
 <script>
 // 投入順（ベース→ミドル→トップ）で保持。p=段, n=素材, v=配合比
-const F = [
+const SC = [
+{name:"紅茶とイチジク", F:[
  {name:"スケルトン", items:[
   {p:"ベース",n:"ベンゾインAbs",v:25},
   {p:"ベース",n:"シダーウッド",v:13},
@@ -125,9 +133,53 @@ const F = [
   {p:"トップ",n:"ローマンカモミール",v:1},
   {p:"トップ",n:"ガルバナム",v:1}
  ]}
+]},
+{name:"ピーチとチュベローズ", F:[
+ {name:"スケルトン", items:[
+  {p:"ベース",n:"サンダルウッド",v:25},
+  {p:"ベース",n:"バニラAbs",v:15},
+  {p:"ミドル",n:"イランイラン",v:26},
+  {p:"ミドル",n:"オスマンサスAbs",v:20},
+  {p:"トップ",n:"ベルガモット",v:14}
+ ]},
+ {name:"ベースアコード", items:[
+  {p:"ベース",n:"サンダルウッド",v:15},
+  {p:"ベース",n:"ベンゾインAbs",v:10},
+  {p:"ベース",n:"バニラAbs",v:9},
+  {p:"ベース",n:"シダーウッド",v:6},
+  {p:"ベース",n:"ベチバー",v:2},
+  {p:"ミドル",n:"イランイラン",v:16},
+  {p:"ミドル",n:"オスマンサスAbs",v:12},
+  {p:"ミドル",n:"ジャスミンサンバックAbs",v:8},
+  {p:"ミドル",n:"オレンジフラワーAbs",v:8},
+  {p:"ミドル",n:"ローズAbs",v:6},
+  {p:"トップ",n:"ベルガモット",v:8}
+ ]},
+ {name:"フル処方", items:[
+  {p:"ベース",n:"サンダルウッド",v:10},
+  {p:"ベース",n:"ベンゾインAbs",v:6},
+  {p:"ベース",n:"シダーウッド・バージニア",v:6},
+  {p:"ベース",n:"バニラAbs",v:5},
+  {p:"ベース",n:"アンブレットシード",v:4},
+  {p:"ベース",n:"ベチバー",v:2},
+  {p:"ミドル",n:"イランイラン",v:10},
+  {p:"ミドル",n:"ジャスミンサンバックAbs",v:8},
+  {p:"ミドル",n:"オレンジフラワーAbs",v:7},
+  {p:"ミドル",n:"オスマンサスAbs",v:6},
+  {p:"ミドル",n:"ローズAbs",v:5},
+  {p:"ミドル",n:"オリスコンクリート",v:4},
+  {p:"ミドル",n:"ゼラニウム",v:3},
+  {p:"ミドル",n:"バイオレットリーフAbs",v:2},
+  {p:"トップ",n:"ベルガモット(FCF)",v:9},
+  {p:"トップ",n:"ネロリ",v:7},
+  {p:"トップ",n:"コリアンダー",v:4},
+  {p:"トップ",n:"ローマンカモミール",v:2}
+ ]}
+]}
 ];
+let F = SC[0].F;
 
-let fi=0, total=100, done=[], tubes=0, auto=true, order=[], lock=null;
+let si=0, fi=0, total=100, done=[], tubes=0, auto=true, order=[], lock=null;
 const grid=document.getElementById("grid");
 
 function amt(v){const t=F[fi].items.reduce((s,x)=>s+x.v,0);const a=total*v/t;
@@ -171,6 +223,12 @@ document.getElementById("undo").onclick=function(){
 };
 document.getElementById("next").onclick=nextTube;
 
+document.querySelectorAll("[data-s]").forEach(b=>b.onclick=function(){
+  document.querySelectorAll("[data-s]").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); si=+b.dataset.s; F=SC[si].F; fi=0;
+  document.querySelectorAll("[data-f]").forEach((x,i)=>x.classList.toggle("on",i===0));
+  build();
+});
 document.querySelectorAll("[data-f]").forEach(b=>b.onclick=function(){
   document.querySelectorAll("[data-f]").forEach(x=>x.classList.remove("on"));
   b.classList.add("on"); fi=+b.dataset.f; build();
