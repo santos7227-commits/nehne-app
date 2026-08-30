@@ -910,9 +910,14 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         <div class="formula-meta">スケルトン5本 ・ ベースアコード11本 ・ フル14本</div>
         <div class="formula-ing-list">柑橘を一切使わないスパイス／樹脂／白檀の構造。IFRA制限が実際に効く処方です。</div>
       </a>
+      <a href="formulas/lavender-moss.html" class="formula-card" style="display:block; text-decoration:none;">
+        <h3>ラベンダーと苔 ─ 天然香料のみの処方 <span style="font-size:0.75rem; color:var(--paper-dim);">↗</span></h3>
+        <div class="formula-meta">スケルトン5本 ・ ベースアコード9本 ・ フル11本</div>
+        <div class="formula-ing-list">アロマティック・ウッディ。ローズウッドを資源保護のため置き換えています。</div>
+      </a>
       <a href="formulas/mix.html" class="formula-card" style="display:block; text-decoration:none; margin-bottom:16px;">
         <h3>調香ページ（速記版） <span style="font-size:0.75rem; color:var(--paper-dim);">↗</span></h3>
-        <div class="formula-ing-list">上の4香調・計12処方を連続で仕込むための消し込み画面。マイフォーミュラの処方は各カードの「調香」から。</div>
+        <div class="formula-ing-list">上の5香調・計15処方を連続で仕込むための消し込み画面。マイフォーミュラの処方は各カードの「調香」から。</div>
       </a>
       <div id="libList"></div>
     </section>
@@ -3725,7 +3730,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.16.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.17.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
