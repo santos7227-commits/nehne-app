@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ラベンダーと苔 ─ 天然香料処方 | nehne</title>
+<style>
+:root{--g:#00A496;--gd:#00776D;--gl:#E6F5F3;--gold:#C9A227;--ink:#1c2b2a;--sub:#6b7b7a;--line:#dfe8e7;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#f4f7f6;color:var(--ink);
+ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:15px;line-height:1.7;padding-bottom:48px}
+header{background:var(--g);color:#fff;padding:18px 16px calc(14px + env(safe-area-inset-top,0));
+ padding-top:calc(18px + env(safe-area-inset-top,0))}
+header h1{margin:0;font-size:17px;font-weight:700;letter-spacing:.02em}
+header p{margin:4px 0 0;font-size:11.5px;opacity:.85;line-height:1.5}
+nav{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);
+ display:flex;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:0 0 auto;background:none;border:none;padding:13px 15px;font-size:13.5px;
+ font-weight:600;color:var(--sub);font-family:inherit;border-bottom:3px solid transparent;white-space:nowrap}
+nav button.on{color:var(--g);border-bottom-color:var(--g)}
+main{padding:14px 12px 40px;max-width:720px;margin:0 auto}
+.panel{display:none}.panel.on{display:block}
+.lead{font-size:12.5px;color:var(--sub);margin:0 0 14px;padding:0 2px}
+.calc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px;
+ display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.calc label{font-size:12.5px;font-weight:600}
+.calc input{width:82px;padding:8px 10px;font-size:16px;font-family:inherit;text-align:right;
+ border:1.5px solid var(--g);border-radius:8px;background:#fff;color:var(--ink)}
+.calc .chips{display:flex;gap:6px;margin-left:auto}
+.calc .chips button{background:var(--gl);border:none;color:var(--gd);font-weight:700;font-size:12px;
+ padding:7px 11px;border-radius:999px;font-family:inherit}
+.grp{margin:16px 0 8px;font-size:12px;font-weight:700;color:var(--gd);letter-spacing:.08em}
+.row{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:7px}
+.row .top{display:flex;align-items:baseline;gap:8px}
+.row .nm{font-weight:700;font-size:14.5px;flex:1}
+.row .ul{font-variant-numeric:tabular-nums;font-weight:700;color:var(--gd);font-size:15px;white-space:nowrap}
+.row .ul small{font-size:10.5px;font-weight:600;opacity:.7;margin-left:1px}
+.row .rl{font-size:11.5px;color:var(--sub);margin-top:2px}
+.bar{height:6px;background:var(--gl);border-radius:99px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--g);border-radius:99px}
+.row .mm{font-size:11px;color:#a4632a;background:#fdf3e7;border-radius:6px;padding:5px 8px;margin-top:8px}
+.row .dp{font-size:11.5px;color:var(--sub);border-left:2px solid var(--gold);padding-left:8px;margin-top:8px}
+.tot{display:flex;justify-content:space-between;background:var(--gl);border-radius:11px;
+ padding:11px 14px;margin-top:10px;font-weight:700;font-size:13.5px;color:var(--gd)}
+.card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:8px}
+.card h3{margin:0 0 6px;font-size:14px;color:var(--gd)}
+.card .l{font-size:12px;color:var(--sub);margin:0 0 2px}
+.card .v{font-size:13.5px;margin:0 0 8px}
+.card .v:last-child{margin-bottom:0}
+details{background:#fff;border:1px solid var(--line);border-radius:11px;margin-bottom:8px;overflow:hidden}
+details summary{padding:12px 14px;font-weight:700;font-size:13.5px;color:var(--gd);cursor:pointer;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"＋";float:right;color:var(--g)}
+details[open] summary::after{content:"−"}
+details .body{padding:0 14px 12px;font-size:13px}
+details ul{margin:0;padding-left:1.1em}details li{margin-bottom:6px}
+table.o{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+table.o th{background:var(--g);color:#fff;font-size:11.5px;padding:8px 6px;text-align:left}
+table.o td{border-bottom:1px solid var(--line);padding:9px 6px;vertical-align:top}
+table.o td:first-child{color:var(--sub);font-size:11.5px;white-space:nowrap}
+footer{text-align:center;font-size:11px;color:var(--sub);padding:22px 16px 6px;line-height:1.6}
+</style>
+</head>
+<body>
+<header>
+<h1>ラベンダーと苔 ─ 天然香料のみの処方</h1>
+<p>アロマティック・ウッディ。ラベンダー／木／苔の構造　配合比は10%希釈液どうしの比率・合計100</p>
+</header>
+<nav id="nav"></nav>
+<main>
+
+<section class="panel on" id="p-sk">
+<p class="lead">この香りが成立する最小本数。1本でも抜くとこの香りでなくなる限界点を示す、学習と分析のための処方です。</p>
+<div class="calc" data-for="sk">
+<label>仕込み総量</label><input type="number" inputmode="decimal" value="100" step="10" min="1"><span style="font-size:13px">µL</span>
+<div class="chips"><button data-v="50">50</button><button data-v="100">100</button><button data-v="500">500</button></div>
+</div>
+<div id="sk"></div>
+<details><summary>3役の読み方</summary><div class="body"><ul>
+<li><b>看板</b> … その香りと聞いて誰もが思い浮かべる匂い。この香りは「ラベンダー」と「ミントの冷たさ」の2枚看板です。</li>
+<li><b>相棒</b> … 看板だけでは単調なので、明るさ・苦み・甘みのいずれかで対比をつくる役。</li>
+<li><b>固定剤</b> … 揮発を遅らせ、奥行きと持続を与えて立体にする役。</li>
+</ul></div></details>
+<details><summary>実習の進め方</summary><div class="body"><ul>
+<li>5本すべてを仕込んだものと、1本ずつ抜いた5本を並べて比較すると、各素材の仕事がはっきり分かります。</li>
+<li>スケルトンからベースアコードへの差分が、そのまま「肉付けの手順」になります。</li>
+</ul></div></details>
+</section>
+
+<section class="panel" id="p-bs">
+<p class="lead">スケルトンに肉付けし、それ自体を1つの素材として使えるようにした常備アコード。完成品の20〜40%を占める部品として使います。</p>
+<div class="calc" data-for="bs">
+<label>仕込み総量</label><input type="number" inputmode="decimal" value="100" step="10" min="1"><span style="font-size:13px">µL</span>
+<div class="chips"><button data-v="50">50</button><button data-v="100">100</button><button data-v="500">500</button></div>
+</div>
+<div id="bs"></div>
+<details><summary>スケルトンからの差分＝肉付けの手順</summary><div class="body"><ul>
+<li><b>ホーウッド</b>を足す → ラベンダーと白檀の間が埋まり、香りが一本の線につながる。ここが空いていると上下が分離して聞こえる。</li>
+<li><b>オークモス</b>を足す → 土くさいだけだったパチュリに、湿った苔の深さが出る。</li>
+<li><b>ラブダナム</b>を足す → 冷たい香りに体温が入り、着られる香りになる。</li>
+<li><b>コリアンダー</b>を足す → ラベンダーの薬っぽさが和らぎ、丸くなる。</li>
+</ul></div></details>
+<details><summary>使い方</summary><div class="body"><ul>
+<li>このアコードを1素材として35前後で使い、キャラウェイ・スターアニスを足すと、ほぼフル処方になります。差が2本しかないのは、公表ノートが11項目しかないためです。</li>
+<li>原作はオードトワレです。賦香率は8〜12%が近くなります。</li>
+</ul></div></details>
+</section>
+
+<section class="panel" id="p-fl">
+<p class="lead">公表ノート16項目すべてに担当を割り当てた完成形の処方です。</p>
+<div class="calc" data-for="fl">
+<label>仕込み総量</label><input type="number" inputmode="decimal" value="100" step="10" min="1"><span style="font-size:13px">µL</span>
+<div class="chips"><button data-v="50">50</button><button data-v="100">100</button><button data-v="500">500</button></div>
+</div>
+<div id="fl"></div>
+<details><summary>仕込みの手順</summary><div class="body"><ul>
+<li>ベース → ミドル → トップ の順に入れ、キャップを閉じて指で弾き混ぜ、最低10分置いてからムエットへ。</li>
+<li>直後・10分後・1時間後・翌日の4回、印象を記録する。</li>
+</ul></div></details>
+<details><summary>安全・取り扱い</summary><div class="body"><ul>
+<li>オークモスAbsはアトラノール／クロロアトラノールにIFRAの制限があります。配合比5なら処方全体の0.5%、賦香率10%で最終製品0.05%となり制限内です。低アトラノール品を選んでください。</li>
+<li>スターアニスとキャラウェイの合計8を超えないでください。アネトールが増えると薬っぽさが前に出ます。</li>
+<li>ペパーミントはメントールを含みます。増やすと歯磨き粉の方向に倒れるので、5で止めてください。</li>
+<li>ラブダナムとオークモスは粘度が高く、10%希釈時に湯せんまたは一晩静置が必要です。</li>
+</ul></div></details>
+</section>
+
+<section class="panel" id="p-sb">
+<p class="lead">公表ノートのほぼ全部が天然でそのまま揃います。置き換えが必要なのは1本だけですが、それは入手性ではなく資源保護を理由とする置き換えです。</p>
+<div id="sb"></div>
+<details><summary>さらに素材が欠ける場合</summary><div class="body"><ul>
+<li>ホーウッド → ローズウッドは使わないでください。同じリナロール系ならボアドローズ・ブラジル産の合法流通品もありますが、証明書のないものは避けます。</li>
+<li>オークモスAbs → 省く場合はパチュリを3増やす。湿った深さは減り、乾いた土だけが残ります。</li>
+<li>マンダリン → ベルガモット(FCF)で代用可。やや苦く、フゼアらしさは増します。</li>
+<li>サンダルウッド → アミリスで代用可。乳っぽさは減ります。</li>
+<li>キャラウェイ → クミンは避けてください。方向が近く見えて、汗の匂いに倒れます。</li>
+</ul></div></details>
+<details><summary>確認の順番</summary><div class="body"><ul>
+<li>まずスケルトン5本を仕込み、狙った香りになっているかを確認する。</li>
+<li>次に冷たさアコード（ラベンダー・ペパーミント・マンダリン）だけを仕込み、清涼感が薬っぽさに倒れていないかを確認する。ここが決まればこの香りはほぼ決まります。</li>
+<li>さらに土台（サンダルウッド・パチュリ・オークモス）を単独で仕込み、苔の湿り気が出ているかを確認する。</li>
+<li>この3つが合格してからベースアコード、フル処方の順に組むと失敗が減ります。</li>
+</ul></div></details>
+</section>
+
+<section class="panel" id="p-og">
+<p class="lead">この処方は、下記の市販香水の<b>公表ノートを手がかりに構成した独自の処方</b>です。配合比はすべて推定であり、実際の処方ではありません。商標は各権利者に帰属し、nehneとは関係ありません。</p>
+<div class="card"><h3>参考にした香り</h3><p class="v">Cartier「Pasha de Cartier」(1992)　調香：Jacques Cavallier Belletrud<br>オード・トワレ ／ メンズ ／ ウッディ・アロマティック</p></div>
+<table class="o"><thead><tr><th>段</th><th>公表ノート</th><th>この処方での担当</th></tr></thead><tbody id="og"></tbody></table>
+</section>
+
+</main>
+<footer>公表ノートは販売代理店およびフレグランス資料の記載による。<br>nehne 調香ノート</footer>
+
+<script>
+const D = {"skeleton": [{"n": "ラベンダー", "k": "精油", "r": "看板①：アロマティックの軸", "v": 26, "d": "抜くとフゼアでなくなり、ただの木の香りになる"}, {"n": "サンダルウッド", "k": "精油", "r": "固定剤：柔らかいウッディ", "v": 24, "d": "抜くと1時間で香りが終わる"}, {"n": "パチュリ", "k": "精油", "r": "固定剤：土と苔の下地", "v": 20, "d": "抜くと軽薄になり、大人の香りに読めなくなる"}, {"n": "マンダリン", "k": "精油", "r": "相棒：明るさと立ち上がり", "v": 18, "d": "抜くと冒頭が重く、薬っぽくなる"}, {"n": "ペパーミント", "k": "精油", "r": "看板②：冷たさ", "v": 12, "d": "抜くとラベンダーが甘く沈み、清涼感が消える"}], "base": [{"n": "ラベンダー", "k": "精油", "r": "アロマティックの軸", "v": 18}, {"n": "サンダルウッド", "k": "精油", "r": "柔らかいウッディ", "v": 16}, {"n": "パチュリ", "k": "精油", "r": "土と苔の下地", "v": 14}, {"n": "ホーウッド", "k": "精油", "r": "ローズウッド代替", "v": 13}, {"n": "マンダリン", "k": "精油", "r": "明るさ", "v": 12}, {"n": "ラブダナムAbs", "k": "アブソリュート", "r": "アンバーの温度", "v": 9}, {"n": "コリアンダー", "k": "精油", "r": "スパイスのつなぎ", "v": 7}, {"n": "ペパーミント", "k": "精油", "r": "冷たさ", "v": 6}, {"n": "オークモスAbs", "k": "アブソリュート", "r": "シプレの苔", "v": 5}], "full": [{"g": "トップ", "n": "ラベンダー", "k": "精油", "r": "看板・アロマティックの軸", "v": 14, "m": ""}, {"g": "トップ", "n": "マンダリン", "k": "精油", "r": "明るさと立ち上がり", "v": 11, "m": "光毒性は低いが肌用は要確認"}, {"g": "トップ", "n": "ペパーミント", "k": "精油", "r": "冷たさ", "v": 5, "m": "メントール。増量不可"}, {"g": "トップ", "n": "キャラウェイ", "k": "精油", "r": "温かいスパイス", "v": 5, "m": ""}, {"g": "トップ", "n": "スターアニス", "k": "精油", "r": "アニス＝甘草", "v": 3, "m": "アネトール高含有。増量不可"}, {"g": "ミドル", "n": "ホーウッド", "k": "精油", "r": "ブラジリアン・ローズウッド代替", "v": 14, "m": "資源保護のための置き換え"}, {"g": "ミドル", "n": "コリアンダー", "k": "精油", "r": "スパイスとウッドのつなぎ", "v": 8, "m": ""}, {"g": "ベース", "n": "サンダルウッド", "k": "精油", "r": "柔らかいウッディの柱", "v": 14, "m": ""}, {"g": "ベース", "n": "パチュリ", "k": "精油", "r": "土と苔の下地", "v": 12, "m": ""}, {"g": "ベース", "n": "ラブダナムAbs", "k": "アブソリュート", "r": "アンバーの温度", "v": 9, "m": "粘度高。湯せんで希釈"}, {"g": "ベース", "n": "オークモスAbs", "k": "アブソリュート", "r": "シプレの苔", "v": 5, "m": "IFRA制限あり。低アトラノール品を使う"}], "subs": [{"a": "ブラジリアン・ローズウッド", "b": "ローズウッド精油（Aniba rosaeodora）", "c": "ホーウッド 14", "d": "ローズウッドはワシントン条約附属書IIの規制対象で、伐採により個体数が激減した樹種。ホーウッド（Cinnamomum camphora ct. linalool）はリナロール主体で香りの方向がほぼ同じ、かつ持続可能に生産できる。ここは代替ではなく、置き換えるべき素材と考えている。"}, {"a": "オークモス", "b": "オークモスAbs", "c": "そのまま使用 5（低アトラノール品）", "d": "アトラノール／クロロアトラノールにIFRAの制限がある。処方全体の0.5%、賦香率10%なら最終製品0.05%で制限内に収まる。"}, {"a": "アニス", "b": "アニス精油", "c": "スターアニス 3", "d": "アニスシードでもよい。ややパウダリーで丸くなる。キャラウェイと合わせて8を超えないこと。"}, {"a": "ミント", "b": "ミント精油（種類の指定なし）", "c": "ペパーミント 5", "d": "スペアミントに替えると、メントールの刺す冷たさが消えて丸くなる。原作の鋭さを取るならペパーミント。"}, {"a": "素材数について", "b": "─", "c": "フル処方でも11本", "d": "公表ノートが11項目しかなく、天然でほぼそのまま揃うため、置き換えのための増員が要らない。4処方の中で最も少ない本数で成立する。"}], "orig": [{"g": "トップ", "n": "ラベンダー", "c": "ラベンダー"}, {"g": "トップ", "n": "ミント", "c": "ペパーミント"}, {"g": "トップ", "n": "キャラウェイ", "c": "キャラウェイ"}, {"g": "トップ", "n": "アニス", "c": "スターアニス"}, {"g": "トップ", "n": "マンダリン", "c": "マンダリン"}, {"g": "ミドル", "n": "コリアンダー", "c": "コリアンダー"}, {"g": "ミドル", "n": "ブラジリアン・ローズウッド", "c": "ホーウッド"}, {"g": "ラスト", "n": "オークモス", "c": "オークモスAbs"}, {"g": "ラスト", "n": "サンダルウッド", "c": "サンダルウッド"}, {"g": "ラスト", "n": "パチュリ", "c": "パチュリ"}, {"g": "ラスト", "n": "ラブダナム", "c": "ラブダナムAbs"}]};
+const TABS = [["p-sk","スケルトン"],["p-bs","ベースアコード"],["p-fl","フル処方"],["p-sb","代用メモ"],["p-og","参考にした香り"]];
+const nav = document.getElementById("nav");
+TABS.forEach(function(t,i){
+  const b=document.createElement("button");
+  b.textContent=t[1]; if(i===0)b.className="on";
+  b.onclick=function(){
+    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
+    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); document.getElementById(t[0]).classList.add("on");
+    window.scrollTo(0,0);
+  };
+  nav.appendChild(b);
+});
+
+const totals = {sk:100, bs:100, fl:100};
+function sum(a){return a.reduce((s,x)=>s+x.v,0);}
+function fmt(x){return x>=100?x.toFixed(0):x.toFixed(x<10?2:1);}
+function bar(v,max){return '<div class="bar"><i style="width:'+(v/max*100).toFixed(1)+'%"></i></div>';}
+
+function rowHTML(it,max,total,tot){
+  const ul = total*it.v/100;
+  let h='<div class="row"><div class="top"><span class="nm">'+it.n+'</span>'
+       +'<span class="ul">'+fmt(ul)+'<small>µL</small></span></div>'
+       +'<div class="rl">'+it.k+'　'+it.r+'　<b>比 '+it.v+'</b></div>'+bar(it.v,max);
+  if(it.d) h+='<div class="dp">抜くと… '+it.d+'</div>';
+  if(it.m) h+='<div class="mm">'+it.m+'</div>';
+  return h+'</div>';
+}
+
+function render(key){
+  const total = totals[key];
+  if(key==="sk"||key==="bs"){
+    const arr = key==="sk"?D.skeleton:D.base;
+    const max = Math.max.apply(null,arr.map(x=>x.v));
+    let h = arr.map(x=>rowHTML(x,max,total)).join("");
+    h += '<div class="tot"><span>合計 '+arr.length+'本　比 '+sum(arr)+'</span><span>'+fmt(total)+' µL</span></div>';
+    document.getElementById(key).innerHTML=h;
+  } else {
+    const max = Math.max.apply(null,D.full.map(x=>x.v));
+    let h="", g=null;
+    D.full.forEach(function(x){
+      if(x.g!==g){ g=x.g; h+='<div class="grp">'+g+'</div>'; }
+      h+=rowHTML(x,max,total);
+    });
+    h += '<div class="tot"><span>合計 '+D.full.length+'本　比 '+sum(D.full)+'</span><span>'+fmt(total)+' µL</span></div>';
+    document.getElementById("fl").innerHTML=h;
+  }
+}
+
+document.querySelectorAll(".calc").forEach(function(c){
+  const key=c.dataset.for, inp=c.querySelector("input");
+  function set(v){ v=parseFloat(v); if(!v||v<=0)return; totals[key]=v; inp.value=v; render(key); }
+  inp.addEventListener("input",()=>set(inp.value));
+  c.querySelectorAll(".chips button").forEach(b=>b.onclick=()=>set(b.dataset.v));
+});
+
+document.getElementById("sb").innerHTML = D.subs.map(function(s){
+  return '<div class="card"><h3>'+s.a+'</h3>'
+   +'<p class="l">本来使う素材</p><p class="v">'+s.b+'</p>'
+   +'<p class="l">この処方での代替</p><p class="v">'+s.c+'</p>'
+   +'<p class="l">ねらい</p><p class="v">'+s.d+'</p></div>';
+}).join("");
+
+document.getElementById("og").innerHTML = D.orig.map(function(o){
+  return '<tr><td>'+o.g+'</td><td>'+o.n+'</td><td>'+o.c+'</td></tr>';
+}).join("");
+
+["sk","bs","fl"].forEach(render);
+</script>
+</body>
+</html>
