@@ -110,7 +110,9 @@ footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-h
   <div class="panel" id="inst" hidden>
     <p class="lbl">ホーム画面に置く</p>
     <button class="btn" id="inst-btn">ホーム画面に追加する</button>
-    <p class="sub" style="margin-top:10px">アイコン名は「調香メモ」になります。中身が分からない名前なので、人に画面を見られても安心です。</p>
+    <p class="sub" style="margin-top:10px">nehne調香ノートとは別のアイコンになります。名前は「調香メモ」。中身が分からない名前なので、人に画面を見られても安心です。</p>
+    <p class="sub" id="inst-manual" hidden style="margin-top:10px;color:#8A6A2F">
+      ボタンが効かない場合は、Chromeの右上（または右下）の点3つ → 「ホーム画面に追加」または「アプリをインストール」を選んでください。同じアイコンが置かれます。</p>
   </div>
 
   <div class="panel">
@@ -339,17 +341,20 @@ document.getElementById("exp").onclick=function(){
   a.click(); URL.revokeObjectURL(a.href);
 };
 document.getElementById("back").onclick=back;
-var deferred=null;
+var deferred=null, standalone=matchMedia("(display-mode: standalone)").matches;
+if(!standalone) document.getElementById("inst").hidden=false;
 window.addEventListener("beforeinstallprompt",function(e){
   e.preventDefault(); deferred=e;
-  if(!matchMedia("(display-mode: standalone)").matches)
-    document.getElementById("inst").hidden=false;
+  if(!standalone) document.getElementById("inst").hidden=false;
 });
 document.getElementById("inst-btn").onclick=function(){
-  if(!deferred) return;
-  deferred.prompt();
-  deferred.userChoice.then(function(){ deferred=null;
-    document.getElementById("inst").hidden=true; });
+  if(deferred){
+    deferred.prompt();
+    deferred.userChoice.then(function(){ deferred=null;
+      document.getElementById("inst").hidden=true; });
+  } else {
+    document.getElementById("inst-manual").hidden=false;
+  }
 };
 window.addEventListener("appinstalled",function(){
   document.getElementById("inst").hidden=true; });
