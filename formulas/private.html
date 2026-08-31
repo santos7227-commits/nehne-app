@@ -107,12 +107,13 @@ footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-h
 
   <div class="list" id="list"></div>
 
-  <div class="panel" id="inst" hidden>
+  <div class="panel" id="inst">
     <p class="lbl">ホーム画面に置く</p>
     <button class="btn" id="inst-btn">ホーム画面に追加する</button>
     <p class="sub" style="margin-top:10px">nehne調香ノートとは別のアイコンになります。名前は「調香メモ」。中身が分からない名前なので、人に画面を見られても安心です。</p>
     <p class="sub" id="inst-manual" hidden style="margin-top:10px;color:#8A6A2F">
-      ボタンが効かない場合は、Chromeの右上（または右下）の点3つ → 「ホーム画面に追加」または「アプリをインストール」を選んでください。同じアイコンが置かれます。</p>
+      ボタンが効きませんでした。下の「いまの状態」を見てください。</p>
+    <p class="sub" id="diag" style="margin-top:12px;font-family:var(--num);font-size:11px"></p>
   </div>
 
   <div class="panel">
@@ -341,11 +342,16 @@ document.getElementById("exp").onclick=function(){
   a.click(); URL.revokeObjectURL(a.href);
 };
 document.getElementById("back").onclick=back;
-var deferred=null, standalone=matchMedia("(display-mode: standalone)").matches;
-if(!standalone) document.getElementById("inst").hidden=false;
+var deferred=null;
+function diag(){
+  var m=matchMedia("(display-mode: standalone)").matches?"アプリとして表示中"
+      : matchMedia("(display-mode: minimal-ui)").matches?"minimal-ui"
+      : "ブラウザのタブ";
+  document.getElementById("diag").textContent=
+    "いまの状態： "+m+" ／ 追加ボタン："+(deferred?"使えます":"まだ使えません");
+}
 window.addEventListener("beforeinstallprompt",function(e){
-  e.preventDefault(); deferred=e;
-  if(!standalone) document.getElementById("inst").hidden=false;
+  e.preventDefault(); deferred=e; diag();
 });
 document.getElementById("inst-btn").onclick=function(){
   if(deferred){
@@ -358,6 +364,7 @@ document.getElementById("inst-btn").onclick=function(){
 };
 window.addEventListener("appinstalled",function(){
   document.getElementById("inst").hidden=true; });
+diag();
 
 load(); renderList();
 </script>
