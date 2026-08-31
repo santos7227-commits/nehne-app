@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>非公開処方 | nehne</title>
+<style>
+:root{
+  --ink:#23291F;--deep:#2E4038;--water:#6E8C86;--gold:#A9853F;
+  --paper:#EFF0EA;--card:#FBFBF8;--line:#D6D9CE;
+  --mincho:"Hiragino Mincho ProN","Yu Mincho",YuMincho,"Noto Serif JP",serif;
+  --gothic:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;
+  --num:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--gothic);
+  font-size:15px;line-height:1.7;padding-bottom:60px}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+header{padding:26px 0 16px}
+.badge{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--gold);
+  border:1px solid var(--gold);padding:2px 8px;border-radius:2px;margin-bottom:12px}
+h1{font-family:var(--mincho);font-size:26px;letter-spacing:.18em;color:var(--deep);margin:0}
+.sub{font-size:11.5px;color:#9AA396;margin:8px 0 0;letter-spacing:.03em}
+.panel{background:var(--card);border:1px solid var(--line);padding:15px;margin-bottom:12px}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--water);margin:0 0 9px}
+.btn{display:inline-block;border:1px solid var(--gold);background:var(--gold);color:#fff;
+  font-family:inherit;font-size:13.5px;padding:11px 16px;border-radius:2px;cursor:pointer;
+  width:100%;text-align:center}
+.btn.ghost{background:transparent;color:var(--gold)}
+.mini{background:none;border:none;color:var(--water);font-size:12px;text-decoration:underline;
+  cursor:pointer;font-family:inherit;padding:4px 0}
+.list{margin-bottom:12px}
+.item{display:flex;justify-content:space-between;align-items:center;background:var(--card);
+  border:1px solid var(--line);border-top:none;padding:14px 15px;cursor:pointer}
+.item:first-child{border-top:1px solid var(--line)}
+.item b{font-family:var(--mincho);font-size:17px;letter-spacing:.1em;color:var(--deep);font-weight:500}
+.item small{display:block;font-size:11px;color:#9AA396;letter-spacing:.02em}
+.item span{color:var(--gold);font-size:18px}
+.empty{background:var(--card);border:1px dashed var(--line);padding:26px 18px;text-align:center;
+  color:#9AA396;font-size:13px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--deep);
+  font-family:inherit;font-size:13px;padding:9px 13px;border-radius:2px;cursor:pointer;white-space:nowrap}
+.chip small{display:block;font-size:10px;color:#9AA396}
+.chip[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:#fff}
+.chip[aria-pressed="true"] small{color:#A9BDB4}
+.pre{border:1px solid var(--line);background:#fff;font-family:var(--num);font-size:12px;
+  padding:6px 10px;border-radius:2px;cursor:pointer;color:var(--deep)}
+.pre[aria-pressed="true"]{background:var(--water);border-color:var(--water);color:#fff}
+.poem{font-family:var(--mincho);font-size:13px;line-height:2.1;color:var(--water);
+  border-left:2px solid var(--line);padding-left:13px;margin:0 0 14px}
+.note{font-size:12.5px;color:#5A6152;margin:0 0 14px}
+.cat{font-size:11px;letter-spacing:.18em;color:var(--gold);margin:22px 0 8px;
+  display:flex;align-items:center;gap:10px}
+.cat::after{content:"";flex:1;height:1px;background:var(--line)}
+.row{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:end;background:var(--card);
+  border:1px solid var(--line);border-top:none;padding:11px 13px;cursor:pointer}
+.row:first-of-type{border-top:1px solid var(--line)}
+.row.done{background:#E7EAE1;color:#9AA396}
+.row.done .ul{color:#9AA396;text-decoration:line-through}
+.nm{font-size:14.5px}
+.nm em{font-style:normal;font-size:10.5px;color:var(--gold);border:1px solid var(--gold);
+  padding:0 4px;margin-left:6px;border-radius:2px;vertical-align:1px}
+.ul{font-family:var(--num);font-size:22px;font-weight:600;color:var(--deep);line-height:1.1;text-align:right}
+.ul u{font-size:10px;font-weight:400;text-decoration:none;color:var(--water);margin-left:2px}
+.sb{grid-column:1;font-family:var(--num);font-size:10.5px;color:#9AA396}
+.mo{grid-column:2;font-size:10.5px;color:#9AA396;text-align:right}
+.bar{grid-column:1/-1;height:3px;background:#E2E5DB;margin-top:7px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--water)}
+.sum{display:flex;justify-content:space-between;background:var(--deep);color:#fff;
+  padding:13px 14px;font-size:12.5px;letter-spacing:.05em;margin-top:-1px}
+.sum b{font-family:var(--num);font-size:16px}
+.warn{background:#F7EFE0;border-left:3px solid var(--gold);padding:10px 12px;font-size:12px;
+  color:#7A6330;margin:10px 0 0}
+details{background:var(--card);border:1px solid var(--line);margin-bottom:10px}
+summary{padding:13px 14px;font-size:13.5px;cursor:pointer;list-style:none;display:flex;
+  justify-content:space-between;align-items:center;color:var(--deep)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";color:var(--gold)}
+details[open] summary::after{content:"−"}
+.body{padding:0 14px 15px;font-size:12.5px;color:#4A5142}
+.body p{margin:0 0 8px}
+.body code{font-family:var(--num);font-size:11px;background:#EFF0EA;padding:1px 4px}
+pre{font-family:var(--num);font-size:10.5px;background:#EFF0EA;padding:10px;overflow-x:auto;
+  line-height:1.5;color:#3A4237}
+h2{font-family:var(--mincho);font-size:16px;letter-spacing:.1em;color:var(--deep);
+  margin:30px 0 12px;font-weight:500}
+.back{background:none;border:none;color:var(--water);font-size:13px;cursor:pointer;
+  font-family:inherit;padding:14px 0 6px}
+footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-height:1.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="home">
+  <header>
+    <span class="badge">端末内保存 ／ 非公開</span>
+    <h1>非公開処方</h1>
+    <p class="sub">この画面の処方データは、お使いの端末の中だけに保存されます。サーバーにも GitHub にも送信されません。</p>
+  </header>
+
+  <div class="list" id="list"></div>
+
+  <div class="panel">
+    <p class="lbl">処方を追加する</p>
+    <label class="btn" for="file">JSONファイルを読み込む</label>
+    <input id="file" type="file" accept=".json,application/json" multiple hidden>
+    <p class="sub" style="margin-top:10px">複数まとめて選べます。同じIDの処方は上書きされます。</p>
+  </div>
+
+  <div class="panel">
+    <p class="lbl">バックアップ</p>
+    <button class="btn ghost" id="exp">保存中の処方をまとめて書き出す</button>
+    <p class="sub" style="margin-top:10px">端末を変えるとき・アプリのデータが消えたときのために、書き出したファイルをクラウドに置いておいてください。</p>
+  </div>
+
+  <h2>使い方とデータの形</h2>
+  <details><summary>この画面の仕組み</summary><div class="body">
+  <p>このページ自体は「表示器」で、処方の数値は入っていません。読み込んだJSONは端末のブラウザ保存領域（localStorage）に置かれ、次回からは一覧に並びます。</p>
+  <p>公開しているのは表示の仕組みだけなので、このページがGitHubにあっても、香料名や配合比が外から見えることはありません。</p>
+  <p>ブラウザの履歴やサイトデータを消すと保存も消えます。書き出したJSONは別に保管してください。</p>
+  </div></details>
+
+  <details><summary>JSONの書き方</summary><div class="body">
+  <p>1つの処方が1ファイルです。<code>tiers</code> に段を並べます。段は3つでなくても構いません。</p>
+  <pre>{
+  "id": "sample",
+  "name": "作品名",
+  "subtitle": "天然香料のみの処方",
+  "poem": "詩\n改行は \\n",
+  "note": "香りの骨格の説明",
+  "tiers": [
+    { "key": "skeleton", "name": "スケルトン",
+      "batch": 100, "desc": "この段の説明",
+      "items": [
+        { "n": "ベルガモット", "p": "トップ", "v": 31, "m": "メモ" }
+      ] }
+  ],
+  "memo": ["注意書き1", "注意書き2"]
+}</pre>
+  <p><code>v</code> は配合比（10%希釈液どうしの比率・合計100）。<code>p</code> は トップ／ミドル／ベース。<code>batch</code> はその段の既定の仕込み量（µL）です。</p>
+  </div></details>
+
+  <footer>nehne 調香ノート ／ 非公開処方ビューア<br>データは端末内にのみ保存されます</footer>
+</div>
+
+<div id="view" hidden>
+  <button class="back" id="back">← 一覧にもどる</button>
+  <header style="padding-top:6px">
+    <span class="badge">非公開</span>
+    <h1 id="v-name"></h1>
+    <p class="sub" id="v-sub"></p>
+  </header>
+  <p class="poem" id="v-poem"></p>
+  <p class="note" id="v-note"></p>
+
+  <div class="panel">
+    <p class="lbl">段をえらぶ</p>
+    <div class="chips" id="tiers"></div>
+  </div>
+  <div class="panel">
+    <p class="lbl">仕込む量</p>
+    <div class="chips" id="batch"></div>
+    <p class="sub" id="b-note" style="margin-top:10px"></p>
+    <div id="warn"></div>
+  </div>
+
+  <div id="rows"></div>
+
+  <h2>おぼえがき</h2>
+  <div id="memo"></div>
+
+  <div class="panel">
+    <button class="mini" id="del">この処方を端末から削除する</button>
+  </div>
+  <footer>行をタップすると消し込みできます</footer>
+</div>
+
+</div>
+<script>
+var KEY="nehne_private_formulas";
+var DB={}, cur=null, ti=0, batch=100, done={};
+
+function load(){ try{ DB=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ DB={}; } }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(DB)); }
+  catch(e){ alert("保存できませんでした。端末の空き容量を確認してください。"); } }
+function fmt(x){ return x>=100?x.toFixed(0):x>=10?x.toFixed(1):x.toFixed(2); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
+
+function renderList(){
+  var ids=Object.keys(DB), h="";
+  if(!ids.length){
+    document.getElementById("list").innerHTML=
+      '<div class="empty">まだ処方がありません。<br>下のボタンからJSONを読み込んでください。</div>';
+    return;
+  }
+  ids.forEach(function(id){
+    var f=DB[id], n=(f.tiers||[]).length;
+    h+='<div class="item" data-id="'+esc(id)+'"><div><b>'+esc(f.name)+'</b>'+
+       '<small>'+esc(f.subtitle||"")+'　'+n+'段</small></div><span>›</span></div>';
+  });
+  document.getElementById("list").innerHTML=h;
+  document.querySelectorAll(".item").forEach(function(el){
+    el.onclick=function(){ open(el.dataset.id); };
+  });
+}
+
+function open(id){
+  cur=DB[id]; ti=0; done={};
+  batch=(cur.tiers[0]&&cur.tiers[0].batch)||100;
+  document.getElementById("home").hidden=true;
+  document.getElementById("view").hidden=false;
+  document.getElementById("v-name").textContent=cur.name||"";
+  document.getElementById("v-sub").textContent=cur.subtitle||"";
+  var p=document.getElementById("v-poem");
+  p.innerHTML=esc(cur.poem||"").replace(/\n/g,"<br>"); p.style.display=cur.poem?"":"none";
+  var nt=document.getElementById("v-note");
+  nt.textContent=cur.note||""; nt.style.display=cur.note?"":"none";
+  var m=(cur.memo||[]).map(function(x,i){
+    var t=String(x).split("｜");
+    return '<details><summary>'+esc(t[0])+'</summary><div class="body"><p>'+
+           esc(t[1]||t[0]).replace(/\n/g,"</p><p>")+'</p></div></details>';
+  }).join("");
+  document.getElementById("memo").innerHTML=m||'<div class="empty">なし</div>';
+  document.getElementById("del").onclick=function(){
+    if(confirm("「"+cur.name+"」を端末から削除します。よろしいですか。")){
+      for(var k in DB) if(DB[k]===cur) delete DB[k];
+      save(); back();
+    }
+  };
+  tiers(); batches(); rows();
+  window.scrollTo(0,0);
+}
+function back(){
+  document.getElementById("view").hidden=true;
+  document.getElementById("home").hidden=false;
+  renderList(); window.scrollTo(0,0);
+}
+function tiers(){
+  var h="";
+  cur.tiers.forEach(function(t,i){
+    h+='<button class="chip" aria-pressed="'+(i===ti)+'" data-i="'+i+'">'+esc(t.name)+
+       '<small>'+t.items.length+'素材</small></button>';
+  });
+  document.getElementById("tiers").innerHTML=h;
+  document.querySelectorAll("#tiers .chip").forEach(function(b){
+    b.onclick=function(){ ti=+b.dataset.i; done={};
+      batch=cur.tiers[ti].batch||100; tiers(); batches(); rows(); };
+  });
+}
+function batches(){
+  var P=[50,100,200,500,1000], h="";
+  P.forEach(function(p){ h+='<button class="pre" aria-pressed="'+(p===batch)+'" data-v="'+p+'">'+p+'µL</button>'; });
+  document.getElementById("batch").innerHTML=h;
+  document.querySelectorAll("#batch .pre").forEach(function(b){
+    b.onclick=function(){ batch=+b.dataset.v; batches(); rows(); };
+  });
+}
+function rows(){
+  var t=cur.tiers[ti], tot=0, max=0;
+  t.items.forEach(function(x){ tot+=x.v; if(x.v>max) max=x.v; });
+  var order=["トップ","ミドル","ベース"], h="", min=1e9;
+  order.forEach(function(pos){
+    var ms=t.items.filter(function(x){ return (x.p||"")===pos; });
+    if(!ms.length) return;
+    h+='<p class="cat">'+pos+'</p>';
+    ms.sort(function(a,b){ return b.v-a.v; }).forEach(function(x){
+      var ul=x.v/tot*batch; if(ul<min) min=ul;
+      h+='<div class="row'+(done[x.n]?" done":"")+'" data-n="'+esc(x.n)+'">'+
+        '<div class="nm">'+esc(x.n)+(x.m?'<em>'+esc(x.m)+'</em>':'')+'</div>'+
+        '<div class="ul">'+fmt(ul)+'<u>µL</u></div>'+
+        '<div class="sb">'+x.v+'</div>'+
+        '<div class="mo">'+(x.v/tot*100).toFixed(1)+'%</div>'+
+        '<div class="bar"><i style="width:'+(x.v/max*100)+'%"></i></div></div>';
+    });
+  });
+  var un=t.items.filter(function(x){ return order.indexOf(x.p||"")<0; });
+  if(un.length){
+    h+='<p class="cat">その他</p>';
+    un.forEach(function(x){
+      var ul=x.v/tot*batch; if(ul<min) min=ul;
+      h+='<div class="row" data-n="'+esc(x.n)+'"><div class="nm">'+esc(x.n)+'</div>'+
+         '<div class="ul">'+fmt(ul)+'<u>µL</u></div><div class="sb">'+x.v+'</div>'+
+         '<div class="mo"></div></div>';
+    });
+  }
+  h+='<div class="sum"><span>合計</span><span><b>'+fmt(batch)+'</b> µL ／ 配合比 '+
+     (Math.round(tot*10)/10)+'</span></div>';
+  document.getElementById("rows").innerHTML=h;
+  document.querySelectorAll(".row").forEach(function(el){
+    el.onclick=function(){ done[el.dataset.n]=!done[el.dataset.n]; rows(); };
+  });
+  document.getElementById("b-note").textContent=t.desc||"";
+  document.getElementById("warn").innerHTML = min<0.5
+    ? '<div class="warn">最小の素材が '+min.toFixed(2)+
+      'µL になります。0.5µLピペットでは量れないので、仕込む量を上げてください。</div>' : "";
+}
+
+document.getElementById("file").addEventListener("change",function(e){
+  var fs=e.target.files, n=0, left=fs.length;
+  if(!left) return;
+  Array.prototype.forEach.call(fs,function(f){
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var d=JSON.parse(r.result);
+        if(d&&d.id&&d.tiers){ DB[d.id]=d; n++; }
+        else {
+          var got=0;
+          for(var k in d){ if(d[k]&&d[k].tiers){ DB[d[k].id||k]=d[k]; got++; } }
+          if(!got) throw 0;
+          n+=got;
+        }
+      }catch(err){ alert(f.name+" は読み込めませんでした。"); }
+      if(--left===0){ save(); renderList(); if(n) alert(n+"件を読み込みました。"); }
+    };
+    r.readAsText(f,"utf-8");
+  });
+  e.target.value="";
+});
+document.getElementById("exp").onclick=function(){
+  var b=new Blob([JSON.stringify(DB,null,1)],{type:"application/json"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(b);
+  a.download="nehne_非公開処方_"+new Date().toISOString().slice(0,10)+".json";
+  a.click(); URL.revokeObjectURL(a.href);
+};
+document.getElementById("back").onclick=back;
+load(); renderList();
+</script>
+</body>
+</html>
