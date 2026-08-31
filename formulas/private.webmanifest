@@ -1,0 +1,30 @@
+{
+ "name": "調香メモ",
+ "short_name": "調香メモ",
+ "start_url": "./private.html",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#DFF9EE",
+ "theme_color": "#EFF0EA",
+ "icons": [
+  {
+   "src": "./note-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "./note-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "./note-512-maskable.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

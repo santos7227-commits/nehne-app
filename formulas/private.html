@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>非公開処方 | nehne</title>
+<title>調香メモ</title>
+<link rel="manifest" href="./private.webmanifest">
+<meta name="theme-color" content="#EFF0EA">
+<link rel="apple-touch-icon" href="./note-192.png">
+<link rel="icon" href="./note-192.png">
 <style>
 :root{
   --ink:#23291F;--deep:#2E4038;--water:#6E8C86;--gold:#A9853F;
@@ -102,6 +106,12 @@ footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-h
   </header>
 
   <div class="list" id="list"></div>
+
+  <div class="panel" id="inst" hidden>
+    <p class="lbl">ホーム画面に置く</p>
+    <button class="btn" id="inst-btn">ホーム画面に追加する</button>
+    <p class="sub" style="margin-top:10px">アイコン名は「調香メモ」になります。中身が分からない名前なので、人に画面を見られても安心です。</p>
+  </div>
 
   <div class="panel">
     <p class="lbl">処方を追加する</p>
@@ -329,6 +339,21 @@ document.getElementById("exp").onclick=function(){
   a.click(); URL.revokeObjectURL(a.href);
 };
 document.getElementById("back").onclick=back;
+var deferred=null;
+window.addEventListener("beforeinstallprompt",function(e){
+  e.preventDefault(); deferred=e;
+  if(!matchMedia("(display-mode: standalone)").matches)
+    document.getElementById("inst").hidden=false;
+});
+document.getElementById("inst-btn").onclick=function(){
+  if(!deferred) return;
+  deferred.prompt();
+  deferred.userChoice.then(function(){ deferred=null;
+    document.getElementById("inst").hidden=true; });
+};
+window.addEventListener("appinstalled",function(){
+  document.getElementById("inst").hidden=true; });
+
 load(); renderList();
 </script>
 </body>
