@@ -795,6 +795,13 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
 
     <!-- ===== TAB: BUILDER ===== -->
     <section id="tab-builder" class="hidden">
+      <div id="memoLinkBar" class="memo-link-bar hidden">
+        <div class="memo-link-txt">調香メモ「<b id="memoLinkName"></b>」<span id="memoLinkTier"></span>を編集中</div>
+        <div class="memo-link-row">
+          <button class="btn btn-primary btn-sm" id="memoLinkSendBtn">メモに戻す</button>
+          <button class="btn btn-secondary btn-sm" id="memoLinkClearBtn">連携を解除</button>
+        </div>
+      </div>
       <div class="section-title"><span class="step-badge" id="stepBadge1">STEP 1</span><span id="stCompound">配合の設計</span><small>COMPOUND</small></div>
       <p class="section-sub" id="subCompound">香りのレシピ（香料どうしの比率）を決めます。</p>
       <div class="builder-card">
@@ -3701,7 +3708,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.17.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.18.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
@@ -3765,6 +3772,105 @@ renderLibrary();
       if(top.id === 'mixOverlay' && typeof closeMixPage === 'function'){ closeMixPage(); }
       else { top.classList.add('hidden'); }
     }
+  });
+})();
+</script>
+<style>
+/* ---------- v1.18.0: 調香メモ連携 ---------- */
+.memo-link-bar{
+  background:var(--ink-700); border:1px solid var(--amber);
+  border-radius:var(--radius); padding:12px 14px; margin:0 0 14px;
+}
+.memo-link-txt{font-size:0.8125rem; line-height:1.7; color:var(--paper);}
+.memo-link-txt b{color:var(--amber-soft);}
+.memo-link-row{display:flex; gap:8px; margin-top:10px;}
+.memo-link-row .btn{flex:1;}
+</style>
+<script>
+/* =====================================================
+   v1.18.0: 調香メモ（formulas/private.html）との連携
+   localStorage を同じオリジンで共有して処方を受け渡す。
+   URLには処方も作品名も載せない。
+   ===================================================== */
+(function(){
+  var HK = 'nehne_handoff_v1';
+  var link = null;   /* {memoId, tierKey, tierName, name} メモリ上だけに持つ */
+
+  var bar   = document.getElementById('memoLinkBar');
+  var elNm  = document.getElementById('memoLinkName');
+  var elTi  = document.getElementById('memoLinkTier');
+  var btnGo = document.getElementById('memoLinkSendBtn');
+  var btnNo = document.getElementById('memoLinkClearBtn');
+  if(!bar) return;
+
+  function showBar(){
+    elNm.textContent = link.name || '';
+    elTi.textContent = link.tierName ? ('　' + link.tierName + ' ') : '';
+    bar.classList.remove('hidden');
+  }
+  function clearLink(){ link = null; bar.classList.add('hidden'); }
+
+  /* ---- 受け取り（メモ → ノート） ---- */
+  try{
+    var raw = localStorage.getItem(HK);
+    if(raw){
+      var h = JSON.parse(raw);
+      var fresh = h && h.sentAt && (Date.now() - h.sentAt < 30*60*1000);
+      if(h && h.dir === 'to_note' && h.items && h.items.length && fresh){
+        localStorage.removeItem(HK);   /* 一度きり。残さない */
+        builderIngredients = h.items.map(function(it){
+          return {
+            name: it.name,
+            parts: Number(it.parts) || 0,
+            note: it.note || 'Middle',
+            dilution: Number(it.dilution) || 10
+          };
+        });
+        document.getElementById('builderName').value = h.name || '';
+        document.getElementById('targetWeight').value = Number(h.batch) || 100;
+        link = { memoId:h.memoId, tierKey:h.tierKey, tierName:h.tierName, name:h.name };
+        renderBuilder();
+        var nav = document.querySelector('.nav-btn[data-tab="builder"]');
+        if(nav) nav.click();
+        showBar();
+        if(typeof toast === 'function') toast('調香メモから読み込みました');
+      } else if(h && h.dir === 'to_note' && !fresh){
+        localStorage.removeItem(HK);   /* 30分以上前の受け渡しは捨てる */
+      }
+    }
+  }catch(e){}
+
+  /* ---- 返し（ノート → メモ） ---- */
+  btnGo.addEventListener('click', function(){
+    if(!link) return;
+    if(!builderIngredients.length){
+      if(typeof toast === 'function') toast('素材がありません');
+      return;
+    }
+    var payload = {
+      dir:'to_memo',
+      memoId: link.memoId,
+      tierKey: link.tierKey,
+      tierName: link.tierName,
+      name: (document.getElementById('builderName').value || '').trim(),
+      batch: parseFloat(document.getElementById('targetWeight').value) || 100,
+      items: builderIngredients.map(function(it){
+        return { name:it.name, parts:it.parts, note:it.note, dilution:it.dilution };
+      }),
+      sentAt: Date.now()
+    };
+    try{
+      localStorage.setItem(HK, JSON.stringify(payload));
+    }catch(e){
+      if(typeof toast === 'function') toast('受け渡しに失敗しました');
+      return;
+    }
+    clearLink();
+    location.href = './formulas/private.html';
+  });
+
+  btnNo.addEventListener('click', function(){
+    if(confirm('調香メモとの連携を解除します。いまの配合はこの画面に残ります。')) clearLink();
   });
 })();
 </script>
