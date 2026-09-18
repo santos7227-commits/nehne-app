@@ -92,6 +92,16 @@ h2{font-family:var(--mincho);font-size:16px;letter-spacing:.1em;color:var(--deep
   margin:30px 0 12px;font-weight:500}
 .back{background:none;border:none;color:var(--water);font-size:13px;cursor:pointer;
   font-family:inherit;padding:14px 0 6px}
+.dif{background:var(--card);border:1px solid var(--line);padding:11px 13px;margin-bottom:6px;
+  display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center}
+.dif .nm{font-size:14px}
+.dif .vv{font-family:var(--num);font-size:13px;color:var(--deep)}
+.dif .vv s{color:#9AA396;margin-right:6px}
+.dif.add{border-left:3px solid var(--gold)}
+.dif.del{border-left:3px solid #C08A8A}
+.dif.del .nm{color:#9AA396;text-decoration:line-through}
+.dif .tag{font-size:10.5px;color:var(--water);letter-spacing:.1em}
+.cat2{font-size:11px;letter-spacing:.14em;color:var(--water);margin:16px 0 7px}
 footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-height:1.9}
 </style>
 </head>
@@ -182,6 +192,12 @@ footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-h
 
   <div id="rows"></div>
 
+  <div class="panel">
+    <p class="lbl">調香ノートと連携</p>
+    <button class="btn" id="to-note">この段を調香ノートで調整する</button>
+    <p class="sub" style="margin-top:10px">向こうで配合比を変えて「メモに戻す」を押すと、ここへ差分が返ってきます。処方はURLに載らず、端末の中だけを通ります。</p>
+  </div>
+
   <h2>おぼえがき</h2>
   <div id="memo"></div>
 
@@ -191,10 +207,31 @@ footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-h
   <footer>行をタップすると消し込みできます</footer>
 </div>
 
+<div id="inbox" hidden>
+  <header style="padding-top:6px">
+    <span class="badge">調香ノートから</span>
+    <h1 id="in-name"></h1>
+    <p class="sub" id="in-sub"></p>
+  </header>
+
+  <div id="in-diff"></div>
+
+  <div class="panel">
+    <p class="lbl">どう残しますか</p>
+    <button class="btn" id="in-over">この段を上書きする</button>
+    <button class="btn ghost" id="in-new" style="margin-top:8px">新しい段として残す</button>
+    <p class="sub" style="margin-top:10px">上書きは元の数値が消えます。版として残したいときは「新しい段」を選んでください。</p>
+  </div>
+  <div class="panel">
+    <button class="mini" id="in-drop">この変更を破棄する</button>
+  </div>
+  <footer>書き出しのJSONにも反映されます。変更後は一度バックアップを取ってください</footer>
+</div>
+
 </div>
 <script>
 var KEY="nehne_private_formulas";
-var DB={}, cur=null, ti=0, batch=100, done={};
+var DB={}, cur=null, curId=null, ti=0, batch=100, done={};
 
 function load(){ try{ DB=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ DB={}; } }
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(DB)); }
@@ -222,7 +259,7 @@ function renderList(){
 }
 
 function open(id){
-  cur=DB[id]; ti=0; done={};
+  cur=DB[id]; curId=id; ti=0; done={};
   batch=(cur.tiers[0]&&cur.tiers[0].batch)||100;
   document.getElementById("home").hidden=true;
   document.getElementById("view").hidden=false;
@@ -366,7 +403,157 @@ window.addEventListener("appinstalled",function(){
   document.getElementById("inst").hidden=true; });
 diag();
 
-load(); renderList();
+/* =====================================================
+   調香ノート（../index.html）との連携
+   同じオリジンのlocalStorageで受け渡す。URLには何も載せない。
+   ===================================================== */
+var HK="nehne_handoff_v1";
+var inbox=null;
+
+function posToNote(p){
+  return p==="トップ"?"Top": p==="ミドル"?"Middle": p==="ベース"?"Base":"Other";
+}
+function noteToPos(n){
+  n=String(n||"");
+  if(n.indexOf("Top")===0||n.indexOf("トップ")===0) return "トップ";
+  if(n.indexOf("Mid")===0||n.indexOf("Heart")===0||n.indexOf("ミドル")===0||n.indexOf("ハート")===0) return "ミドル";
+  if(n.indexOf("Base")===0||n.indexOf("ベース")===0) return "ベース";
+  return "";
+}
+/* メモの数値は10%希釈どうしの比。おぼえがきに1%とあればそれを伝える */
+function dilOf(x){
+  var m=String(x.m||"");
+  if(m.indexOf("1%")>=0 && m.indexOf("10%")<0) return 1;
+  if(m.indexOf("原液")>=0 || m.indexOf("100%")>=0) return 100;
+  return 10;
+}
+
+document.getElementById("to-note").onclick=function(){
+  var t=cur.tiers[ti];
+  var payload={
+    dir:"to_note", memoId:curId, tierKey:t.key||String(ti), tierName:t.name,
+    name:cur.name, batch:batch, sentAt:Date.now(),
+    items:t.items.map(function(x){
+      return { name:x.n, parts:x.v, note:posToNote(x.p), dilution:dilOf(x) };
+    })
+  };
+  try{ localStorage.setItem(HK, JSON.stringify(payload)); }
+  catch(e){ alert("受け渡しに失敗しました。"); return; }
+  location.href="../index.html";
+};
+
+function showInbox(h){
+  var f=DB[h.memoId];
+  if(!f){ alert("戻り先の処方が見つかりませんでした。"); localStorage.removeItem(HK); return; }
+  inbox=h;
+  var idx=-1;
+  f.tiers.forEach(function(t,i){ if((t.key||String(i))===h.tierKey) idx=i; });
+  if(idx<0) idx=0;
+  inbox.tierIndex=idx;
+  var t=f.tiers[idx];
+
+  document.getElementById("home").hidden=true;
+  document.getElementById("view").hidden=true;
+  document.getElementById("inbox").hidden=false;
+  document.getElementById("in-name").textContent=f.name||"";
+  document.getElementById("in-sub").textContent=t.name+" の調整結果が戻ってきました";
+
+  var old={}, neu={}, names=[];
+  t.items.forEach(function(x){ old[x.n]=x.v; names.push(x.n); });
+  h.items.forEach(function(x){ neu[x.name]=Number(x.parts)||0;
+    if(names.indexOf(x.name)<0) names.push(x.name); });
+
+  var chg=[], add=[], del=[], same=0;
+  names.forEach(function(n){
+    var a=old[n], b=neu[n];
+    if(a===undefined) add.push({n:n,b:b});
+    else if(b===undefined) del.push({n:n,a:a});
+    else if(Math.abs(a-b)>1e-9) chg.push({n:n,a:a,b:b});
+    else same++;
+  });
+
+  var h2="";
+  if(chg.length){
+    h2+='<p class="cat2">変わったもの</p>';
+    chg.forEach(function(x){
+      h2+='<div class="dif"><div class="nm">'+esc(x.n)+'</div><div class="vv"><s>'+x.a+'</s>→ '+x.b+'</div></div>';
+    });
+  }
+  if(add.length){
+    h2+='<p class="cat2">加わったもの</p>';
+    add.forEach(function(x){
+      h2+='<div class="dif add"><div class="nm">'+esc(x.n)+'</div><div class="vv">'+x.b+'</div></div>';
+    });
+  }
+  if(del.length){
+    h2+='<p class="cat2">外したもの</p>';
+    del.forEach(function(x){
+      h2+='<div class="dif del"><div class="nm">'+esc(x.n)+'</div><div class="vv"><s>'+x.a+'</s></div></div>';
+    });
+  }
+  if(!chg.length && !add.length && !del.length){
+    h2+='<div class="panel"><p class="sub" style="margin:0">配合比に変わりはありませんでした。</p></div>';
+  }
+  var ot=0, nt=0;
+  t.items.forEach(function(x){ ot+=x.v; });
+  h.items.forEach(function(x){ nt+=Number(x.parts)||0; });
+  h2+='<div class="dif"><div class="nm"><b>合計</b><br><span class="tag">素材数 '+t.items.length+' → '+h.items.length+'</span></div>'+
+      '<div class="vv"><s>'+(Math.round(ot*10)/10)+'</s>→ '+(Math.round(nt*10)/10)+'</div></div>';
+  document.getElementById("in-diff").innerHTML=h2;
+}
+
+function inboxItems(){
+  return inbox.items.map(function(x){
+    var o={ n:x.name, p:noteToPos(x.note), v:Number(x.parts)||0 };
+    var dil=Number(x.dilution)||10;
+    if(dil!==10) o.m=dil+"%希釈";
+    return o;
+  });
+}
+function closeInbox(){
+  localStorage.removeItem(HK); inbox=null;
+  document.getElementById("inbox").hidden=true;
+  document.getElementById("home").hidden=false;
+  renderList(); window.scrollTo(0,0);
+}
+document.getElementById("in-over").onclick=function(){
+  var f=DB[inbox.memoId], t=f.tiers[inbox.tierIndex];
+  if(!confirm("「"+t.name+"」を上書きします。元の数値は残りません。")) return;
+  /* 元のおぼえがき（m）は素材名が同じものだけ引き継ぐ */
+  var keep={}; t.items.forEach(function(x){ if(x.m) keep[x.n]=x.m; });
+  t.items=inboxItems().map(function(x){ if(!x.m && keep[x.n]) x.m=keep[x.n]; return x; });
+  t.batch=Number(inbox.batch)||t.batch;
+  save();
+  var id=inbox.memoId; closeInbox(); open(id);
+};
+document.getElementById("in-new").onclick=function(){
+  var f=DB[inbox.memoId], t=f.tiers[inbox.tierIndex];
+  var nm=prompt("新しい段の名前", t.name+" 改");
+  if(nm===null) return;
+  nm=(nm||"").trim() || (t.name+" 改");
+  f.tiers.splice(inbox.tierIndex+1, 0, {
+    key:"v"+Date.now(), name:nm, batch:Number(inbox.batch)||t.batch||100,
+    desc:t.desc||"", items:inboxItems()
+  });
+  save();
+  var id=inbox.memoId; closeInbox(); open(id);
+};
+document.getElementById("in-drop").onclick=function(){
+  if(confirm("戻ってきた変更を破棄します。よろしいですか。")) closeInbox();
+};
+
+function checkHandoff(){
+  try{
+    var raw=localStorage.getItem(HK);
+    if(!raw) return;
+    var h=JSON.parse(raw);
+    var fresh = h && h.sentAt && (Date.now()-h.sentAt < 30*60*1000);
+    if(h && h.dir==="to_memo" && h.items && h.items.length && fresh) showInbox(h);
+    else if(h && h.dir==="to_memo") localStorage.removeItem(HK);
+  }catch(e){}
+}
+
+load(); renderList(); checkHandoff();
 </script>
 </body>
 </html>
