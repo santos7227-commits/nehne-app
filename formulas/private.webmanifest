@@ -1,8 +1,8 @@
 {
  "name": "調香メモ",
  "short_name": "調香メモ",
- "id": "./private.html",
- "start_url": "./private.html",
+ "id": "./private.html?m=2",
+ "start_url": "./private.html?m=2",
  "scope": "./",
  "display": "standalone",
  "orientation": "portrait",
