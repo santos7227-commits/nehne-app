@@ -31,6 +31,12 @@ h1{font-family:var(--mincho);font-size:26px;letter-spacing:.18em;color:var(--dee
   font-family:inherit;font-size:13.5px;padding:11px 16px;border-radius:2px;cursor:pointer;
   width:100%;text-align:center}
 .btn.ghost{background:transparent;color:var(--gold)}
+#v-ref{width:100%;box-sizing:border-box;font-family:inherit;font-size:13.5px;line-height:1.7;
+  color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:4px;
+  padding:9px 10px;resize:vertical}
+.ref-row{display:flex;align-items:center;gap:12px;margin-top:9px}
+.ref-saved{font-size:11.5px;color:var(--water);opacity:0;transition:opacity .25s}
+.ref-saved.show{opacity:1}
 .mini{background:none;border:none;color:var(--water);font-size:12px;text-decoration:underline;
   cursor:pointer;font-family:inherit;padding:4px 0}
 .list{margin-bottom:12px}
@@ -154,6 +160,7 @@ footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-h
   "subtitle": "天然香料のみの処方",
   "poem": "詩\n改行は \\n",
   "note": "香りの骨格の説明",
+  "ref": "参照メモ（元の香水の情報。処方全体で1つ）",
   "tiers": [
     { "key": "skeleton", "name": "スケルトン",
       "batch": 100, "desc": "この段の説明",
@@ -178,6 +185,16 @@ footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-h
   </header>
   <p class="poem" id="v-poem"></p>
   <p class="note" id="v-note"></p>
+
+  <div class="panel">
+    <p class="lbl">参照メモ（元の香水の情報）</p>
+    <textarea id="v-ref" rows="3" placeholder="例：元にしたのは〇〇（ブランド）の△△。トップのシトラス感とラストのムスクを参考にした。素材の対応は下の各段のおぼえがき参照。"></textarea>
+    <div class="ref-row">
+      <button class="btn ghost" id="v-ref-save">この内容を保存する</button>
+      <span class="ref-saved" id="v-ref-saved">保存しました</span>
+    </div>
+    <p class="sub" style="margin-top:8px">この処方が何をもとにしているかのメモです。段が変わっても内容は共通です。</p>
+  </div>
 
   <div class="panel">
     <p class="lbl">段をえらぶ</p>
@@ -275,6 +292,8 @@ function open(id){
            esc(t[1]||t[0]).replace(/\n/g,"</p><p>")+'</p></div></details>';
   }).join("");
   document.getElementById("memo").innerHTML=m||'<div class="empty">なし</div>';
+  document.getElementById("v-ref").value=cur.ref||"";
+  document.getElementById("v-ref-saved").className="ref-saved";
   document.getElementById("del").onclick=function(){
     if(confirm("「"+cur.name+"」を端末から削除します。よろしいですか。")){
       for(var k in DB) if(DB[k]===cur) delete DB[k];
@@ -379,6 +398,15 @@ document.getElementById("exp").onclick=function(){
   a.click(); URL.revokeObjectURL(a.href);
 };
 document.getElementById("back").onclick=back;
+document.getElementById("v-ref-save").onclick=function(){
+  if(!cur) return;
+  cur.ref=document.getElementById("v-ref").value;
+  save();
+  var s=document.getElementById("v-ref-saved");
+  s.className="ref-saved show";
+  clearTimeout(window._refSavedT);
+  window._refSavedT=setTimeout(function(){ s.className="ref-saved"; }, 1600);
+};
 var deferred=null;
 function diag(){
   var m=matchMedia("(display-mode: standalone)").matches?"アプリとして表示中"
