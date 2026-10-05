@@ -1,6 +1,7 @@
 {
   "name": "nehne Perfumer's Notebook / 調香ノート",
   "short_name": "nehne",
+  "id": "./index.html",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
