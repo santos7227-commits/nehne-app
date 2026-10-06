@@ -918,6 +918,10 @@ html[data-theme="sepia"] .brand svg [fill="#c8963f"]{fill:var(--amber);}
         </div>
         <input type="file" id="importFile" accept="application/json,.json" style="display:none;">
       </div>
+      <div class="memo-entry">
+        <button class="btn btn-secondary btn-block" id="openMemoBtn"><span id="lblOpenMemo">調香メモを開く</span></button>
+        <p class="memo-entry-note" id="memoEntryNote">自作の処方を、この端末の中だけに保存するノートです。</p>
+      </div>
       <div id="savedList"></div>
     </section>
 
@@ -1123,6 +1127,7 @@ const STR = {
     open_mix_btn:'調香専用ページを開く',
     target_conc_label:'目標賦香率（%）', final_vol_label:'出来上がる香水の量（ml）',
     exp_csv:'Excelに書き出す', exp_json:'バックアップ', exp_import:'復元',
+    open_memo:'調香メモを開く', open_memo_note:'自作の処方を、この端末の中だけに保存するノートです。',
     dil_compound:'コンパウンド（原液）', dil_alcohol:'無水エタノール', dil_final:'合計', dil_weight:'重量', dil_volume:'容量', dil_density:'香水の比重',
     clear_btn:'クリア', save_btn:'保存する',
     library_desc:'既存の処方例です。タップして詳細を見るか、「編集で使う」で配合エディタに読み込めます。（レシピ内の説明文は日本語のみです）',
@@ -1287,6 +1292,7 @@ const STR = {
     open_mix_btn:'Open Compounding Mode',
     target_conc_label:'Target concentration (%)', final_vol_label:'Perfume you end up with (ml)',
     exp_csv:'Export to Excel', exp_json:'Backup', exp_import:'Restore',
+    open_memo:'Open Private Memo', open_memo_note:'A notebook that keeps your own formulas on this device only.',
     dil_compound:'Compound (concentrate)', dil_alcohol:'Ethanol (anhydrous)', dil_final:'Total', dil_weight:'Weight', dil_volume:'Volume', dil_density:'Perfume density',
     clear_btn:'Clear', save_btn:'Save',
     library_desc:'Reference formulas. Tap to see details, or "Use in editor" to load into the formula builder. (Recipe notes remain in Japanese.)',
@@ -1881,6 +1887,8 @@ function applyStaticLang(){
     const el = document.getElementById('lbl'+n);
     if(el) el.textContent = t(['exp_csv','exp_json','exp_import'][i]);
   });
+  const _om = document.getElementById('lblOpenMemo'); if(_om) _om.textContent = t('open_memo');
+  const _on = document.getElementById('memoEntryNote'); if(_on) _on.textContent = t('open_memo_note');
   document.getElementById('appTitleText').textContent = t('app_title');
   document.getElementById('matSearch').placeholder = t('search_materials_ph');
   document.getElementById('addCustomMatBtnLabel').textContent = t('add_custom_btn');
@@ -3708,7 +3716,7 @@ document.getElementById('openWelcomeBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- Version & auto-update ---------------- */
-const APP_VERSION = '1.18.0';  /* ← 更新のたびにここの数字を上げる */
+const APP_VERSION = '1.19.0';  /* ← 更新のたびにここの数字を上げる */
 document.getElementById('appVersionLabel').textContent = 'nehne調香ノート  v' + APP_VERSION;
 
 /* サービスワーカー登録（GitHub Pages等のhttps配信時のみ動作。
@@ -3866,12 +3874,25 @@ renderLibrary();
       return;
     }
     clearLink();
-    location.href = '/memo/private.html';
+    location.href = '/memo/private.html?from=note';
   });
 
   btnNo.addEventListener('click', function(){
     if(confirm('調香メモとの連携を解除します。いまの配合はこの画面に残ります。')) clearLink();
   });
+})();
+</script>
+<style>
+/* ---------- v1.19.0: 調香メモへの入口 ---------- */
+.memo-entry{margin:0 0 18px;}
+.memo-entry-note{font-size:0.6875rem; color:var(--paper-dim); line-height:1.7; margin:6px 2px 0; text-align:center;}
+</style>
+<script>
+/* v1.19.0: 調香ノートの中から調香メモを開く。
+   同じドメインなので、Play版の中でもアプリの画面のまま表示され、データも共有される。 */
+(function(){
+  var b = document.getElementById('openMemoBtn');
+  if(b) b.addEventListener('click', function(){ location.href = '/memo/private.html?from=note'; });
 })();
 </script>
 </body>
