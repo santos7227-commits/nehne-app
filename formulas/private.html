@@ -2,13 +2,602 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
-<title>調香メモは移動しました</title>
-<script>location.replace("/memo/private.html");</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>調香メモ</title>
+<link rel="manifest" href="./private.webmanifest">
+<meta name="theme-color" content="#EFF0EA">
+<link rel="apple-touch-icon" href="/nehne-app/formulas/note-192.png">
+<link rel="icon" href="/nehne-app/formulas/note-192.png">
+<style>
+:root{
+  --ink:#23291F;--deep:#2E4038;--water:#6E8C86;--gold:#A9853F;
+  --paper:#EFF0EA;--card:#FBFBF8;--line:#D6D9CE;
+  --mincho:"Hiragino Mincho ProN","Yu Mincho",YuMincho,"Noto Serif JP",serif;
+  --gothic:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;
+  --num:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--gothic);
+  font-size:15px;line-height:1.7;padding-bottom:60px}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+header{padding:26px 0 16px}
+.back-note{display:inline-block;margin-top:16px;font-size:12.5px;color:var(--water);text-decoration:underline;text-underline-offset:3px}
+.badge{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--gold);
+  border:1px solid var(--gold);padding:2px 8px;border-radius:2px;margin-bottom:12px}
+h1{font-family:var(--mincho);font-size:26px;letter-spacing:.18em;color:var(--deep);margin:0}
+.sub{font-size:11.5px;color:#9AA396;margin:8px 0 0;letter-spacing:.03em}
+.panel{background:var(--card);border:1px solid var(--line);padding:15px;margin-bottom:12px}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--water);margin:0 0 9px}
+.btn{display:inline-block;border:1px solid var(--gold);background:var(--gold);color:#fff;
+  font-family:inherit;font-size:13.5px;padding:11px 16px;border-radius:2px;cursor:pointer;
+  width:100%;text-align:center}
+.btn.ghost{background:transparent;color:var(--gold)}
+#v-ref{width:100%;box-sizing:border-box;font-family:inherit;font-size:13.5px;line-height:1.7;
+  color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:4px;
+  padding:9px 10px;resize:vertical}
+.ref-row{display:flex;align-items:center;gap:12px;margin-top:9px}
+.ref-saved{font-size:11.5px;color:var(--water);opacity:0;transition:opacity .25s}
+.ref-saved.show{opacity:1}
+.mini{background:none;border:none;color:var(--water);font-size:12px;text-decoration:underline;
+  cursor:pointer;font-family:inherit;padding:4px 0}
+.list{margin-bottom:12px}
+.item{display:flex;justify-content:space-between;align-items:center;background:var(--card);
+  border:1px solid var(--line);border-top:none;padding:14px 15px;cursor:pointer}
+.item:first-child{border-top:1px solid var(--line)}
+.item b{font-family:var(--mincho);font-size:17px;letter-spacing:.1em;color:var(--deep);font-weight:500}
+.item small{display:block;font-size:11px;color:#9AA396;letter-spacing:.02em}
+.item span{color:var(--gold);font-size:18px}
+.empty{background:var(--card);border:1px dashed var(--line);padding:26px 18px;text-align:center;
+  color:#9AA396;font-size:13px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--deep);
+  font-family:inherit;font-size:13px;padding:9px 13px;border-radius:2px;cursor:pointer;white-space:nowrap}
+.chip small{display:block;font-size:10px;color:#9AA396}
+.chip[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:#fff}
+.chip[aria-pressed="true"] small{color:#A9BDB4}
+.pre{border:1px solid var(--line);background:#fff;font-family:var(--num);font-size:12px;
+  padding:6px 10px;border-radius:2px;cursor:pointer;color:var(--deep)}
+.pre[aria-pressed="true"]{background:var(--water);border-color:var(--water);color:#fff}
+.poem{font-family:var(--mincho);font-size:13px;line-height:2.1;color:var(--water);
+  border-left:2px solid var(--line);padding-left:13px;margin:0 0 14px}
+.note{font-size:12.5px;color:#5A6152;margin:0 0 14px}
+.cat{font-size:11px;letter-spacing:.18em;color:var(--gold);margin:22px 0 8px;
+  display:flex;align-items:center;gap:10px}
+.cat::after{content:"";flex:1;height:1px;background:var(--line)}
+.row{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:end;background:var(--card);
+  border:1px solid var(--line);border-top:none;padding:11px 13px;cursor:pointer}
+.row:first-of-type{border-top:1px solid var(--line)}
+.row.done{background:#E7EAE1;color:#9AA396}
+.row.done .ul{color:#9AA396;text-decoration:line-through}
+.nm{font-size:14.5px}
+.nm em{font-style:normal;font-size:10.5px;color:var(--gold);border:1px solid var(--gold);
+  padding:0 4px;margin-left:6px;border-radius:2px;vertical-align:1px}
+.ul{font-family:var(--num);font-size:22px;font-weight:600;color:var(--deep);line-height:1.1;text-align:right}
+.ul u{font-size:10px;font-weight:400;text-decoration:none;color:var(--water);margin-left:2px}
+.sb{grid-column:1;font-family:var(--num);font-size:10.5px;color:#9AA396}
+.mo{grid-column:2;font-size:10.5px;color:#9AA396;text-align:right}
+.bar{grid-column:1/-1;height:3px;background:#E2E5DB;margin-top:7px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--water)}
+.sum{display:flex;justify-content:space-between;background:var(--deep);color:#fff;
+  padding:13px 14px;font-size:12.5px;letter-spacing:.05em;margin-top:-1px}
+.sum b{font-family:var(--num);font-size:16px}
+.warn{background:#F7EFE0;border-left:3px solid var(--gold);padding:10px 12px;font-size:12px;
+  color:#7A6330;margin:10px 0 0}
+details{background:var(--card);border:1px solid var(--line);margin-bottom:10px}
+summary{padding:13px 14px;font-size:13.5px;cursor:pointer;list-style:none;display:flex;
+  justify-content:space-between;align-items:center;color:var(--deep)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";color:var(--gold)}
+details[open] summary::after{content:"−"}
+.body{padding:0 14px 15px;font-size:12.5px;color:#4A5142}
+.body p{margin:0 0 8px}
+.body code{font-family:var(--num);font-size:11px;background:#EFF0EA;padding:1px 4px}
+pre{font-family:var(--num);font-size:10.5px;background:#EFF0EA;padding:10px;overflow-x:auto;
+  line-height:1.5;color:#3A4237}
+h2{font-family:var(--mincho);font-size:16px;letter-spacing:.1em;color:var(--deep);
+  margin:30px 0 12px;font-weight:500}
+.back{background:none;border:none;color:var(--water);font-size:13px;cursor:pointer;
+  font-family:inherit;padding:14px 0 6px}
+.dif{background:var(--card);border:1px solid var(--line);padding:11px 13px;margin-bottom:6px;
+  display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center}
+.dif .nm{font-size:14px}
+.dif .vv{font-family:var(--num);font-size:13px;color:var(--deep)}
+.dif .vv s{color:#9AA396;margin-right:6px}
+.dif.add{border-left:3px solid var(--gold)}
+.dif.del{border-left:3px solid #C08A8A}
+.dif.del .nm{color:#9AA396;text-decoration:line-through}
+.dif .tag{font-size:10.5px;color:var(--water);letter-spacing:.1em}
+.cat2{font-size:11px;letter-spacing:.14em;color:var(--water);margin:16px 0 7px}
+footer{text-align:center;font-size:11px;color:#9AA396;padding:26px 0 10px;line-height:1.9}
+</style>
 </head>
-<body style="font-family:sans-serif;padding:24px;line-height:1.8">
-<p>調香メモは新しい場所に移動しました。</p>
-<p><a href="/memo/private.html">こちらから開いてください</a></p>
+<body>
+<div class="wrap">
+
+<div id="home">
+  <a class="back-note" href="/nehne-app/index.html">← 調香ノートへ</a>
+  <header>
+    <span class="badge">端末内保存 ／ 非公開</span>
+    <h1>非公開処方</h1>
+    <p class="sub">この画面の処方データは、お使いの端末の中だけに保存されます。サーバーにも GitHub にも送信されません。</p>
+  </header>
+
+  <div class="list" id="list"></div>
+
+  <div class="panel" id="inst">
+    <p class="lbl">ホーム画面に置く</p>
+    <button class="btn" id="inst-btn">ホーム画面に追加する</button>
+    <p class="sub" style="margin-top:10px">nehne調香ノートとは別のアイコンになります。名前は「調香メモ」。中身が分からない名前なので、人に画面を見られても安心です。</p>
+    <p class="sub" id="inst-manual" hidden style="margin-top:10px;color:#8A6A2F">
+      ボタンが効きませんでした。下の「いまの状態」を見てください。</p>
+    <p class="sub" id="diag" style="margin-top:12px;font-family:var(--num);font-size:11px"></p>
+  </div>
+
+  <div class="panel">
+    <p class="lbl">処方を追加する</p>
+    <label class="btn" for="file">JSONファイルを読み込む</label>
+    <input id="file" type="file" accept=".json,application/json" multiple hidden>
+    <p class="sub" style="margin-top:10px">複数まとめて選べます。同じIDの処方は上書きされます。</p>
+  </div>
+
+  <div class="panel">
+    <p class="lbl">バックアップ</p>
+    <button class="btn ghost" id="exp">保存中の処方をまとめて書き出す</button>
+    <p class="sub" style="margin-top:10px">端末を変えるとき・アプリのデータが消えたときのために、書き出したファイルをクラウドに置いておいてください。</p>
+  </div>
+
+  <h2>使い方とデータの形</h2>
+  <details><summary>この画面の仕組み</summary><div class="body">
+  <p>このページ自体は「表示器」で、処方の数値は入っていません。読み込んだJSONは端末のブラウザ保存領域（localStorage）に置かれ、次回からは一覧に並びます。</p>
+  <p>公開しているのは表示の仕組みだけなので、このページがGitHubにあっても、香料名や配合比が外から見えることはありません。</p>
+  <p>ブラウザの履歴やサイトデータを消すと保存も消えます。書き出したJSONは別に保管してください。</p>
+  </div></details>
+
+  <details><summary>JSONの書き方</summary><div class="body">
+  <p>1つの処方が1ファイルです。<code>tiers</code> に段を並べます。段は3つでなくても構いません。</p>
+  <pre>{
+  "id": "sample",
+  "name": "作品名",
+  "subtitle": "天然香料のみの処方",
+  "poem": "詩\n改行は \\n",
+  "note": "香りの骨格の説明",
+  "ref": "参照メモ（元の香水の情報。処方全体で1つ）",
+  "tiers": [
+    { "key": "skeleton", "name": "スケルトン",
+      "batch": 100, "desc": "この段の説明",
+      "items": [
+        { "n": "ベルガモット", "p": "トップ", "v": 31, "m": "メモ" }
+      ] }
+  ],
+  "memo": ["注意書き1", "注意書き2"]
+}</pre>
+  <p><code>v</code> は配合比（10%希釈液どうしの比率・合計100）。<code>p</code> は トップ／ミドル／ベース。<code>batch</code> はその段の既定の仕込み量（µL）です。</p>
+  </div></details>
+
+  <footer>nehne 調香ノート ／ 非公開処方ビューア<br>データは端末内にのみ保存されます</footer>
+</div>
+
+<div id="view" hidden>
+  <button class="back" id="back">← 一覧にもどる</button>
+  <header style="padding-top:6px">
+    <span class="badge">非公開</span>
+    <h1 id="v-name"></h1>
+    <p class="sub" id="v-sub"></p>
+  </header>
+  <p class="poem" id="v-poem"></p>
+  <p class="note" id="v-note"></p>
+
+  <div class="panel">
+    <p class="lbl">参照メモ（元の香水の情報）</p>
+    <textarea id="v-ref" rows="3" placeholder="例：元にしたのは〇〇（ブランド）の△△。トップのシトラス感とラストのムスクを参考にした。素材の対応は下の各段のおぼえがき参照。"></textarea>
+    <div class="ref-row">
+      <button class="btn ghost" id="v-ref-save">この内容を保存する</button>
+      <span class="ref-saved" id="v-ref-saved">保存しました</span>
+    </div>
+    <p class="sub" style="margin-top:8px">この処方が何をもとにしているかのメモです。段が変わっても内容は共通です。</p>
+  </div>
+
+  <div class="panel">
+    <p class="lbl">段をえらぶ</p>
+    <div class="chips" id="tiers"></div>
+  </div>
+  <div class="panel">
+    <p class="lbl">仕込む量</p>
+    <div class="chips" id="batch"></div>
+    <p class="sub" id="b-note" style="margin-top:10px"></p>
+    <div id="warn"></div>
+  </div>
+
+  <div id="rows"></div>
+
+  <div class="panel">
+    <p class="lbl">調香ノートと連携</p>
+    <button class="btn" id="to-note">この段を調香ノートで調整する</button>
+    <p class="sub" style="margin-top:10px">向こうで配合比を変えて「メモに戻す」を押すと、ここへ差分が返ってきます。処方はURLに載らず、端末の中だけを通ります。</p>
+  </div>
+
+  <h2>おぼえがき</h2>
+  <div id="memo"></div>
+
+  <div class="panel">
+    <button class="mini" id="del">この処方を端末から削除する</button>
+  </div>
+  <footer>行をタップすると消し込みできます</footer>
+</div>
+
+<div id="inbox" hidden>
+  <header style="padding-top:6px">
+    <span class="badge">調香ノートから</span>
+    <h1 id="in-name"></h1>
+    <p class="sub" id="in-sub"></p>
+  </header>
+
+  <div id="in-diff"></div>
+
+  <div class="panel">
+    <p class="lbl">どう残しますか</p>
+    <button class="btn" id="in-over">この段を上書きする</button>
+    <button class="btn ghost" id="in-new" style="margin-top:8px">新しい段として残す</button>
+    <p class="sub" style="margin-top:10px">上書きは元の数値が消えます。版として残したいときは「新しい段」を選んでください。</p>
+  </div>
+  <div class="panel">
+    <button class="mini" id="in-drop">この変更を破棄する</button>
+  </div>
+  <footer>書き出しのJSONにも反映されます。変更後は一度バックアップを取ってください</footer>
+</div>
+
+</div>
+<script>
+var KEY="nehne_private_formulas";
+var DB={}, cur=null, curId=null, ti=0, batch=100, done={};
+
+function load(){ try{ DB=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ DB={}; } }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(DB)); }
+  catch(e){ alert("保存できませんでした。端末の空き容量を確認してください。"); } }
+function fmt(x){ return x>=100?x.toFixed(0):x>=10?x.toFixed(1):x.toFixed(2); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
+
+function renderList(){
+  var ids=Object.keys(DB), h="";
+  if(!ids.length){
+    document.getElementById("list").innerHTML=
+      '<div class="empty">まだ処方がありません。<br>下のボタンからJSONを読み込んでください。</div>';
+    return;
+  }
+  ids.forEach(function(id){
+    var f=DB[id], n=(f.tiers||[]).length;
+    h+='<div class="item" data-id="'+esc(id)+'"><div><b>'+esc(f.name)+'</b>'+
+       '<small>'+esc(f.subtitle||"")+'　'+n+'段</small></div><span>›</span></div>';
+  });
+  document.getElementById("list").innerHTML=h;
+  document.querySelectorAll(".item").forEach(function(el){
+    el.onclick=function(){ open(el.dataset.id); };
+  });
+}
+
+function open(id){
+  cur=DB[id]; curId=id; ti=0; done={};
+  batch=(cur.tiers[0]&&cur.tiers[0].batch)||100;
+  document.getElementById("home").hidden=true;
+  document.getElementById("view").hidden=false;
+  document.getElementById("v-name").textContent=cur.name||"";
+  document.getElementById("v-sub").textContent=cur.subtitle||"";
+  var p=document.getElementById("v-poem");
+  p.innerHTML=esc(cur.poem||"").replace(/\n/g,"<br>"); p.style.display=cur.poem?"":"none";
+  var nt=document.getElementById("v-note");
+  nt.textContent=cur.note||""; nt.style.display=cur.note?"":"none";
+  var m=(cur.memo||[]).map(function(x,i){
+    var t=String(x).split("｜");
+    return '<details><summary>'+esc(t[0])+'</summary><div class="body"><p>'+
+           esc(t[1]||t[0]).replace(/\n/g,"</p><p>")+'</p></div></details>';
+  }).join("");
+  document.getElementById("memo").innerHTML=m||'<div class="empty">なし</div>';
+  document.getElementById("v-ref").value=cur.ref||"";
+  document.getElementById("v-ref-saved").className="ref-saved";
+  document.getElementById("del").onclick=function(){
+    if(confirm("「"+cur.name+"」を端末から削除します。よろしいですか。")){
+      for(var k in DB) if(DB[k]===cur) delete DB[k];
+      save(); back();
+    }
+  };
+  tiers(); batches(); rows();
+  window.scrollTo(0,0);
+}
+function back(){
+  document.getElementById("view").hidden=true;
+  document.getElementById("home").hidden=false;
+  renderList(); window.scrollTo(0,0);
+}
+function tiers(){
+  var h="";
+  cur.tiers.forEach(function(t,i){
+    h+='<button class="chip" aria-pressed="'+(i===ti)+'" data-i="'+i+'">'+esc(t.name)+
+       '<small>'+t.items.length+'素材</small></button>';
+  });
+  document.getElementById("tiers").innerHTML=h;
+  document.querySelectorAll("#tiers .chip").forEach(function(b){
+    b.onclick=function(){ ti=+b.dataset.i; done={};
+      batch=cur.tiers[ti].batch||100; tiers(); batches(); rows(); };
+  });
+}
+function batches(){
+  var P=[50,100,200,500,1000], h="";
+  P.forEach(function(p){ h+='<button class="pre" aria-pressed="'+(p===batch)+'" data-v="'+p+'">'+p+'µL</button>'; });
+  document.getElementById("batch").innerHTML=h;
+  document.querySelectorAll("#batch .pre").forEach(function(b){
+    b.onclick=function(){ batch=+b.dataset.v; batches(); rows(); };
+  });
+}
+function rows(){
+  var t=cur.tiers[ti], tot=0, max=0;
+  t.items.forEach(function(x){ tot+=x.v; if(x.v>max) max=x.v; });
+  var order=["トップ","ミドル","ベース"], h="", min=1e9;
+  order.forEach(function(pos){
+    var ms=t.items.filter(function(x){ return (x.p||"")===pos; });
+    if(!ms.length) return;
+    h+='<p class="cat">'+pos+'</p>';
+    ms.sort(function(a,b){ return b.v-a.v; }).forEach(function(x){
+      var ul=x.v/tot*batch; if(ul<min) min=ul;
+      h+='<div class="row'+(done[x.n]?" done":"")+'" data-n="'+esc(x.n)+'">'+
+        '<div class="nm">'+esc(x.n)+(x.m?'<em>'+esc(x.m)+'</em>':'')+'</div>'+
+        '<div class="ul">'+fmt(ul)+'<u>µL</u></div>'+
+        '<div class="sb">'+x.v+'</div>'+
+        '<div class="mo">'+(x.v/tot*100).toFixed(1)+'%</div>'+
+        '<div class="bar"><i style="width:'+(x.v/max*100)+'%"></i></div></div>';
+    });
+  });
+  var un=t.items.filter(function(x){ return order.indexOf(x.p||"")<0; });
+  if(un.length){
+    h+='<p class="cat">その他</p>';
+    un.forEach(function(x){
+      var ul=x.v/tot*batch; if(ul<min) min=ul;
+      h+='<div class="row" data-n="'+esc(x.n)+'"><div class="nm">'+esc(x.n)+'</div>'+
+         '<div class="ul">'+fmt(ul)+'<u>µL</u></div><div class="sb">'+x.v+'</div>'+
+         '<div class="mo"></div></div>';
+    });
+  }
+  h+='<div class="sum"><span>合計</span><span><b>'+fmt(batch)+'</b> µL ／ 配合比 '+
+     (Math.round(tot*10)/10)+'</span></div>';
+  document.getElementById("rows").innerHTML=h;
+  document.querySelectorAll(".row").forEach(function(el){
+    el.onclick=function(){ done[el.dataset.n]=!done[el.dataset.n]; rows(); };
+  });
+  document.getElementById("b-note").textContent=t.desc||"";
+  document.getElementById("warn").innerHTML = min<0.5
+    ? '<div class="warn">最小の素材が '+min.toFixed(2)+
+      'µL になります。0.5µLピペットでは量れないので、仕込む量を上げてください。</div>' : "";
+}
+
+document.getElementById("file").addEventListener("change",function(e){
+  var fs=e.target.files, n=0, left=fs.length;
+  if(!left) return;
+  Array.prototype.forEach.call(fs,function(f){
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var d=JSON.parse(r.result);
+        if(d&&d.id&&d.tiers){ DB[d.id]=d; n++; }
+        else {
+          var got=0;
+          for(var k in d){ if(d[k]&&d[k].tiers){ DB[d[k].id||k]=d[k]; got++; } }
+          if(!got) throw 0;
+          n+=got;
+        }
+      }catch(err){ alert(f.name+" は読み込めませんでした。"); }
+      if(--left===0){ save(); renderList(); if(n) alert(n+"件を読み込みました。"); }
+    };
+    r.readAsText(f,"utf-8");
+  });
+  e.target.value="";
+});
+document.getElementById("exp").onclick=function(){
+  var b=new Blob([JSON.stringify(DB,null,1)],{type:"application/json"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(b);
+  a.download="nehne_非公開処方_"+new Date().toISOString().slice(0,10)+".json";
+  a.click(); URL.revokeObjectURL(a.href);
+};
+document.getElementById("back").onclick=back;
+document.getElementById("v-ref-save").onclick=function(){
+  if(!cur) return;
+  cur.ref=document.getElementById("v-ref").value;
+  save();
+  var s=document.getElementById("v-ref-saved");
+  s.className="ref-saved show";
+  clearTimeout(window._refSavedT);
+  window._refSavedT=setTimeout(function(){ s.className="ref-saved"; }, 1600);
+};
+var deferred=null;
+function diag(){
+  var m=matchMedia("(display-mode: standalone)").matches?"アプリとして表示中"
+      : matchMedia("(display-mode: minimal-ui)").matches?"minimal-ui"
+      : "ブラウザのタブ";
+  document.getElementById("diag").textContent=
+    "いまの状態： "+m+" ／ 追加ボタン："+(deferred?"使えます":"まだ使えません");
+}
+window.addEventListener("beforeinstallprompt",function(e){
+  e.preventDefault(); deferred=e; diag();
+});
+document.getElementById("inst-btn").onclick=function(){
+  if(deferred){
+    deferred.prompt();
+    deferred.userChoice.then(function(){ deferred=null;
+      document.getElementById("inst").hidden=true; });
+  } else {
+    document.getElementById("inst-manual").hidden=false;
+  }
+};
+window.addEventListener("appinstalled",function(){
+  document.getElementById("inst").hidden=true; });
+diag();
+
+/* =====================================================
+   調香ノート（/nehne-app/index.html）との連携
+   同じオリジンのlocalStorageで受け渡す。URLには何も載せない。
+   ===================================================== */
+var HK="nehne_handoff_v1";
+var inbox=null;
+
+function posToNote(p){
+  return p==="トップ"?"Top": p==="ミドル"?"Middle": p==="ベース"?"Base":"Other";
+}
+function noteToPos(n){
+  n=String(n||"");
+  if(n.indexOf("Top")===0||n.indexOf("トップ")===0) return "トップ";
+  if(n.indexOf("Mid")===0||n.indexOf("Heart")===0||n.indexOf("ミドル")===0||n.indexOf("ハート")===0) return "ミドル";
+  if(n.indexOf("Base")===0||n.indexOf("ベース")===0) return "ベース";
+  return "";
+}
+/* メモの数値は10%希釈どうしの比。おぼえがきに1%とあればそれを伝える */
+function dilOf(x){
+  var m=String(x.m||"");
+  if(m.indexOf("1%")>=0 && m.indexOf("10%")<0) return 1;
+  if(m.indexOf("原液")>=0 || m.indexOf("100%")>=0) return 100;
+  return 10;
+}
+
+document.getElementById("to-note").onclick=function(){
+  var t=cur.tiers[ti];
+  var payload={
+    dir:"to_note", memoId:curId, tierKey:t.key||String(ti), tierName:t.name,
+    name:cur.name, batch:batch, sentAt:Date.now(),
+    items:t.items.map(function(x){
+      return { name:x.n, parts:x.v, note:posToNote(x.p), dilution:dilOf(x) };
+    })
+  };
+  try{ localStorage.setItem(HK, JSON.stringify(payload)); }
+  catch(e){ alert("受け渡しに失敗しました。"); return; }
+  location.href="/nehne-app/index.html";
+};
+
+function showInbox(h){
+  var f=DB[h.memoId];
+  if(!f){ alert("戻り先の処方が見つかりませんでした。"); localStorage.removeItem(HK); return; }
+  inbox=h;
+  var idx=-1;
+  f.tiers.forEach(function(t,i){ if((t.key||String(i))===h.tierKey) idx=i; });
+  if(idx<0) idx=0;
+  inbox.tierIndex=idx;
+  var t=f.tiers[idx];
+
+  document.getElementById("home").hidden=true;
+  document.getElementById("view").hidden=true;
+  document.getElementById("inbox").hidden=false;
+  document.getElementById("in-name").textContent=f.name||"";
+  document.getElementById("in-sub").textContent=t.name+" の調整結果が戻ってきました";
+
+  var old={}, neu={}, names=[];
+  t.items.forEach(function(x){ old[x.n]=x.v; names.push(x.n); });
+  h.items.forEach(function(x){ neu[x.name]=Number(x.parts)||0;
+    if(names.indexOf(x.name)<0) names.push(x.name); });
+
+  var chg=[], add=[], del=[], same=0;
+  names.forEach(function(n){
+    var a=old[n], b=neu[n];
+    if(a===undefined) add.push({n:n,b:b});
+    else if(b===undefined) del.push({n:n,a:a});
+    else if(Math.abs(a-b)>1e-9) chg.push({n:n,a:a,b:b});
+    else same++;
+  });
+
+  var h2="";
+  if(chg.length){
+    h2+='<p class="cat2">変わったもの</p>';
+    chg.forEach(function(x){
+      h2+='<div class="dif"><div class="nm">'+esc(x.n)+'</div><div class="vv"><s>'+x.a+'</s>→ '+x.b+'</div></div>';
+    });
+  }
+  if(add.length){
+    h2+='<p class="cat2">加わったもの</p>';
+    add.forEach(function(x){
+      h2+='<div class="dif add"><div class="nm">'+esc(x.n)+'</div><div class="vv">'+x.b+'</div></div>';
+    });
+  }
+  if(del.length){
+    h2+='<p class="cat2">外したもの</p>';
+    del.forEach(function(x){
+      h2+='<div class="dif del"><div class="nm">'+esc(x.n)+'</div><div class="vv"><s>'+x.a+'</s></div></div>';
+    });
+  }
+  if(!chg.length && !add.length && !del.length){
+    h2+='<div class="panel"><p class="sub" style="margin:0">配合比に変わりはありませんでした。</p></div>';
+  }
+  var ot=0, nt=0;
+  t.items.forEach(function(x){ ot+=x.v; });
+  h.items.forEach(function(x){ nt+=Number(x.parts)||0; });
+  h2+='<div class="dif"><div class="nm"><b>合計</b><br><span class="tag">素材数 '+t.items.length+' → '+h.items.length+'</span></div>'+
+      '<div class="vv"><s>'+(Math.round(ot*10)/10)+'</s>→ '+(Math.round(nt*10)/10)+'</div></div>';
+  document.getElementById("in-diff").innerHTML=h2;
+}
+
+function inboxItems(){
+  return inbox.items.map(function(x){
+    var o={ n:x.name, p:noteToPos(x.note), v:Number(x.parts)||0 };
+    var dil=Number(x.dilution)||10;
+    if(dil!==10) o.m=dil+"%希釈";
+    return o;
+  });
+}
+function closeInbox(){
+  localStorage.removeItem(HK); inbox=null;
+  document.getElementById("inbox").hidden=true;
+  document.getElementById("home").hidden=false;
+  renderList(); window.scrollTo(0,0);
+}
+document.getElementById("in-over").onclick=function(){
+  var f=DB[inbox.memoId], t=f.tiers[inbox.tierIndex];
+  if(!confirm("「"+t.name+"」を上書きします。元の数値は残りません。")) return;
+  /* 元のおぼえがき（m）は素材名が同じものだけ引き継ぐ */
+  var keep={}; t.items.forEach(function(x){ if(x.m) keep[x.n]=x.m; });
+  t.items=inboxItems().map(function(x){ if(!x.m && keep[x.n]) x.m=keep[x.n]; return x; });
+  t.batch=Number(inbox.batch)||t.batch;
+  save();
+  var id=inbox.memoId; closeInbox(); open(id);
+};
+document.getElementById("in-new").onclick=function(){
+  var f=DB[inbox.memoId], t=f.tiers[inbox.tierIndex];
+  var nm=prompt("新しい段の名前", t.name+" 改");
+  if(nm===null) return;
+  nm=(nm||"").trim() || (t.name+" 改");
+  f.tiers.splice(inbox.tierIndex+1, 0, {
+    key:"v"+Date.now(), name:nm, batch:Number(inbox.batch)||t.batch||100,
+    desc:t.desc||"", items:inboxItems()
+  });
+  save();
+  var id=inbox.memoId; closeInbox(); open(id);
+};
+document.getElementById("in-drop").onclick=function(){
+  if(confirm("戻ってきた変更を破棄します。よろしいですか。")) closeInbox();
+};
+
+function checkHandoff(){
+  try{
+    var raw=localStorage.getItem(HK);
+    if(!raw) return;
+    var h=JSON.parse(raw);
+    var fresh = h && h.sentAt && (Date.now()-h.sentAt < 30*60*1000);
+    if(h && h.dir==="to_memo" && h.items && h.items.length && fresh) showInbox(h);
+    else if(h && h.dir==="to_memo") localStorage.removeItem(HK);
+  }catch(e){}
+}
+
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("./sw.js").catch(function(){}); }
+
+/* 調香ノートの中から開かれたときは「ホーム画面に置く」を隠す
+   （その場合はインストールの必要がなく、ボタンも効かないため） */
+(function(){
+  try{
+    if(/[?&]from=note(&|$)/.test(location.search)){
+      sessionStorage.setItem("memo_from_note","1");
+      history.replaceState(null,"",location.pathname);   /* アドレスをきれいに戻す */
+    }
+    if(sessionStorage.getItem("memo_from_note")==="1") document.getElementById("inst").hidden=true;
+  }catch(e){}
+})();
+
+load(); renderList(); checkHandoff();
+</script>
 </body>
 </html>
